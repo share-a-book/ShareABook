@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "330008153852",
+    "firebase_url": "https://share-a-book-project-ae374.firebaseio.com",
+    "project_id": "share-a-book-project-ae374",
+    "storage_bucket": "share-a-book-project-ae374.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330008153852:android:93999d116229222c",
+        "android_client_info": {
+          "package_name": "edu.uco.ychong.shareabook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330008153852-p7prgbmuve8d4jt7drc3muhu2snl0fut.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.uco.ychong.shareabook",
+            "certificate_hash": "793f122df1ef2c96dfeebab12bad21e9a8f933dc"
+          }
+        },
+        {
+          "client_id": "330008153852-hrl3rfdokgapqu9i45v31pl7n6s7pcpm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyPbZFx0jJYv6QZpBSPJnbgii_FEYLDdU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330008153852-hrl3rfdokgapqu9i45v31pl7n6s7pcpm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

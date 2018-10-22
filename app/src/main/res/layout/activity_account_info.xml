@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AccountInfoActivity">
+
+
+    <TextView
+            android:text="@string/id_accountInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/id_accountInfoText"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:textSize="24sp"/>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/id_accountInfoText"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/scrollView3">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical">
+
+        <TextView
+                android:text="@string/id_accountInfoFirstNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/id_accountInfoFirstNameText"
+
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/id_accountInfoFirstNameInput"
+
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <TextView
+                android:text="@string/id_accountInfoLastNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/id_accountInfoLastNameText"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/id_accountInfoLastNameInput"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <TextView
+                android:text="@string/id_accountInfoPhoneNumberText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/id_accountInfoPhoneNumberText"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/id_accountInfoPhoneNumberInput"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <TextView
+                android:text="@string/id_accountInfoEmailText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/id_accountInfoEmailText"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/id_accountInfoEmailInput"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <TextView
+                android:text="@string/id_accountInfoPasswordText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/id_accountInfoPasswordText"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/id_accountInfoPasswordInput"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <TextView
+                android:text="@string/id_accountInfoPasswordConfirmationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/id_accountInfoPasswordConfirmationText"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/id_accountInfoPasswordConfirmationInput"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="6dp"
+                app:layout_constraintHorizontal_bias="0.283"/>
+    </LinearLayout>
+    </ScrollView>
+    <Button
+            android:text="@string/id_updateAccountInfoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/id_updateAccountInfoButton"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView3" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+    <Button
+            android:text="@string/id_cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/id_cancelUpdateButton" android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/id_updateAccountInfoButton"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+
+
+</android.support.constraint.ConstraintLayout>

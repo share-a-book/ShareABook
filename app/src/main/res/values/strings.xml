@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Share A Book</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="id_shareABook">Share-A-Book</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="id_loginButton">Log In</string>
+    <string name="id_forgotPasswordButton">Forgot Password?</string>
+    <string name="id_signUpButton">Sign Up</string>
+    <string name="id_resetPasswordText">Enter your email address\nto reset your password.</string>
+    <string name="id_resetPasswordButton">Reset Password</string>
+    <string name="id_cancelButton">Cancel</string>
+    <string name="id_backButton">Back</string>
+    <string name="id_createAccountText">Create Account</string>
+    <string name="id_firstNameText">First Name*</string>
+    <string name="id_lastNameText">Last Name*</string>
+    <string name="id_phoneNumberText">Phone Number*</string>
+    <string name="id_emailText">Email Address*</string>
+    <string name="id_passwordText">Password*</string>
+    <string name="id_passwordConfirmationText">Password Confirmation*</string>
+    <string name="id_createAccountButton">Create Account</string>
+    <string name="hint_passwordLength">Must be 6+ characters</string>
+    <string name="id_accountInfoText">Account Information</string>
+    <string name="id_accountInfoFirstNameText">First Name</string>
+    <string name="id_accountInfoLastNameText">Last Name</string>
+    <string name="id_accountInfoPhoneNumberText">Phone Number</string>
+    <string name="id_accountInfoEmailText">Email Address</string>
+    <string name="id_accountInfoPasswordText">Password</string>
+    <string name="id_accountInfoPasswordConfirmationText">Password Confirmation</string>
+    <string name="id_updateAccountInfoButton">Update</string>
+</resources>
