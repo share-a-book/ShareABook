@@ -4,31 +4,46 @@
       tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item android:title="Home" android:id="@+id/nav_home" android:icon="@drawable/ic_action_home"/>
         <item
-                android:id="@+id/nav_camera"
-                android:icon="@drawable/ic_menu_camera"
-                android:title="Import"/>
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_action_home"
+            android:title="@string/menu_home" />
         <item
-                android:id="@+id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="Gallery"/>
+            android:id="@+id/nav_books"
+            android:icon="@drawable/ic_books"
+            android:title="@string/menu_books" />
         <item
-                android:id="@+id/nav_slideshow"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="Slideshow"/>
+            android:id="@+id/nav_listing"
+            android:icon="@drawable/ic_playlist_add_black_24dp"
+            android:title="@string/menu_listing" />
         <item
-                android:id="@+id/nav_manage"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Tools"/>
+            android:id="@+id/nav_pending"
+            android:icon="@drawable/ic_sand_timer"
+            android:title="@string/menu_pending" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_history_black_24dp"
+            android:title="@string/menu_history" />
     </group>
 
-    <item android:title="Account">
+    <item android:title="@string/menu_account">
         <menu>
-            <item android:title="Log In" android:id="@+id/nav_login" android:icon="@drawable/ic_action_login"/>
-            <item android:title="Account Info" android:id="@+id/nav_accountInfo"
-                  android:icon="@drawable/ic_action_login"/>
-            <item android:title="Log Out" android:id="@+id/nav_logout" android:icon="@drawable/ic_action_logout"/>
+            <item
+                android:id="@+id/nav_sign_up"
+                android:icon="@drawable/ic_signup_24"
+                android:title="@string/menu_sign_up" />
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/ic_action_login"
+                android:title="@string/menu_login" />
+            <item
+                android:id="@+id/nav_accountInfo"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/menu_account_info" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_action_logout"
+                android:title="@string/menu_logout" />
         </menu>
     </item>
 

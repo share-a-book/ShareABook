@@ -1,20 +1,18 @@
 package edu.uco.ychong.shareabook
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import edu.uco.ychong.shareabook.helper.ToastMe
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
-
     private var mAuth: FirebaseAuth ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-
         mAuth = FirebaseAuth.getInstance()
 
         id_createAccountButton.setOnClickListener {
@@ -23,35 +21,33 @@ class SignUpActivity : AppCompatActivity() {
             val passwordConfirmation = id_signUpPasswordConfirmInput.text.toString().trim()
 
             if (email.isNullOrEmpty() || email.isNullOrBlank()) {
-                Toast.makeText(this, "Invalid email input!", Toast.LENGTH_SHORT).show()
+                ToastMe.message(this, "Invalid email input.")
                 return@setOnClickListener
             }
 
             if (password.length < 6) {
-                Toast.makeText(this, "Invalid password!", Toast.LENGTH_SHORT).show()
+                ToastMe.message(this, "Invalid password.")
                 return@setOnClickListener
             }
 
             if (passwordConfirmation.length < 6) {
-                Toast.makeText(this, "Invalid password confirmation!", Toast.LENGTH_SHORT).show()
+                ToastMe.message(this, "Invalid password confirmation!")
                 return@setOnClickListener
             }
 
             if (!password.equals(passwordConfirmation)) {
-                Toast.makeText(this, "Password and Password Confirmation don't match!", Toast.LENGTH_SHORT).show()
+                ToastMe.message(this, "Password and Password Confirmation don't match!")
                 return@setOnClickListener
             }
 
             mAuth?.createUserWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener {
                     if(it.isSuccessful) {
-                        Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show()
-
+                        ToastMe.message(this, "Password and Password Confirmation don't match!")
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val message = it.exception.toString()
-                        Toast.makeText(this, "Account creation failed.\n$message", Toast.LENGTH_SHORT).show()
+                        ToastMe.message(this, "Account creation failed.\n${it.exception.toString()}")
                     }
                 }
         }

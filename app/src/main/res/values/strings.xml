@@ -34,4 +34,14 @@
     <string name="id_accountInfoPasswordText">Password</string>
     <string name="id_accountInfoPasswordConfirmationText">Password Confirmation</string>
     <string name="id_updateAccountInfoButton">Update</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_books">Books</string>
+    <string name="menu_pending">Pending</string>
+    <string name="menu_history">History</string>
+    <string name="menu_listing">Listing</string>
+    <string name="menu_account">Account</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_account_info">Settings</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_sign_up">Sign Up</string>
 </resources>
