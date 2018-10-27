@@ -1,4 +1,4 @@
-package edu.uco.ychong.shareabook
+package edu.uco.ychong.shareabook.helper
 
 import com.google.firebase.auth.FirebaseUser
 

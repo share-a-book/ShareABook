@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import edu.uco.ychong.shareabook.helper.UserAccess
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 

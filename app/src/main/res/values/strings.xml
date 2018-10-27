@@ -44,4 +44,6 @@
     <string name="menu_account_info">Settings</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_sign_up">Sign Up</string>
+    <string name="no_account">No account yet?</string>
+    <string name="create_one">Create one</string>
 </resources>

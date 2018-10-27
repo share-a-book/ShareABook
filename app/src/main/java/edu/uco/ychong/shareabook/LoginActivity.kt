@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import edu.uco.ychong.shareabook.helper.ToastMe
-
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -41,18 +40,18 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
 
-        id_forgotPasswordButton.setOnClickListener {
-            val intent = Intent(this, ForgotPasswordActivity::class.java)
-            startActivity(intent)
-        }
-
+//        id_forgotPasswordButton.setOnClickListener {
+//            val intent = Intent(this, ForgotPasswordActivity::class.java)
+//            startActivity(intent)
+//        }
+//
         id_signUpButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
-
-        id_backButton.setOnClickListener {
-            onBackPressed()
-        }
+//
+//        id_backButton.setOnClickListener {
+//            onBackPressed()
+//        }
     }
 }
