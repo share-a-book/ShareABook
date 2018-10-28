@@ -48,4 +48,7 @@
     <string name="create_one">Create one</string>
     <string name="logo">Logo</string>
     <string name="create">Create</string>
+    <string name="title_activity_listing">ListingActivity</string>
+    <string name="Add" />
+    <string name="listing_books">Listing Books</string>
 </resources>

@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth ?= null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,10 +26,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mAuth = FirebaseAuth.getInstance()
         val currentUser = mAuth?.currentUser
 
-        if (currentUser != null) {
+        if (UserAccess.isLoggedIn(currentUser)) {
             val headerView = nav_view.getHeaderView(0)
             val emailView = headerView.findViewById<TextView>(R.id.id_nav_email)
-            emailView.text = currentUser.email
+            emailView.text = currentUser?.email
         }
         setLoginLogoutStats(currentUser)
         val toggle = ActionBarDrawerToggle(
@@ -43,15 +42,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setLoginLogoutStats(currentUser: FirebaseUser?) {
         val navMenu = findViewById<NavigationView>(R.id.nav_view).menu
-        if(UserAccess.isLoggedIn(currentUser)) {
-            navMenu.findItem(R.id.nav_login).isVisible = false
-            navMenu.findItem(R.id.nav_accountInfo).isVisible = true
-            navMenu.findItem(R.id.nav_logout).isVisible = true
-        } else {
-            navMenu.findItem(R.id.nav_login).isVisible = true
-            navMenu.findItem(R.id.nav_accountInfo).isVisible = false
-            navMenu.findItem(R.id.nav_logout).isVisible = false
-        }
+
+        // *** !!! Uncomment after complete testing !!! ***//
+
+//        if(UserAccess.isLoggedIn(currentUser)) {
+//            navMenu.findItem(R.id.nav_listing).isVisible = true
+//            navMenu.findItem(R.id.nav_pending).isVisible = true
+//            navMenu.findItem(R.id.nav_history).isVisible = true
+//            navMenu.findItem(R.id.nav_logout).isVisible = true
+//            navMenu.findItem(R.id.nav_accountInfo).isVisible = true
+//
+//            navMenu.findItem(R.id.nav_login).isVisible = false
+//            navMenu.findItem(R.id.nav_sign_up).isVisible = false
+//        } else {
+//            navMenu.findItem(R.id.nav_listing).isVisible = false
+//            navMenu.findItem(R.id.nav_pending).isVisible = false
+//            navMenu.findItem(R.id.nav_history).isVisible = false
+//            navMenu.findItem(R.id.nav_logout).isVisible = false
+//            navMenu.findItem(R.id.nav_accountInfo).isVisible = false
+//
+//            navMenu.findItem(R.id.nav_login).isVisible = true
+//            navMenu.findItem(R.id.nav_sign_up).isVisible = true
+//        }
     }
 
     override fun onBackPressed() {
@@ -77,6 +89,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val currentUser = mAuth?.currentUser
         when (item.itemId) {
             R.id.nav_home -> {
                 val intent = Intent(this, MainActivity::class.java)
@@ -86,7 +99,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_listing -> {
-
+                startActivity(Intent(this, ListingActivity::class.java))
             }
             R.id.nav_pending-> {
 
@@ -94,28 +107,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_history -> {
 
             }
+            R.id.nav_sign_up -> {
+                startActivity(Intent(this, SignUpActivity::class.java))
+            }
             R.id.nav_login -> {
-                val currentUser = mAuth?.currentUser
-
-                if(currentUser == null) {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
+                if(!UserAccess.isLoggedIn(currentUser)) {
+                    startActivity(Intent(this, LoginActivity::class.java))
                 }
             }
             R.id.nav_accountInfo -> {
-                val currentUser = mAuth?.currentUser
-                if(currentUser != null) {
-                    val intent = Intent(this, AccountInfoActivity::class.java)
-                    startActivity(intent)
+                if(UserAccess.isLoggedIn(currentUser)) {
+                    startActivity(Intent(this, AccountInfoActivity::class.java))
                 }
             }
             R.id.nav_logout -> {
-                val currentUser = mAuth?.currentUser
-                if(currentUser != null) {
+                if(UserAccess.isLoggedIn(currentUser)) {
                     mAuth?.signOut()
                     finish()
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    startActivity(Intent(this, MainActivity::class.java))
                 }
             }
         }
