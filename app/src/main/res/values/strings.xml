@@ -51,4 +51,6 @@
     <string name="title_activity_listing">ListingActivity</string>
     <string name="Add" />
     <string name="listing_books">Listing Books</string>
+    <string name="registration">Registration</string>
+    <string name="submit">Submit</string>
 </resources>

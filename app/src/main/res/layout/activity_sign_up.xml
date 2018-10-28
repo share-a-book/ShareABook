@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SignUpActivity">
+        tools:context=".user.SignUpActivity">
 
     <TextView
         android:id="@+id/id_createAccountText"
@@ -15,7 +15,7 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/corn_font"
-        android:text="@string/menu_account"
+        android:text="@string/registration"
         android:textColor="@color/colorDarkPurp"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,6 @@
         android:layout_width="254dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:ems="10"
         android:fontFamily="@font/quicksand"
@@ -121,7 +120,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/button_corner"
         android:fontFamily="@font/quicksand_bold"
-        android:text="@string/create"
+        android:text="@string/submit"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintEnd_toEndOf="@+id/id_signUpPasswordConfirmInput"
         app:layout_constraintHorizontal_bias="1.0"

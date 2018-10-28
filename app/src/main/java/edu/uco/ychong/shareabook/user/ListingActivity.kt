@@ -1,4 +1,4 @@
-package edu.uco.ychong.shareabook
+package edu.uco.ychong.shareabook.user
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
+import edu.uco.ychong.shareabook.MainActivity
+import edu.uco.ychong.shareabook.R
 
 class ListingActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth?= null

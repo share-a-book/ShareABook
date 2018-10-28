@@ -19,19 +19,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".ForgotPasswordActivity"></activity>
+        <activity android:name=".user.LoginActivity"></activity>
+        <activity android:name=".user.ForgotPasswordActivity"></activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".user.SignUpActivity"
             android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".AccountInfoActivity"></activity>
+        <activity android:name=".user.AccountInfoActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".ListingActivity"
+            android:name=".user.ListingActivity"
             android:label="@string/listing_books"></activity>
     </application>
 

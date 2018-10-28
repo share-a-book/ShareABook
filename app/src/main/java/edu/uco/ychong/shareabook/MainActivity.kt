@@ -12,6 +12,10 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import edu.uco.ychong.shareabook.helper.UserAccess
+import edu.uco.ychong.shareabook.user.AccountInfoActivity
+import edu.uco.ychong.shareabook.user.ListingActivity
+import edu.uco.ychong.shareabook.user.LoginActivity
+import edu.uco.ychong.shareabook.user.SignUpActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
