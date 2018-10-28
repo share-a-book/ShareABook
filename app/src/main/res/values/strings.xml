@@ -18,12 +18,12 @@
     <string name="id_cancelButton">Cancel</string>
     <string name="id_backButton">Back</string>
     <string name="id_createAccountText">Create Account</string>
-    <string name="id_firstNameText">First Name*</string>
-    <string name="id_lastNameText">Last Name*</string>
-    <string name="id_phoneNumberText">Phone Number*</string>
-    <string name="id_emailText">Email Address*</string>
+    <string name="id_firstNameText">First Name</string>
+    <string name="id_lastNameText">Last Name</string>
+    <string name="id_phoneNumberText">Phone Number</string>
+    <string name="id_emailText">Email Address</string>
     <string name="id_passwordText">Password*</string>
-    <string name="id_passwordConfirmationText">Password Confirmation*</string>
+    <string name="id_passwordConfirmationText">Confirmation</string>
     <string name="id_createAccountButton">Create Account</string>
     <string name="hint_passwordLength">Must be 6+ characters</string>
     <string name="id_accountInfoText">Account Information</string>
@@ -46,4 +46,6 @@
     <string name="menu_sign_up">Sign Up</string>
     <string name="no_account">No account yet?</string>
     <string name="create_one">Create one</string>
+    <string name="logo">Logo</string>
+    <string name="create">Create</string>
 </resources>

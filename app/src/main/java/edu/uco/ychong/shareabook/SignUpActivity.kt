@@ -51,9 +51,5 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 }
         }
-
-        id_cancelCreateAccountButton.setOnClickListener {
-            onBackPressed()
-        }
     }
 }
