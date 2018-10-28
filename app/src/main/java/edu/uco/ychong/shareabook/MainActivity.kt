@@ -49,25 +49,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // *** !!! Uncomment after complete testing !!! ***//
 
-//        if(UserAccess.isLoggedIn(currentUser)) {
-//            navMenu.findItem(R.id.nav_listing).isVisible = true
-//            navMenu.findItem(R.id.nav_pending).isVisible = true
-//            navMenu.findItem(R.id.nav_history).isVisible = true
-//            navMenu.findItem(R.id.nav_logout).isVisible = true
-//            navMenu.findItem(R.id.nav_accountInfo).isVisible = true
-//
-//            navMenu.findItem(R.id.nav_login).isVisible = false
-//            navMenu.findItem(R.id.nav_sign_up).isVisible = false
-//        } else {
-//            navMenu.findItem(R.id.nav_listing).isVisible = false
-//            navMenu.findItem(R.id.nav_pending).isVisible = false
-//            navMenu.findItem(R.id.nav_history).isVisible = false
-//            navMenu.findItem(R.id.nav_logout).isVisible = false
-//            navMenu.findItem(R.id.nav_accountInfo).isVisible = false
-//
-//            navMenu.findItem(R.id.nav_login).isVisible = true
-//            navMenu.findItem(R.id.nav_sign_up).isVisible = true
-//        }
+        if(UserAccess.isLoggedIn(currentUser)) {
+            navMenu.findItem(R.id.nav_listing).isVisible = true
+            navMenu.findItem(R.id.nav_pending).isVisible = true
+            navMenu.findItem(R.id.nav_history).isVisible = true
+            navMenu.findItem(R.id.nav_logout).isVisible = true
+            navMenu.findItem(R.id.nav_accountInfo).isVisible = true
+
+            navMenu.findItem(R.id.nav_login).isVisible = false
+            navMenu.findItem(R.id.nav_sign_up).isVisible = false
+        } else {
+            navMenu.findItem(R.id.nav_listing).isVisible = false
+            navMenu.findItem(R.id.nav_pending).isVisible = false
+            navMenu.findItem(R.id.nav_history).isVisible = false
+            navMenu.findItem(R.id.nav_logout).isVisible = false
+            navMenu.findItem(R.id.nav_accountInfo).isVisible = false
+
+            navMenu.findItem(R.id.nav_login).isVisible = true
+            navMenu.findItem(R.id.nav_sign_up).isVisible = true
+        }
     }
 
     override fun onBackPressed() {

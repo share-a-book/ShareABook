@@ -39,19 +39,19 @@
         app:layout_constraintTop_toBottomOf="@+id/id_createAccountText" />
 
     <EditText
-        android:id="@+id/id_lastNameInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:ems="10"
-        android:fontFamily="@font/quicksand"
-        android:hint="@string/id_emailText"
-        android:inputType="textPersonName"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/id_firstNameInput"
-        app:layout_constraintStart_toStartOf="@+id/id_firstNameInput"
-        app:layout_constraintTop_toBottomOf="@+id/id_firstNameInput" />
+            android:id="@+id/id_lastNameInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:ems="10"
+            android:fontFamily="@font/quicksand"
+            android:hint="@string/id_lastNameText"
+            android:inputType="textPersonName"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/id_firstNameInput"
+            app:layout_constraintStart_toStartOf="@+id/id_firstNameInput"
+            app:layout_constraintTop_toBottomOf="@+id/id_firstNameInput"/>
 
     <EditText
         android:id="@+id/id_phoneNumberInput"
