@@ -1,27 +1,50 @@
 package edu.uco.ychong.shareabook.user
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.helper.ToastMe
+import edu.uco.ychong.shareabook.model.User
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth ?= null
+    private var db: FirebaseFirestore? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
         mAuth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
         id_createAccountButton.setOnClickListener {
+            val fName = id_firstNameInput.text.toString().trim()
+            val lName = id_lastNameInput.text.toString().trim()
+            val pNumber = id_phoneNumberInput.text.toString().trim()
             val email = id_signUpEmailInput.text.toString().trim()
             val password = id_signUpPasswordInput.text.toString().trim()
             val passwordConfirmation = id_signUpPasswordConfirmInput.text.toString().trim()
+
+            if (fName.isNullOrEmpty() || fName.isNullOrBlank()) {
+                ToastMe.message(this, "Please enter your first name.")
+                return@setOnClickListener
+            }
+
+            if (lName.isNullOrEmpty() || lName.isNullOrBlank()) {
+                ToastMe.message(this, "Please enter your last name.")
+                return@setOnClickListener
+            }
+
+            if (pNumber.length != 10) {
+                ToastMe.message(this, "Invalid phone number!")
+                return@setOnClickListener
+            }
 
             if (email.isNullOrEmpty() || email.isNullOrBlank()) {
                 ToastMe.message(this, "Invalid email input.")
@@ -46,7 +69,17 @@ class SignUpActivity : AppCompatActivity() {
             mAuth?.createUserWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener {
                     if(it.isSuccessful) {
-                        ToastMe.message(this, "Password and Password Confirmation don't match!")
+                        ToastMe.message(this, "Account creation successful!")
+
+                        val userInfo = User(fName, lName, pNumber, email, password, passwordConfirmation)
+                        db?.collection(email)?.document("User Info")?.set(userInfo)
+                            ?.addOnSuccessListener {
+                                ToastMe.message(this, "Account info added!")
+                            }
+                            ?.addOnFailureListener {
+                                ToastMe.message(this, "${it.message}")
+                            }
+
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     } else {

@@ -26,7 +26,7 @@
     <string name="id_passwordConfirmationText">Confirmation</string>
     <string name="id_createAccountButton">Create Account</string>
     <string name="hint_passwordLength">Must be 6+ characters</string>
-    <string name="id_accountInfoText">Account Information</string>
+    <string name="id_accountInfoText">Edit Account Information</string>
     <string name="id_accountInfoFirstNameText">First Name</string>
     <string name="id_accountInfoLastNameText">Last Name</string>
     <string name="id_accountInfoPhoneNumberText">Phone Number</string>
@@ -40,9 +40,9 @@
     <string name="menu_history">History</string>
     <string name="menu_listing">Listing</string>
     <string name="menu_account">Account</string>
-    <string name="menu_login">Login</string>
-    <string name="menu_account_info">Settings</string>
-    <string name="menu_logout">Logout</string>
+    <string name="menu_login">Log In</string>
+    <string name="menu_account_info">Edit Account Information</string>
+    <string name="menu_logout">Log Out</string>
     <string name="menu_sign_up">Sign Up</string>
     <string name="no_account">No account yet?</string>
     <string name="create_one">Create one</string>

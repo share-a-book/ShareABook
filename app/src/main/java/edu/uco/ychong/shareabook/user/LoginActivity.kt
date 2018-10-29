@@ -42,18 +42,14 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
 
-//        id_forgotPasswordButton.setOnClickListener {
-//            val intent = Intent(this, ForgotPasswordActivity::class.java)
-//            startActivity(intent)
-//        }
-//
+        id_forgotPasswordButton.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
         id_signUpButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
-//
-//        id_backButton.setOnClickListener {
-//            onBackPressed()
-//        }
     }
 }

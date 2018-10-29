@@ -1,5 +1,7 @@
 package edu.uco.ychong.shareabook.user
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -28,6 +30,11 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 ?.addOnCompleteListener {
                     if (it.isSuccessful) {
                         ToastMe.message(this, "Reset password email sent to $email")
+
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
+
+                        finish()
                     } else {
                         ToastMe.message(this, "Fail to send reset password email.\n${it.exception.toString()}")
                     }
