@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -42,9 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (UserAccess.isLoggedIn(currentUser)) {
             val email = currentUser?.email
-            if (email == null) {
-                return
-            }
+            if (email == null) return
 
             setAccountHeaderInfo(email)
         }
@@ -206,6 +203,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (updatedAccountInfo == null) return
 
             val email = updatedAccountInfo.email
+            val password = updatedAccountInfo.password
 
             db?.collection(email)?.document("User Info")?.set(updatedAccountInfo)
                 ?.addOnCompleteListener {
@@ -214,6 +212,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }?.addOnFailureListener {
                     ToastMe.message(this, "Account information update failed!")
                     Log.d(TAG, it.toString())
+                }
+
+            val currentUser = mAuth?.currentUser
+
+            currentUser?.updatePassword(password)
+                ?.addOnSuccessListener {
+                    ToastMe.message(this, "Password updated successfully!")
+                }
+                ?.addOnFailureListener {
+                    ToastMe.message(this, "Password update failed!")
                 }
         }
     }
