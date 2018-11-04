@@ -1,48 +1,54 @@
 package edu.uco.ychong.shareabook
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import edu.uco.ychong.shareabook.book.BOOKDOC_PATH
+import edu.uco.ychong.shareabook.book.BookAdapter
+import edu.uco.ychong.shareabook.book.BookInfoActivity
+import edu.uco.ychong.shareabook.book.CustomItemClickListener
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
+import edu.uco.ychong.shareabook.model.Book
 import edu.uco.ychong.shareabook.model.User
 import edu.uco.ychong.shareabook.user.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 const val USER_INFO = "user_info"
 const val UPDATED_USER_INFO = "updated_user_info"
 const val REQ_CODE_EDIT_ACCOUNT_INFO = 1
+const val EXTRA_SELECTED_BOOK = "extra_selected_book"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth? = null
-    private var db: FirebaseFirestore? = null
+    private var mFireStore: FirebaseFirestore? = null
+    var availableBooks = ArrayList<Book>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
         mAuth = FirebaseAuth.getInstance()
+        mFireStore = FirebaseFirestore.getInstance()
         val currentUser = mAuth?.currentUser
-
-        db = FirebaseFirestore.getInstance()
 
         if (UserAccess.isLoggedIn(currentUser)) {
             val email = currentUser?.email
             if (email == null) return
-
             setAccountHeaderInfo(email)
         }
 
@@ -53,10 +59,56 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+
+        var viewManager = LinearLayoutManager(this)
+        val bookAdapter = BookAdapter(availableBooks, object: CustomItemClickListener {
+            override fun onItemClick(v: View, position: Int) {
+                Log.d(TAG, position.toString())
+                val selectedBook = availableBooks[position]
+                goToBookInfoActivity(selectedBook)
+            }
+        })
+
+
+        loadAllAvailableBooks()
+
+        recyclerViewBooks.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = bookAdapter
+        }
+
+    }
+
+    private fun goToBookInfoActivity(selectedBook: Book) {
+        val infoIntent = Intent(this, BookInfoActivity::class.java)
+        infoIntent.putExtra(EXTRA_SELECTED_BOOK, selectedBook)
+        startActivity(infoIntent)
+    }
+
+    private fun loadAllAvailableBooks() {
+        Log.d(TAG, "Load all books'")
+        val publicBookPath = "public/$BOOKDOC_PATH"
+        mFireStore?.collection(publicBookPath)?.get()?.addOnSuccessListener {
+            availableBooks.clear()
+            for (bookSnapShot in it) {
+                Log.d(TAG, bookSnapShot.toString())
+                val book =  bookSnapShot.toObject(Book::class.java)
+                book.id = bookSnapShot.id
+                availableBooks.add(book)
+            }
+
+            val bookAdapter = recyclerViewBooks.adapter
+            bookAdapter?.notifyDataSetChanged()
+
+        }?.addOnFailureListener {
+            Log.d(TAG, it.toString())
+        }
+
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
-        db?.collection(userEmail)?.document("User Info")?.get()
+        mFireStore?.collection(userEmail)?.document("User Info")?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
 
@@ -175,10 +227,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun getAccountInfo(userEmail: String) {
-        db?.collection(userEmail)?.document("User Info")?.get()
+        mFireStore?.collection(userEmail)?.document("User Info")?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
-
                 if (userInfo == null) {
                     return@addOnSuccessListener
                 }
@@ -205,7 +256,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val email = updatedAccountInfo.email
             val password = updatedAccountInfo.password
 
-            db?.collection(email)?.document("User Info")?.set(updatedAccountInfo)
+            mFireStore?.collection(email)?.document("User Info")?.set(updatedAccountInfo)
                 ?.addOnCompleteListener {
                     ToastMe.message(this, "Account information updated successfully!")
                     setAccountHeaderInfo(email)
@@ -215,7 +266,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
             val currentUser = mAuth?.currentUser
-
             currentUser?.updatePassword(password)
                 ?.addOnSuccessListener {
                     ToastMe.message(this, "Password updated successfully!")

@@ -8,6 +8,12 @@
             android:icon="@drawable/ic_home_white_24dp"
             android:title="@string/menu_home"
             app:showAsAction="ifRoom" />
+
+        <item
+                android:icon="@drawable/ic_playlist_add_white_24dp"
+                app:showAsAction="ifRoom" android:id="@+id/menu_listing"
+                android:title="@string/menu_listing"/>
+
         <item
             android:id="@+id/menu_add_book"
             android:icon="@drawable/ic_add_book_white"

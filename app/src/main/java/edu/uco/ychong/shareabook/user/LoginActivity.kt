@@ -24,8 +24,15 @@ class LoginActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         id_loginButton.setOnClickListener {
+            /**
+             * Uncomment after testing
+             */
             val email = id_loginEmail.text.toString().trim()
             val password = id_loginPassword.text.toString().trim()
+//
+//            val email = "dattran10@gmail.com"
+//            val password = "password"
+
             if (email.isNullOrEmpty() || email.isNullOrBlank()) {
                 Toast.makeText(this, "Invalid email input!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

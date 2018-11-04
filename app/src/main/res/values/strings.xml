@@ -49,7 +49,7 @@
     <string name="logo">Logo</string>
     <string name="create">Create</string>
     <string name="title_activity_listing">ListingActivity</string>
-    <string name="Add" />
+    <string name="Add"/>
     <string name="listing_books">Listing Books</string>
     <string name="registration">Registration</string>
     <string name="submit">Submit</string>
@@ -58,4 +58,10 @@
     <string name="book_title">Title</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="author">Author</string>
+    <string name="category">Category</string>
+    <string name="posted_by">Posted By:</string>
+    <string name="status">Status:</string>
+    <string name="request_book">Request Book</string>
+    <string name="book_info">Book Information</string>
 </resources>
