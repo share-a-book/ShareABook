@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             setAccountHeaderInfo(email)
         }
 
-        setLoginLogoutStats(currentUser)
+        setNavMenuLoginLogoutVisibility(currentUser)
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         var viewManager = LinearLayoutManager(this)
+
         val bookAdapter = BookAdapter(availableBooks, object: CustomItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 Log.d(TAG, position.toString())
@@ -68,8 +69,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 goToBookInfoActivity(selectedBook)
             }
         })
-
-
+        
         loadAllAvailableBooks()
 
         recyclerViewBooks.apply {
@@ -111,20 +111,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mFireStore?.collection(userEmail)?.document("User Info")?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
-
                 if (userInfo == null) {
                     return@addOnSuccessListener
                 }
-
-                val firstName = userInfo.firstName
-                val lastName = userInfo.lastName
-                val userName = "$firstName $lastName"
-
+                val userName = "${userInfo.firstName} ${userInfo.lastName}"
                 val headerView = nav_view.getHeaderView(0)
-
                 val emailView = headerView.findViewById<TextView>(R.id.id_nav_email)
                 emailView.text = userEmail
-
                 val nameView = headerView.findViewById<TextView>(R.id.id_nav_account_name)
                 nameView.text = userName
             }
@@ -133,28 +126,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
     }
 
-    private fun setLoginLogoutStats(currentUser: FirebaseUser?) {
-        val navMenu = findViewById<NavigationView>(R.id.nav_view).menu
-
+    private fun setNavMenuLoginLogoutVisibility(currentUser: FirebaseUser?) {
         if (UserAccess.isLoggedIn(currentUser)) {
-            navMenu.findItem(R.id.nav_listing).isVisible = true
-            navMenu.findItem(R.id.nav_pending).isVisible = true
-            navMenu.findItem(R.id.nav_history).isVisible = true
-            navMenu.findItem(R.id.nav_logout).isVisible = true
-            navMenu.findItem(R.id.nav_accountInfo).isVisible = true
-
-            navMenu.findItem(R.id.nav_login).isVisible = false
-            navMenu.findItem(R.id.nav_sign_up).isVisible = false
+            navMenuForLoggedInUser()
         } else {
-            navMenu.findItem(R.id.nav_listing).isVisible = false
-            navMenu.findItem(R.id.nav_pending).isVisible = false
-            navMenu.findItem(R.id.nav_history).isVisible = false
-            navMenu.findItem(R.id.nav_logout).isVisible = false
-            navMenu.findItem(R.id.nav_accountInfo).isVisible = false
-
-            navMenu.findItem(R.id.nav_login).isVisible = true
-            navMenu.findItem(R.id.nav_sign_up).isVisible = true
+            navMenuForPublicUser()
         }
+    }
+
+    private fun navMenuForLoggedInUser() {
+        val navMenu = findViewById<NavigationView>(R.id.nav_view).menu
+        navMenu.findItem(R.id.nav_listing).isVisible = true
+        navMenu.findItem(R.id.nav_pending).isVisible = true
+        navMenu.findItem(R.id.nav_history).isVisible = true
+        navMenu.findItem(R.id.nav_logout).isVisible = true
+        navMenu.findItem(R.id.nav_accountInfo).isVisible = true
+        navMenu.findItem(R.id.nav_login).isVisible = false
+        navMenu.findItem(R.id.nav_sign_up).isVisible = false
+    }
+
+    private fun navMenuForPublicUser() {
+        val navMenu = findViewById<NavigationView>(R.id.nav_view).menu
+        navMenu.findItem(R.id.nav_listing).isVisible = false
+        navMenu.findItem(R.id.nav_pending).isVisible = false
+        navMenu.findItem(R.id.nav_history).isVisible = false
+        navMenu.findItem(R.id.nav_logout).isVisible = false
+        navMenu.findItem(R.id.nav_accountInfo).isVisible = false
+        navMenu.findItem(R.id.nav_login).isVisible = true
+        navMenu.findItem(R.id.nav_sign_up).isVisible = true
     }
 
     override fun onBackPressed() {
@@ -183,8 +182,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val currentUser = mAuth?.currentUser
         when (item.itemId) {
             R.id.nav_home -> {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, MainActivity::class.java))
             }
             R.id.nav_books -> {
 
@@ -210,7 +208,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (UserAccess.isLoggedIn(currentUser)) {
                     val email = currentUser?.email
                     if(email == null) return false
-
                     getAccountInfo(email)
                 }
             }
