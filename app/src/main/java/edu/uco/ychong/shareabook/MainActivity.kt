@@ -15,10 +15,7 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import edu.uco.ychong.shareabook.book.BOOKDOC_PATH
-import edu.uco.ychong.shareabook.book.BookAdapter
-import edu.uco.ychong.shareabook.book.BookInfoActivity
-import edu.uco.ychong.shareabook.book.CustomItemClickListener
+import edu.uco.ychong.shareabook.book.*
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
 import edu.uco.ychong.shareabook.model.Book
@@ -64,12 +61,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val bookAdapter = BookAdapter(availableBooks, object: CustomItemClickListener {
             override fun onItemClick(v: View, position: Int) {
-                Log.d(TAG, position.toString())
                 val selectedBook = availableBooks[position]
                 goToBookInfoActivity(selectedBook)
             }
         })
-        
+
         loadAllAvailableBooks()
 
         recyclerViewBooks.apply {
@@ -184,8 +180,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 startActivity(Intent(this, MainActivity::class.java))
             }
-            R.id.nav_books -> {
-
+            R.id.nav_search -> {
+                startActivity(Intent(this, BookSearchActivity::class.java))
             }
             R.id.nav_listing -> {
                 startActivity(Intent(this, ListingActivity::class.java))
@@ -242,9 +238,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (data == null) return
-
         if(requestCode == REQ_CODE_EDIT_ACCOUNT_INFO) {
             val updatedAccountInfo = data.getParcelableExtra<User>(UPDATED_USER_INFO)
 

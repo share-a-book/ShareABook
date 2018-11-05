@@ -8,11 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.model.Book
-import java.util.*
 
-class BookAdapter(private val myDataSet: ArrayList<Book>, val customItemClickListener: CustomItemClickListener) :
+
+class BookAdapter(private val myDataSet: ArrayList<Book>,
+                  val customItemClickListener: CustomItemClickListener) :
     RecyclerView.Adapter<BookAdapter.MyViewHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.book_card_layout, parent, false)
@@ -21,7 +21,6 @@ class BookAdapter(private val myDataSet: ArrayList<Book>, val customItemClickLis
         rowView.setOnClickListener {
             customItemClickListener.onItemClick(it, viewHolder.position)
         }
-
         return viewHolder
     }
 
@@ -29,8 +28,6 @@ class BookAdapter(private val myDataSet: ArrayList<Book>, val customItemClickLis
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val book = myDataSet[position]
-
-//        val dateTime = LocalDate.parse(book.datePosted, DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))
 
         holder.tile.text = book.title
         holder.author.text = "Author: ${book.author}"
@@ -48,5 +45,26 @@ class BookAdapter(private val myDataSet: ArrayList<Book>, val customItemClickLis
         val status = itemView.findViewById<TextView>(R.id.info_bookStatus)
         val image = itemView.findViewById<ImageView>(R.id.info_bookImage)
         val postedBy = itemView.findViewById<TextView>(R.id.postedBy)
+    }
+
+    fun filter(text: String) {
+        val tempList = ArrayList<Book>()
+        tempList.addAll(myDataSet)
+        myDataSet.clear()
+        if (text.isEmpty()) {
+            myDataSet.addAll(BookSearchActivity.originalDataSet)
+        } else {
+            for (item in tempList) {
+                if (bookTitleOrAuthorContainsText(item, text)) {
+                    myDataSet.add(item)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    private fun bookTitleOrAuthorContainsText(book: Book, text: String): Boolean {
+        return (book.title.toLowerCase().contains(text) ||
+                book.author.toLowerCase().contains(text))
     }
 }
