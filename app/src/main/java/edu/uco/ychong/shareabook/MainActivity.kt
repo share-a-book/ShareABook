@@ -83,8 +83,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadAllAvailableBooks() {
-        Log.d(TAG, "Load all books'")
-        val publicBookPath = "public/$BOOKDOC_PATH"
+        val publicBookPath = "$BOOKDOC_PATH"
         mFireStore?.collection(publicBookPath)?.get()?.addOnSuccessListener {
             availableBooks.clear()
             for (bookSnapShot in it) {
@@ -93,7 +92,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 book.id = bookSnapShot.id
                 availableBooks.add(book)
             }
-
             val bookAdapter = recyclerViewBooks.adapter
             bookAdapter?.notifyDataSetChanged()
 
@@ -104,7 +102,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
-        mFireStore?.collection(userEmail)?.document("User Info")?.get()
+        mFireStore?.collection("$ACCOUNTDOC_PATH/$userEmail")?.document(USER_INFO)?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
                 if (userInfo == null) {
@@ -204,7 +202,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (UserAccess.isLoggedIn(currentUser)) {
                     val email = currentUser?.email
                     if(email == null) return false
-                    getAccountInfo(email)
+                    editAccountInfo(email)
                 }
             }
             R.id.nav_logout -> {
@@ -219,8 +217,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    private fun getAccountInfo(userEmail: String) {
-        mFireStore?.collection(userEmail)?.document("User Info")?.get()
+    private fun editAccountInfo(userEmail: String) {
+        mFireStore?.collection("$ACCOUNTDOC_PATH/$userEmail")?.document(USER_INFO)?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
                 if (userInfo == null) {

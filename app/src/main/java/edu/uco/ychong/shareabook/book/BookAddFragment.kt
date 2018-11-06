@@ -11,19 +11,21 @@ import android.widget.Spinner
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
+import edu.uco.ychong.shareabook.USER_INFO
 import edu.uco.ychong.shareabook.helper.Genre
 import edu.uco.ychong.shareabook.model.Book
 import edu.uco.ychong.shareabook.model.User
+import edu.uco.ychong.shareabook.user.ACCOUNTDOC_PATH
 import edu.uco.ychong.shareabook.user.ListingActivity
-import kotlinx.android.synthetic.main.fragment_add_book.*
-import kotlinx.android.synthetic.main.fragment_add_book.view.*
+import kotlinx.android.synthetic.main.fragment_book_add.*
+import kotlinx.android.synthetic.main.fragment_book_add.view.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-const val BOOKDOC_PATH = "bookDoc/books"
+const val BOOKDOC_PATH = "public/bookDoc/books"
 
-class AddBookFragment: Fragment(), AdapterView.OnItemSelectedListener  {
+class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
     private var mAuth: FirebaseAuth?= null
     private var mFireStore: FirebaseFirestore? = null
     private var genres = ArrayList<String>()
@@ -32,16 +34,16 @@ class AddBookFragment: Fragment(), AdapterView.OnItemSelectedListener  {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mAuth = FirebaseAuth.getInstance()
         mFireStore = FirebaseFirestore.getInstance()
-        val inflatedView = inflater.inflate(R.layout.fragment_add_book, container, false)
+        val inflatedView = inflater.inflate(R.layout.fragment_book_add, container, false)
         setupSpinner(inflatedView, container)
-        setupAddBookFragmentView(inflatedView)
+        setupBookAddFragmentView(inflatedView)
         return inflatedView
     }
 
     private fun getUserInfoAndAddBook() {
         val userEmail = mAuth?.currentUser?.email
         if (userEmail != null) {
-            mFireStore?.collection(userEmail)?.document("User Info")?.get()
+            mFireStore?.collection("$ACCOUNTDOC_PATH/$userEmail")?.document(USER_INFO)?.get()
                 ?.addOnSuccessListener {
                     val userInfo = it.toObject(User::class.java)
                     if (userInfo == null) return@addOnSuccessListener
@@ -79,7 +81,7 @@ class AddBookFragment: Fragment(), AdapterView.OnItemSelectedListener  {
         }
     }
 
-    private fun setupAddBookFragmentView(addBookFragmentView: View) {
+    private fun setupBookAddFragmentView(addBookFragmentView: View) {
         addBookFragmentView.id_currentDate.text = getCurrentDateWithFullFormat()
         addBookFragmentView.id_submitButton.setOnClickListener {
             getUserInfoAndAddBook()
@@ -87,18 +89,8 @@ class AddBookFragment: Fragment(), AdapterView.OnItemSelectedListener  {
     }
 
     private fun addNewBookToFireStore(newBook: Book) {
-        val userEmail = mAuth?.currentUser?.email
-        val collectionName = "$userEmail/$BOOKDOC_PATH"
         val parentActivity = activity as ListingActivity
-        mFireStore?.collection(collectionName)?.document()?.set(newBook)
-            ?.addOnSuccessListener {
-                parentActivity.addBookSuccess()
-            }
-            ?.addOnFailureListener {
-                parentActivity.addBookFail()
-            }
-
-        mFireStore?.collection("public/$BOOKDOC_PATH")?.document()?.set(newBook)
+        mFireStore?.collection("$BOOKDOC_PATH")?.document()?.set(newBook)
             ?.addOnSuccessListener {
                 parentActivity.addBookSuccess()
             }
@@ -118,7 +110,6 @@ class AddBookFragment: Fragment(), AdapterView.OnItemSelectedListener  {
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {

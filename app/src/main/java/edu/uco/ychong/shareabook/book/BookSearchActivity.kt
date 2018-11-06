@@ -54,7 +54,7 @@ class BookSearchActivity : AppCompatActivity() {
     }
 
     private fun loadAllAvailableBooks() {
-        val publicBookPath = "public/$BOOKDOC_PATH"
+        val publicBookPath = "$BOOKDOC_PATH"
         mFireStore?.collection(publicBookPath)?.get()?.addOnSuccessListener {
             availableBooks.clear()
             for (bookSnapShot in it) {

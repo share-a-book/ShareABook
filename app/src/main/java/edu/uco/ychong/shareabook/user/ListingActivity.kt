@@ -9,7 +9,8 @@ import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.AddBookFragment
+import edu.uco.ychong.shareabook.book.BookAddFragment
+import edu.uco.ychong.shareabook.book.BookListingFragment
 import edu.uco.ychong.shareabook.helper.ToastMe
 
 class ListingActivity : AppCompatActivity() {
@@ -40,12 +41,11 @@ class ListingActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_listing -> {
-                startActivity(Intent(this, ListingActivity::class.java))
-                finish()
+                displayBookListingFragment()
                 true
             }
             R.id.menu_add_book -> {
-                addBookTransition()
+                displayBookAddFragment()
                 true
             }
 
@@ -71,11 +71,25 @@ class ListingActivity : AppCompatActivity() {
         super.onResume()
     }
 
-    private fun addBookTransition() {
+    private fun displayBookListingFragment() {
         if (isDestroyed) return
-        val fragment = AddBookFragment()
+        val fragment = BookListingFragment()
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.add_book_container, fragment)
+        fragmentTransaction.add(R.id.book_container, fragment, "bookListingFragment")
         fragmentTransaction.commit()
     }
+
+    private fun displayBookAddFragment() {
+        if (isDestroyed) return
+        val fragment = BookAddFragment()
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.book_container, fragment, "bookAddFragment")
+        fragmentTransaction.commit()
+    }
+
+    private fun removeAddBookFragment() {
+
+    }
+
+
 }

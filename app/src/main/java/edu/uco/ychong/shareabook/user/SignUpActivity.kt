@@ -1,6 +1,5 @@
 package edu.uco.ychong.shareabook.user
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -8,10 +7,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
+import edu.uco.ychong.shareabook.USER_INFO
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.User
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
+const val ACCOUNTDOC_PATH = "account/accountDoc"
 class SignUpActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth ?= null
     private var db: FirebaseFirestore? = null
@@ -70,9 +71,8 @@ class SignUpActivity : AppCompatActivity() {
                 ?.addOnCompleteListener {
                     if(it.isSuccessful) {
                         ToastMe.message(this, "Account creation successful!")
-
                         val userInfo = User(fName, lName, pNumber, email, password, passwordConfirmation)
-                        db?.collection(email)?.document("User Info")?.set(userInfo)
+                        db?.collection("$ACCOUNTDOC_PATH/$email")?.document(USER_INFO)?.set(userInfo)
                             ?.addOnSuccessListener {
                                 ToastMe.message(this, "Account info added!")
                             }
