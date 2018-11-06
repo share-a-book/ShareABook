@@ -13,6 +13,10 @@ import edu.uco.ychong.shareabook.book.BookAddFragment
 import edu.uco.ychong.shareabook.book.BookListingFragment
 import edu.uco.ychong.shareabook.helper.ToastMe
 
+
+const val BOOK_ADD_FRAGMENT = "bookAddFragment"
+const val BOOK_LISTING_FRAGMENT = "bookListingFragment"
+
 class ListingActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth?= null
     private val fragmentManager = supportFragmentManager
@@ -21,11 +25,12 @@ class ListingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing)
-
-
-
         mAuth = FirebaseAuth.getInstance()
         val currentUser = mAuth?.currentUser
+
+        displayBookListingFragment()
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,25 +76,44 @@ class ListingActivity : AppCompatActivity() {
         super.onResume()
     }
 
+    private fun displayBookAddFragment() {
+        if (isDestroyed) return
+        val fragment = BookAddFragment()
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.book_container, fragment, BOOK_ADD_FRAGMENT)
+        fragmentTransaction.commit()
+
+        removeBookListingFragment()
+    }
+
+    private fun removeBookAddFragment() {
+        val bookAddFragment = fragmentManager.findFragmentByTag(BOOK_ADD_FRAGMENT)
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        if (bookAddFragment != null) {
+            fragmentTransaction.remove(bookAddFragment)
+            fragmentTransaction.commit()
+        }
+    }
+
     private fun displayBookListingFragment() {
         if (isDestroyed) return
         val fragment = BookListingFragment()
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.book_container, fragment, "bookListingFragment")
         fragmentTransaction.commit()
+
+        removeBookAddFragment()
     }
 
-    private fun displayBookAddFragment() {
-        if (isDestroyed) return
-        val fragment = BookAddFragment()
+    private fun removeBookListingFragment() {
+        val bookListingFragment = fragmentManager.findFragmentByTag(BOOK_LISTING_FRAGMENT)
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.book_container, fragment, "bookAddFragment")
-        fragmentTransaction.commit()
+        if (bookListingFragment != null) {
+            fragmentTransaction.remove(bookListingFragment)
+            fragmentTransaction.commit()
+        }
     }
 
-    private fun removeAddBookFragment() {
-
-    }
 
 
 }

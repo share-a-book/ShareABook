@@ -16,7 +16,7 @@ class BookListingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mAuth = FirebaseAuth.getInstance()
         mFireStore = FirebaseFirestore.getInstance()
-        val inflatedView = inflater.inflate(R.layout.fragment_book_add, container, false)
+        val inflatedView = inflater.inflate(R.layout.fragment_book_listing, container, false)
 
 
         return inflatedView
