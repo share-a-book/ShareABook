@@ -23,20 +23,13 @@ class BookSearchActivity : AppCompatActivity() {
     private var availableBooks = ArrayList<Book>()
     private var bookAdapter: BookAdapter? = null
 
-
-    companion object {
-        var originalDataSet = ArrayList<Book>()
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_search)
 
         mAuth = FirebaseAuth.getInstance()
         mFireStore = FirebaseFirestore.getInstance()
-        val currentUser = mAuth?.currentUser
         var viewManager = LinearLayoutManager(this)
-
-
         loadAllAvailableBooks()
 
         bookAdapter = BookAdapter(availableBooks, object: CustomItemClickListener {
@@ -54,20 +47,21 @@ class BookSearchActivity : AppCompatActivity() {
     }
 
     private fun loadAllAvailableBooks() {
-        val publicBookPath = "$BOOKDOC_PATH"
-        mFireStore?.collection(publicBookPath)?.get()?.addOnSuccessListener {
+        mFireStore?.collection("$BOOKDOC_PATH")
+                ?.whereEqualTo("status", BookStatus.AVAILABLE)
+                ?.get()
+                ?.addOnSuccessListener {
             availableBooks.clear()
             for (bookSnapShot in it) {
-                Log.d(edu.uco.ychong.shareabook.user.TAG, bookSnapShot.toString())
                 val book =  bookSnapShot.toObject(Book::class.java)
                 book.id = bookSnapShot.id
                 availableBooks.add(book)
-                originalDataSet.add(book)
+                BookPublicData.originalBookDataList.add(book)
             }
             val bookAdapter = recyclerSearchViewBooks.adapter
             bookAdapter?.notifyDataSetChanged()
         }?.addOnFailureListener {
-            Log.d(edu.uco.ychong.shareabook.user.TAG, it.toString())
+            Log.d(TESTTAG, it.toString())
         }
     }
 
@@ -84,21 +78,21 @@ class BookSearchActivity : AppCompatActivity() {
         val searchView = searchMenuItem.actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.isSubmitButtonEnabled = true
+        handleSearchViewTextSubmitAndTextChange(searchView)
+        return true
+    }
 
+    private fun handleSearchViewTextSubmitAndTextChange(searchView: SearchView) {
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
-                if (text != null)
-                bookAdapter?.filter(text)
+                if (text != null) bookAdapter?.filter(text)
                 return true
             }
 
             override fun onQueryTextChange(text: String?): Boolean {
-                if (text != null)
-                    bookAdapter?.filter(text)
+                if (text != null) bookAdapter?.filter(text)
                 return true
             }
-
         })
-        return true
     }
 }

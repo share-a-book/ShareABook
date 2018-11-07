@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.USER_INFO
 import edu.uco.ychong.shareabook.helper.Genre
@@ -28,12 +29,14 @@ const val BOOKDOC_PATH = "public/bookDoc/books"
 class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
     private var mAuth: FirebaseAuth?= null
     private var mFireStore: FirebaseFirestore? = null
+    private var mStorage: FirebaseStorage? = null
     private var genres = ArrayList<String>()
     private var selectedGenre: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mAuth = FirebaseAuth.getInstance()
         mFireStore = FirebaseFirestore.getInstance()
+        mStorage = FirebaseStorage.getInstance()
         val inflatedView = inflater.inflate(R.layout.fragment_book_add, container, false)
         setupSpinner(inflatedView, container)
         setupBookAddFragmentView(inflatedView)
@@ -61,11 +64,6 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
                         "")
 
                     addNewBookToFireStore(newBook)
-
-                    activity?.supportFragmentManager?.beginTransaction()
-                        ?.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                        ?.hide(this)?.commit()
-
                 }
         }
     }

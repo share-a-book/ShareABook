@@ -11,11 +11,12 @@ import edu.uco.ychong.shareabook.model.Book
 
 
 class BookAdapter(private val myDataSet: ArrayList<Book>,
-                  val customItemClickListener: CustomItemClickListener) :
+                  private val customItemClickListener: CustomItemClickListener) :
     RecyclerView.Adapter<BookAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.book_card_layout, parent, false)
+        val rowView: View = LayoutInflater.from(parent.context)
+                .inflate(R.layout.book_card_layout, parent, false)
         val viewHolder = MyViewHolder(rowView)
 
         rowView.setOnClickListener {
@@ -28,7 +29,6 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val book = myDataSet[position]
-
         holder.tile.text = book.title
         holder.author.text = "Author: ${book.author}"
         holder.datePosted.text = "Date posted: ${book.datePosted}"
@@ -54,7 +54,7 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         tempList.addAll(myDataSet)
         myDataSet.clear()
         if (text.isEmpty()) {
-            myDataSet.addAll(BookSearchActivity.originalDataSet)
+            myDataSet.addAll(BookPublicData.originalBookDataList)
         } else {
             for (item in tempList) {
                 if (bookTitleOrAuthorContainsText(item, text)) {
