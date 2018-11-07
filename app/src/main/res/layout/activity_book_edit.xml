@@ -83,10 +83,10 @@
         app:layout_constraintTop_toBottomOf="@+id/id_editBookDescription" />
 
     <Button
-        android:id="@+id/id_submitButton"
+        android:id="@+id/id_editSubmitButton"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_corner"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/submit"
@@ -94,6 +94,28 @@
         app:layout_constraintEnd_toEndOf="@+id/id_editBookDescription"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/id_editBookDescription"
+        app:layout_constraintTop_toBottomOf="@+id/id_editBookStatus" />
+
+    <TextView
+        android:id="@+id/id_editBookDatePosted"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="152dp"
+        android:text="Date Posted"
+        app:layout_constraintEnd_toEndOf="@+id/id_editCategorySpinner"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_editCategorySpinner"
         app:layout_constraintTop_toBottomOf="@+id/id_editCategorySpinner" />
+
+    <TextView
+        android:id="@+id/id_editBookStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Status"
+        app:layout_constraintEnd_toEndOf="@+id/id_editCategorySpinner"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_editCategorySpinner"
+        app:layout_constraintTop_toBottomOf="@+id/id_editBookDatePosted" />
 
 </android.support.constraint.ConstraintLayout>

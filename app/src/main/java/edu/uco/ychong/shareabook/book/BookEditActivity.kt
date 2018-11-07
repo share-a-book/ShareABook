@@ -3,6 +3,8 @@ package edu.uco.ychong.shareabook.book
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -24,10 +26,20 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_edit)
-
         mAuth = FirebaseAuth.getInstance()
         populateInputFields()
         setupSpinner()
+
+        id_editSubmitButton.setOnClickListener {
+            /**
+             * YanFay
+             * Implement edit book information here.
+             *
+             */
+
+
+
+        }
     }
 
     private fun populateInputFields() {
@@ -35,8 +47,9 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         id_editBookTitle.setText(selectedBookFromExtra.title)
         id_editBookAuthor.setText(selectedBookFromExtra.author)
         id_editBookDescription.setText(selectedBookFromExtra.description)
+        id_editBookDatePosted.text = "Date posted: ${selectedBookFromExtra.datePosted}"
+        id_editBookStatus.text = "Status: ${selectedBookFromExtra.status}"
         selectedGenre = selectedBookFromExtra.genre
-        Log.d(TESTTAG, selectedGenre)
     }
 
     private fun setupSpinner() {
@@ -64,5 +77,28 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
     private fun initializeSpinnerItems() {
         genres = Genre.list
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.edit_book_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.id_deleteBook -> {
+                /**
+                 * YanFay
+                 * Implement delete book Here
+                 *
+                 */
+
+
+
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
