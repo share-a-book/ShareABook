@@ -36,6 +36,7 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         holder.image.setImageResource(R.drawable.emptyphoto)
         holder.postedBy.text = "Posted By: ${book.lender}"
         holder.genre.text = "Genre: ${book.genre}"
+        holder.description.text = "Description: ${book.description}"
     }
 
 
@@ -47,6 +48,7 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         val image = itemView.findViewById<ImageView>(R.id.id_infoBookImage)
         val postedBy = itemView.findViewById<TextView>(R.id.id_BookPostedBy)
         val genre = itemView.findViewById<TextView>(R.id.id_infoBookGenre)
+        val description = itemView.findViewById<TextView>(R.id.id_infoBookDescription)
     }
 
     fun filter(text: String) {
