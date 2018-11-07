@@ -59,6 +59,7 @@ class ListingActivity : AppCompatActivity() {
     }
 
     fun addBookSuccess() {
+        displayBookListingFragment()
         ToastMe.message(this, "Added successfully")
     }
 
@@ -79,10 +80,12 @@ class ListingActivity : AppCompatActivity() {
     private fun displayBookAddFragment() {
         if (isDestroyed) return
         val fragment = BookAddFragment()
+        val bookAddFragment = fragmentManager.findFragmentByTag(BOOK_ADD_FRAGMENT)
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.book_container, fragment, BOOK_ADD_FRAGMENT)
-        fragmentTransaction.commit()
-
+        if (bookAddFragment == null) {
+            fragmentTransaction.add(R.id.book_container, fragment, BOOK_ADD_FRAGMENT)
+            fragmentTransaction.commit()
+        }
         removeBookListingFragment()
     }
 
@@ -99,9 +102,11 @@ class ListingActivity : AppCompatActivity() {
         if (isDestroyed) return
         val fragment = BookListingFragment()
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.book_container, fragment, "bookListingFragment")
-        fragmentTransaction.commit()
-
+        val bookListingFragment = fragmentManager.findFragmentByTag(BOOK_LISTING_FRAGMENT)
+        if (bookListingFragment == null) {
+            fragmentTransaction.add(R.id.book_container, fragment, BOOK_LISTING_FRAGMENT)
+            fragmentTransaction.commit()
+        }
         removeBookAddFragment()
     }
 

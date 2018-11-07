@@ -35,16 +35,18 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         holder.status.text = "Status: ${book.status}"
         holder.image.setImageResource(R.drawable.emptyphoto)
         holder.postedBy.text = "Posted By: ${book.lender}"
+        holder.genre.text = "Genre: ${book.genre}"
     }
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tile = itemView.findViewById<TextView>(R.id.info_bookTitle)
-        val author = itemView.findViewById<TextView>(R.id.info_bookAuthor)
-        val datePosted = itemView.findViewById<TextView>(R.id.info_bookDatePosted)
-        val status = itemView.findViewById<TextView>(R.id.info_bookStatus)
-        val image = itemView.findViewById<ImageView>(R.id.info_bookImage)
-        val postedBy = itemView.findViewById<TextView>(R.id.postedBy)
+        val tile = itemView.findViewById<TextView>(R.id.id_infoBookTitle)
+        val author = itemView.findViewById<TextView>(R.id.id_infoBookAuthor)
+        val datePosted = itemView.findViewById<TextView>(R.id.id_infoBookDatePosted)
+        val status = itemView.findViewById<TextView>(R.id.id_infoBookStatus)
+        val image = itemView.findViewById<ImageView>(R.id.id_infoBookImage)
+        val postedBy = itemView.findViewById<TextView>(R.id.id_BookPostedBy)
+        val genre = itemView.findViewById<TextView>(R.id.id_infoBookGenre)
     }
 
     fun filter(text: String) {

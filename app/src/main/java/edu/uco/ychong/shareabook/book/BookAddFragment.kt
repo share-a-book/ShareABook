@@ -72,7 +72,7 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
 
     private fun setupSpinner(addBookFragmentView: View, container: ViewGroup?) {
         initializeSpinnerItems()
-        val spinner = addBookFragmentView.findViewById<Spinner>(R.id.id_categorySpinner)
+        val spinner = addBookFragmentView.findViewById<Spinner>(R.id.id_editCategorySpinner)
         spinner.onItemSelectedListener = this
         val arrayAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, genres)
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)

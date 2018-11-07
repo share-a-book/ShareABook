@@ -6,14 +6,14 @@
                                              android:layout_height="wrap_content"
         android:paddingBottom="16dp"
         android:elevation="5dp"
-        android:background="@drawable/card_round_corner"
+        android:background="@android:drawable/dialog_holo_light_frame"
         android:layout_marginBottom="16dp">
 
     <TextView
             android:layout_width="173dp"
             android:layout_height="23dp"
-            android:id="@+id/info_bookTitle"
-            app:layout_constraintTop_toTopOf="@+id/info_bookImage" app:layout_constraintStart_toEndOf="@+id/info_bookImage"
+            android:id="@+id/id_infoBookTitle"
+            app:layout_constraintTop_toTopOf="@+id/id_infoBookImage" app:layout_constraintStart_toEndOf="@+id/id_infoBookImage"
             android:layout_marginStart="16dp" android:text="@string/book_title"
             android:fontFamily="@font/quicksand_bold"
             android:textColor="@color/colorDarkPurp"
@@ -23,53 +23,93 @@
             android:layout_width="102dp"
             android:scaleType="centerCrop"
             android:layout_height="116dp" tools:srcCompat="@tools:sample/avatars"
-            android:id="@+id/info_bookImage" android:layout_marginTop="40dp"
+            android:id="@+id/id_infoBookImage" android:layout_marginTop="40dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="28dp"/>
+
     <TextView
-            android:text="@string/author"
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:id="@+id/info_bookAuthor" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/info_bookTitle"
-            app:layout_constraintStart_toStartOf="@+id/info_bookTitle"
-            app:layout_constraintEnd_toEndOf="@+id/info_bookTitle" android:fontFamily="@font/quicksand"
-            android:textColor="@color/colorDarkPurp" android:textSize="12sp"/>
+        android:id="@+id/id_infoBookAuthor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/author"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_infoBookTitle"
+        app:layout_constraintStart_toStartOf="@+id/id_infoBookTitle"
+        app:layout_constraintTop_toBottomOf="@+id/id_infoBookTitle" />
+
     <TextView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:id="@+id/info_bookStatus"
-            app:layout_constraintEnd_toEndOf="@+id/info_bookDatePosted" android:fontFamily="@font/quicksand"
-            android:textColor="@color/colorDarkPurp"
-            app:layout_constraintStart_toStartOf="@+id/info_bookDatePosted" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/info_bookDatePosted" android:textSize="12sp"/>
+        android:id="@+id/id_infoBookGenre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="Genre"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_infoBookTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_infoBookTitle"
+        app:layout_constraintTop_toBottomOf="@+id/id_infoBookAuthor" />
+
     <TextView
-            android:text="@string/description"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:id="@+id/textView6" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/info_bookImage"
-            app:layout_constraintStart_toStartOf="@+id/info_bookImage"
-            app:layout_constraintEnd_toEndOf="@+id/info_bookDatePosted"
-            app:layout_constraintHorizontal_bias="1.0" android:fontFamily="@font/quicksand"
-            android:textColor="@color/colorDarkPurp" android:textSize="12sp"/>
+        android:id="@+id/id_infoBookStatus"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/status"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_infoBookDatePosted"
+        app:layout_constraintStart_toStartOf="@+id/id_infoBookDatePosted"
+        app:layout_constraintTop_toBottomOf="@+id/id_infoBookDatePosted" />
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="19dp"
-            android:id="@+id/postedBy"
-            app:layout_constraintEnd_toEndOf="@+id/textView6"
-            android:fontFamily="@font/quicksand"
-            android:textAlignment="textEnd" android:textColor="@color/colorDarkPurp" android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="@+id/textView6" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" app:layout_constraintHorizontal_bias="1.0"
-            android:text="Posted By:" android:textSize="12sp"/>
+        android:id="@+id/id_infoBookDescription"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/description"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_infoBookDatePosted"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_infoBookImage"
+        app:layout_constraintTop_toBottomOf="@+id/id_infoBookStatus" />
+
     <TextView
-            android:text="posted date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/info_bookDatePosted"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/info_bookAuthor"
-            app:layout_constraintStart_toStartOf="@+id/info_bookAuthor"
-            app:layout_constraintEnd_toEndOf="@+id/info_bookAuthor"
-            android:textColor="@color/colorDarkPurp" android:fontFamily="@font/quicksand" android:textSize="12sp"/>
+        android:id="@+id/id_BookPostedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/quicksand"
+        android:text="Posted By:"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/id_infoBookDescription"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/id_infoBookDescription"
+        app:layout_constraintTop_toBottomOf="@+id/id_infoBookDescription" />
+
+    <TextView
+        android:id="@+id/id_infoBookDatePosted"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="posted date"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_infoBookAuthor"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_infoBookAuthor"
+        app:layout_constraintTop_toBottomOf="@+id/id_infoBookGenre" />
 </android.support.constraint.ConstraintLayout>

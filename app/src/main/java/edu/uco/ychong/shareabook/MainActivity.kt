@@ -83,8 +83,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadAllAvailableBooks() {
-        val publicBookPath = "$BOOKDOC_PATH"
-        mFireStore?.collection(publicBookPath)?.get()?.addOnSuccessListener {
+        mFireStore?.collection("$BOOKDOC_PATH")?.get()?.addOnSuccessListener {
             availableBooks.clear()
             for (bookSnapShot in it) {
                 Log.d(TAG, bookSnapShot.toString())
@@ -98,7 +97,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }?.addOnFailureListener {
             Log.d(TAG, it.toString())
         }
-
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
@@ -242,13 +240,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             if (updatedAccountInfo == null) return
 
-            val email = updatedAccountInfo.email
+            val userEmail = updatedAccountInfo.email
             val password = updatedAccountInfo.password
 
-            mFireStore?.collection(email)?.document("User Info")?.set(updatedAccountInfo)
+            mFireStore?.collection("$ACCOUNTDOC_PATH/$userEmail")?.document(USER_INFO)?.set(updatedAccountInfo)
                 ?.addOnCompleteListener {
                     ToastMe.message(this, "Account information updated successfully!")
-                    setAccountHeaderInfo(email)
+                    setAccountHeaderInfo(userEmail)
                 }?.addOnFailureListener {
                     ToastMe.message(this, "Account information update failed!")
                     Log.d(TAG, it.toString())

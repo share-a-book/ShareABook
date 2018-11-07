@@ -37,7 +37,7 @@
     <ImageView
             android:layout_width="130dp"
             android:layout_height="160dp" tools:src="@tools:sample/avatars"
-            android:id="@+id/info_bookImage"
+            android:id="@+id/id_infoBookImage"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="36dp" tools:srcCompat="@tools:sample/avatars" android:layout_marginEnd="8dp"
@@ -46,43 +46,43 @@
     <TextView
             android:layout_width="195dp"
             android:layout_height="25dp"
-            android:id="@+id/info_bookTitle"
-            app:layout_constraintTop_toTopOf="@+id/info_bookImage"
-            app:layout_constraintStart_toEndOf="@+id/info_bookImage"
+            android:id="@+id/id_infoBookTitle"
+            app:layout_constraintTop_toTopOf="@+id/id_infoBookImage"
+            app:layout_constraintStart_toEndOf="@+id/id_infoBookImage"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand" android:textStyle="bold" android:textSize="18sp"
             android:textColor="@color/colorDarkPurp"/>
     <TextView
             android:layout_width="195dp"
             android:layout_height="29dp"
-            android:id="@+id/info_bookAuthor"
-            app:layout_constraintEnd_toEndOf="@+id/info_bookTitle"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/info_bookTitle"
-            app:layout_constraintStart_toStartOf="@+id/info_bookTitle" android:fontFamily="@font/quicksand"
+            android:id="@+id/id_infoBookAuthor"
+            app:layout_constraintEnd_toEndOf="@+id/id_infoBookTitle"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/id_infoBookTitle"
+            app:layout_constraintStart_toStartOf="@+id/id_infoBookTitle" android:fontFamily="@font/quicksand"
             android:textColor="@color/colorDarkPurp"/>
     <TextView
             android:layout_width="195dp"
             android:layout_height="29dp"
             android:id="@+id/info_bookDatePosted"
-            app:layout_constraintEnd_toEndOf="@+id/info_bookAuthor"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/info_bookAuthor"
-            app:layout_constraintStart_toStartOf="@+id/info_bookAuthor" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="@+id/id_infoBookAuthor"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/id_infoBookAuthor"
+            app:layout_constraintStart_toStartOf="@+id/id_infoBookAuthor" app:layout_constraintHorizontal_bias="0.0"
             android:fontFamily="@font/quicksand" android:textColor="@color/colorDarkPurp"/>
     <TextView
             android:layout_width="195dp"
             android:layout_height="29dp"
-            android:id="@+id/info_bookStatus"
-            app:layout_constraintEnd_toEndOf="@+id/info_bookAuthor"
-            app:layout_constraintStart_toStartOf="@+id/info_bookAuthor" app:layout_constraintHorizontal_bias="0.0"
+            android:id="@+id/id_infoBookStatus"
+            app:layout_constraintEnd_toEndOf="@+id/id_infoBookAuthor"
+            app:layout_constraintStart_toStartOf="@+id/id_infoBookAuthor" app:layout_constraintHorizontal_bias="0.0"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/info_bookDatePosted"
             android:fontFamily="@font/quicksand" android:textColor="@color/colorDarkPurp"/>
     <TextView
             android:layout_width="0dp"
             android:layout_height="111dp"
             android:id="@+id/info_bookDescription"
-            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/info_bookImage"
-            app:layout_constraintStart_toStartOf="@+id/info_bookImage" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/info_bookStatus" android:layout_marginEnd="8dp"
+            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/id_infoBookImage"
+            app:layout_constraintStart_toStartOf="@+id/id_infoBookImage" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/id_infoBookStatus" android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand" android:textColor="@color/colorDarkPurp"/>
     <TextView
             android:layout_width="182dp"

@@ -21,17 +21,13 @@ class BookInfoActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_info)
-        info_bookImage.setImageResource(R.drawable.emptyphoto)
+        id_infoBookImage.setImageResource(R.drawable.emptyphoto)
         mAuth = FirebaseAuth.getInstance()
         val currentUser = mAuth?.currentUser
 
+        populateBookInformation()
+
         val selectedBookFromExtra = intent.getParcelableExtra<Book>(EXTRA_SELECTED_BOOK)
-        info_bookTitle.text = selectedBookFromExtra.title
-        info_bookAuthor.text = selectedBookFromExtra.author
-        info_bookDatePosted.text = selectedBookFromExtra.datePosted
-        info_bookStatus.text = "Status: ${selectedBookFromExtra.status}"
-        info_bookDescription.text = selectedBookFromExtra.description
-        info_bookPostedBy.text = "Posted by: ${selectedBookFromExtra.lender}"
         val ownerEmail = selectedBookFromExtra.lenderEmail
         val requestButton = findViewById<Button>(R.id.requestButton)
 
@@ -49,6 +45,16 @@ class BookInfoActivity : Activity() {
                 "Request to borrow ${selectedBookFromExtra.title} by ${selectedBookFromExtra.author}")
         }
 
+    }
+
+    private fun populateBookInformation() {
+        val selectedBookFromExtra = intent.getParcelableExtra<Book>(EXTRA_SELECTED_BOOK)
+        id_infoBookTitle.text = selectedBookFromExtra.title
+        id_infoBookAuthor.text = selectedBookFromExtra.author
+        info_bookDatePosted.text = selectedBookFromExtra.datePosted
+        id_infoBookStatus.text = "Status: ${selectedBookFromExtra.status}"
+        info_bookDescription.text = selectedBookFromExtra.description
+        info_bookPostedBy.text = "Posted by: ${selectedBookFromExtra.lender}"
     }
 
     private fun sendBookRequestToOwnerEmail(ownerEmail: String, subject: String, message: String) {

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".book.BookEditActivity">
+
+    <TextView
+        android:id="@+id/id_editBook"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/corn_font"
+        android:text="@string/edit_book"
+        android:textAlignment="center"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="18sp"
+        android:transitionName="@string/add_book_transition"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/id_editBookTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="textPersonName"
+        android:text="Title"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_editBook"
+        app:layout_constraintStart_toStartOf="@+id/id_editBook"
+        app:layout_constraintTop_toBottomOf="@+id/id_editBook" />
+
+    <EditText
+        android:id="@+id/id_editBookAuthor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="textPersonName"
+        android:text="Author"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_editBook"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_editBook"
+        app:layout_constraintTop_toBottomOf="@+id/id_editBookTitle" />
+
+    <EditText
+        android:id="@+id/id_editBookDescription"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="textMultiLine"
+        android:text="Description"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_editBook"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_editBook"
+        app:layout_constraintTop_toBottomOf="@+id/id_editBookAuthor" />
+
+
+    <Spinner
+        android:id="@+id/id_editCategorySpinner"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/id_editBookDescription"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_editBookDescription"
+        app:layout_constraintTop_toBottomOf="@+id/id_editBookDescription" />
+
+    <Button
+        android:id="@+id/id_submitButton"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="208dp"
+        android:background="@drawable/button_corner"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="@string/submit"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintEnd_toEndOf="@+id/id_editBookDescription"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_editBookDescription"
+        app:layout_constraintTop_toBottomOf="@+id/id_editCategorySpinner" />
+
+</android.support.constraint.ConstraintLayout>
