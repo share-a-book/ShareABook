@@ -2,6 +2,7 @@ package edu.uco.ychong.shareabook
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -24,6 +25,7 @@ import edu.uco.ychong.shareabook.user.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.util.*
 
 const val USER_INFO = "user_info"
 const val UPDATED_USER_INFO = "updated_user_info"
@@ -255,11 +257,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val currentUser = mAuth?.currentUser
             currentUser?.updatePassword(password)
                 ?.addOnSuccessListener {
-                    ToastMe.message(this, "Password updated successfully!")
                 }
                 ?.addOnFailureListener {
-                    ToastMe.message(this, "Password update failed!")
+                    Log.d(TAG, it.toString())
                 }
+
+            val lenderName = "${updatedAccountInfo.firstName} ${updatedAccountInfo.lastName}"
+            updateLenderName(userEmail, lenderName)
+
+            val handler = Handler()
+            handler.postDelayed({loadAllAvailableBooks()}, 3000)
         }
+    }
+
+    private fun updateLenderName(email: String, lenderName: String) {
+        mFireStore?.collection("$BOOKDOC_PATH")?.whereEqualTo("lenderEmail", email)?.get()
+            ?.addOnSuccessListener {
+                for (bookSnapshot in it) {
+                    Log.d(TAG, bookSnapshot.toString())
+
+                    mFireStore?.collection("$BOOKDOC_PATH")?.document(bookSnapshot.id)
+                        ?.update("lender", lenderName)
+                        ?.addOnSuccessListener {
+                        }
+                        ?.addOnFailureListener {
+                            Log.d(TAG, it.toString())
+                        }
+                }
+            }
+            ?.addOnFailureListener {
+                ToastMe.message(this, "Failed to retrieve user")
+            }
     }
 }
