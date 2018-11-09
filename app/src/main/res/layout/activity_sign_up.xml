@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/corn_font"
         android:text="@string/registration"
@@ -33,25 +33,25 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_firstNameText"
         android:inputType="textPersonName"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/id_createAccountText"
         app:layout_constraintStart_toStartOf="@+id/id_createAccountText"
         app:layout_constraintTop_toBottomOf="@+id/id_createAccountText" />
 
     <EditText
-            android:id="@+id/id_lastNameInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:ems="10"
-            android:fontFamily="@font/quicksand"
-            android:hint="@string/id_lastNameText"
-            android:inputType="textPersonName"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/id_firstNameInput"
-            app:layout_constraintStart_toStartOf="@+id/id_firstNameInput"
-            app:layout_constraintTop_toBottomOf="@+id/id_firstNameInput"/>
+        android:id="@+id/id_lastNameInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:hint="@string/id_lastNameText"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_firstNameInput"
+        app:layout_constraintStart_toStartOf="@+id/id_firstNameInput"
+        app:layout_constraintTop_toBottomOf="@+id/id_firstNameInput" />
 
     <EditText
         android:id="@+id/id_phoneNumberInput"
@@ -63,7 +63,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_phoneNumberText"
         android:inputType="phone"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/id_lastNameInput"
         app:layout_constraintStart_toStartOf="@+id/id_lastNameInput"
         app:layout_constraintTop_toBottomOf="@+id/id_lastNameInput" />
@@ -78,7 +78,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_emailText"
         android:inputType="textEmailAddress"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/id_phoneNumberInput"
         app:layout_constraintStart_toStartOf="@+id/id_phoneNumberInput"
         app:layout_constraintTop_toBottomOf="@+id/id_phoneNumberInput" />
@@ -93,7 +93,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/hint_password"
         android:inputType="textPassword"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/id_signUpEmailInput"
         app:layout_constraintStart_toStartOf="@+id/id_signUpEmailInput"
         app:layout_constraintTop_toBottomOf="@+id/id_signUpEmailInput" />
@@ -108,7 +108,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_accountInfoPasswordConfirmationText"
         android:inputType="textPassword"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/id_signUpPasswordInput"
         app:layout_constraintStart_toStartOf="@+id/id_signUpPasswordInput"
         app:layout_constraintTop_toBottomOf="@+id/id_signUpPasswordInput" />
@@ -118,7 +118,7 @@
         android:id="@+id/id_createAccountButton"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/button_corner"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/submit"
