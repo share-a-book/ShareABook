@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
-import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.UPDATED_USER_INFO
 import edu.uco.ychong.shareabook.USER_INFO
@@ -13,15 +12,13 @@ import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.User
 import kotlinx.android.synthetic.main.activity_account_info.*
 
-const val TAG = "ACCOUNT_INFO_ACTIVITY"
-
 class AccountInfoActivity : AppCompatActivity() {
-    private var db: FirebaseFirestore ?= null
+    private var mFireStore: FirebaseFirestore ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_info)
-        db = FirebaseFirestore.getInstance()
+        mFireStore = FirebaseFirestore.getInstance()
 
         populateAccountInfoField()
 
@@ -86,9 +83,11 @@ class AccountInfoActivity : AppCompatActivity() {
 
         val userInfo = intent.getParcelableExtra<User>(USER_INFO)
         val updatedAccountInfo = User(fName, lName, pNumber, userInfo.email, password, passwordConfirmation)
+
         val intent = Intent()
         intent.putExtra(UPDATED_USER_INFO, updatedAccountInfo)
         setResult(Activity.RESULT_OK, intent)
+
         return validateIsSuccess
     }
 }

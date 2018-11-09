@@ -35,7 +35,7 @@ const val EXTRA_SELECTED_BOOK = "extra_selected_book"
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth? = null
     private var mFireStore: FirebaseFirestore? = null
-    var availableBooks = ArrayList<Book>()
+    private var availableBooks = ArrayList<Book>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mFireStore?.collection("$BOOKDOC_PATH")?.get()?.addOnSuccessListener {
             availableBooks.clear()
             for (bookSnapShot in it) {
-                Log.d(TAG, bookSnapShot.toString())
                 val book =  bookSnapShot.toObject(Book::class.java)
                 book.id = bookSnapShot.id
                 availableBooks.add(book)
@@ -97,12 +96,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             bookAdapter?.notifyDataSetChanged()
 
         }?.addOnFailureListener {
-            Log.d(TAG, it.toString())
+            Log.d(TESTTAG, it.toString())
         }
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
-        mFireStore?.collection("$ACCOUNTDOC_PATH/$userEmail")?.document(USER_INFO)?.get()
+        mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
                 if (userInfo == null) {
@@ -112,6 +111,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val headerView = nav_view.getHeaderView(0)
                 val emailView = headerView.findViewById<TextView>(R.id.id_nav_email)
                 emailView.text = userEmail
+
                 val nameView = headerView.findViewById<TextView>(R.id.id_nav_account_name)
                 nameView.text = userName
             }
@@ -121,11 +121,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setNavMenuLoginLogoutVisibility(currentUser: FirebaseUser?) {
-        if (UserAccess.isLoggedIn(currentUser)) {
+        if (UserAccess.isLoggedIn(currentUser))
             navMenuForLoggedInUser()
-        } else {
+        else
             navMenuForPublicUser()
-        }
     }
 
     private fun navMenuForLoggedInUser() {
@@ -151,13 +150,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START))
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            //mAuth?.signOut()
-            //Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show()
+        else
             super.onBackPressed()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -167,8 +163,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+            R.id.action_settings ->
+                return true
+            else ->
+                return super.onOptionsItemSelected(item)
         }
     }
 
@@ -201,7 +199,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_accountInfo -> {
                 if (UserAccess.isLoggedIn(currentUser)) {
                     val email = currentUser?.email
-                    if(email == null) return false
+                    if(email == null)
+                        return false
                     editAccountInfo(email)
                 }
             }
@@ -213,17 +212,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
+
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
     private fun editAccountInfo(userEmail: String) {
-        mFireStore?.collection("$ACCOUNTDOC_PATH/$userEmail")?.document(USER_INFO)?.get()
+        mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
-                if (userInfo == null) {
+
+                if (userInfo == null)
                     return@addOnSuccessListener
-                }
+
 
                 val intent = Intent(this, AccountInfoActivity::class.java)
                 intent.putExtra(USER_INFO, userInfo)
@@ -245,21 +246,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val userEmail = updatedAccountInfo.email
             val password = updatedAccountInfo.password
 
-            mFireStore?.collection("$ACCOUNTDOC_PATH/$userEmail")?.document(USER_INFO)?.set(updatedAccountInfo)
+            mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.set(updatedAccountInfo)
                 ?.addOnCompleteListener {
                     ToastMe.message(this, "Account information updated successfully!")
                     setAccountHeaderInfo(userEmail)
                 }?.addOnFailureListener {
                     ToastMe.message(this, "Account information update failed!")
-                    Log.d(TAG, it.toString())
                 }
 
             val currentUser = mAuth?.currentUser
             currentUser?.updatePassword(password)
                 ?.addOnSuccessListener {
+                    ToastMe.message(this, "Password updated successfully.")
                 }
                 ?.addOnFailureListener {
-                    Log.d(TAG, it.toString())
+                    Log.d(TESTTAG, it.toString())
                 }
 
             val lenderName = "${updatedAccountInfo.firstName} ${updatedAccountInfo.lastName}"
@@ -274,19 +275,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mFireStore?.collection("$BOOKDOC_PATH")?.whereEqualTo("lenderEmail", email)?.get()
             ?.addOnSuccessListener {
                 for (bookSnapshot in it) {
-                    Log.d(TAG, bookSnapshot.toString())
-
                     mFireStore?.collection("$BOOKDOC_PATH")?.document(bookSnapshot.id)
                         ?.update("lender", lenderName)
                         ?.addOnSuccessListener {
+                            ToastMe.message(this, "Update name successfully.")
                         }
                         ?.addOnFailureListener {
-                            Log.d(TAG, it.toString())
+                            Log.d(TESTTAG, it.toString())
                         }
                 }
             }
             ?.addOnFailureListener {
-                ToastMe.message(this, "Failed to retrieve user")
+                ToastMe.message(this, "Failed to retrieve user.")
             }
     }
 }

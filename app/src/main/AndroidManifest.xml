@@ -40,15 +40,16 @@
         <activity
             android:name=".user.ListingActivity"
             android:label="@string/listing_books" />
-        <activity android:name=".book.BookInfoActivity"></activity>
+        <activity android:name=".book.BookInfoActivity" />
         <activity
-            android:label="@string/search"
-            android:name=".book.BookSearchActivity">
+            android:name=".book.BookSearchActivity"
+            android:label="@string/search">
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".book.BookSearchActivity" />
         </activity>
-        <activity android:name=".book.BookEditActivity"></activity>
+        <activity android:name=".book.BookEditActivity" />
+        <activity android:name=".user.PendingActivity"></activity>
     </application>
 
 </manifest>

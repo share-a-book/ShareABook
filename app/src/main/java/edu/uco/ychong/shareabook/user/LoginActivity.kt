@@ -14,24 +14,19 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth ?= null
-    private var db: FirebaseFirestore?= null
+    private var mFireStore: FirebaseFirestore?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         mAuth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
+        mFireStore = FirebaseFirestore.getInstance()
 
         id_loginButton.setOnClickListener {
-            /**
-             * Uncomment after testing
-             */
+
             val email = id_loginEmail.text.toString().trim()
             val password = id_loginPassword.text.toString().trim()
-//
-//            val email = "dattran10@gmail.com"
-//            val password = "password"
 
             if (email.isNullOrEmpty() || email.isNullOrBlank()) {
                 Toast.makeText(this, "Invalid email input!", Toast.LENGTH_SHORT).show()
@@ -69,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updatePasswordAfterReset(email: String, password: String) {
-        db?.collection(email)?.document("User Info")?.get()
+        mFireStore?.collection(email)?.document("User Info")?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
 
@@ -78,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
                 val userPassword = userInfo.password
 
                 if (!userPassword.equals(password)) {
-                    db?.collection(email)?.document("User Info")
+                    mFireStore?.collection(email)?.document("User Info")
                         ?.update("password", password, "passwordConfirm", password)
                         ?.addOnCompleteListener {
                             ToastMe.message(this, "Account information updated successfully!")

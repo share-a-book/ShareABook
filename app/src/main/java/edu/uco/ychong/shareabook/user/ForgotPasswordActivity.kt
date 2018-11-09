@@ -29,14 +29,14 @@ class ForgotPasswordActivity : AppCompatActivity() {
             mAuth?.sendPasswordResetEmail(email)
                 ?.addOnCompleteListener {
                     if (it.isSuccessful) {
-                        ToastMe.message(this, "Reset password email sent to $email")
+                        ToastMe.message(this, "Reset password email sent to $email.")
 
                         val intent = Intent()
                         setResult(Activity.RESULT_OK, intent)
 
                         finish()
                     } else {
-                        ToastMe.message(this, "Fail to send reset password email.\n${it.exception.toString()}")
+                        ToastMe.message(this, "Fail to send reset password email.\n${it.exception.toString()}.")
                     }
                 }
         }

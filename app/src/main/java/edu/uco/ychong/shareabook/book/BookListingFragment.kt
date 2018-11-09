@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.model.Book
-import edu.uco.ychong.shareabook.user.TAG
 import kotlinx.android.synthetic.main.fragment_book_listing.*
 import kotlinx.android.synthetic.main.fragment_book_listing.view.*
 
@@ -56,6 +55,7 @@ class BookListingFragment : Fragment() {
 
     private fun loadUserOwnedBooks() {
         val userEmail = mAuth?.currentUser?.email
+
         mFireStore?.collection("$BOOKDOC_PATH")
                 ?.whereEqualTo("lenderEmail", userEmail)
                 ?.get()
@@ -64,7 +64,6 @@ class BookListingFragment : Fragment() {
             allUserOwnedBooks.clear()
 
             for (bookSnapShot in it) {
-                Log.d(TAG, bookSnapShot.toString())
                 val book =  bookSnapShot.toObject(Book::class.java)
                 book.id = bookSnapShot.id
                 allUserOwnedBooks.add(book)
@@ -73,7 +72,7 @@ class BookListingFragment : Fragment() {
             bookAdapter?.notifyDataSetChanged()
 
         }?.addOnFailureListener {
-            Log.d(TAG, it.toString())
+            Log.d(TESTTAG, it.toString())
         }
     }
 }

@@ -16,7 +16,7 @@ import edu.uco.ychong.shareabook.USER_INFO
 import edu.uco.ychong.shareabook.helper.Genre
 import edu.uco.ychong.shareabook.model.Book
 import edu.uco.ychong.shareabook.model.User
-import edu.uco.ychong.shareabook.user.ACCOUNTDOC_PATH
+import edu.uco.ychong.shareabook.user.ACCOUNT_DOC_PATH
 import edu.uco.ychong.shareabook.user.ListingActivity
 import kotlinx.android.synthetic.main.fragment_book_add.*
 import kotlinx.android.synthetic.main.fragment_book_add.view.*
@@ -46,7 +46,7 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
     private fun getUserInfoAndAddBook() {
         val userEmail = mAuth?.currentUser?.email
         if (userEmail != null) {
-            mFireStore?.collection("$ACCOUNTDOC_PATH/$userEmail")?.document(USER_INFO)?.get()
+            mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.get()
                 ?.addOnSuccessListener {
                     val userInfo = it.toObject(User::class.java)
                     if (userInfo == null)

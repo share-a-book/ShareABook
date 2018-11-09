@@ -1,12 +1,10 @@
 package edu.uco.ychong.shareabook.book
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -55,13 +53,13 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)?.update("title", title,
                 "author", author, "description", description, "genre", category)
                 ?.addOnSuccessListener {
-                    ToastMe.message(this, "Book information updated successfully!")
 
+                    ToastMe.message(this, "Book information updated successfully!")
                     startActivity(Intent(this, ListingActivity::class.java))
                     finish()
+
                 }?.addOnFailureListener {
                     ToastMe.message(this, "Book information update failed.")
-                    Log.d(edu.uco.ychong.shareabook.user.TAG, it.toString())
                 }
     }
 
@@ -87,7 +85,6 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
         if (!selectedGenre.isEmpty()) {
             val position = arrayAdapter.getPosition(selectedGenre)
-            Log.d(TESTTAG, position.toString())
             spinner.setSelection(position)
         }
     }
@@ -111,7 +108,6 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         return when(item.itemId) {
             R.id.id_deleteBook -> {
                 showDeleteAlertDialog()
-
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -143,13 +139,14 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)?.delete()
                 ?.addOnSuccessListener {
+
                     ToastMe.message(this, "Book deleted successfully.")
                     startActivity(Intent(this, ListingActivity::class.java))
                     finish()
+
                 }
                 ?.addOnFailureListener {
                     ToastMe.message(this, "Book delete failed.")
-                    Log.d(edu.uco.ychong.shareabook.user.TAG, it.toString())
                 }
     }
 }

@@ -12,17 +12,17 @@ import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.User
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
-const val ACCOUNTDOC_PATH = "account/accountDoc"
+const val ACCOUNT_DOC_PATH = "account/accountDoc"
 class SignUpActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth ?= null
-    private var db: FirebaseFirestore? = null
+    private var mFireStore: FirebaseFirestore? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
         mAuth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
+        mFireStore = FirebaseFirestore.getInstance()
 
         id_createAccountButton.setOnClickListener {
             val fName = id_firstNameInput.text.toString().trim()
@@ -72,7 +72,7 @@ class SignUpActivity : AppCompatActivity() {
                     if(it.isSuccessful) {
                         ToastMe.message(this, "Account creation successful!")
                         val userInfo = User(fName, lName, pNumber, email, password, passwordConfirmation)
-                        db?.collection("$ACCOUNTDOC_PATH/$email")?.document(USER_INFO)?.set(userInfo)
+                        mFireStore?.collection("$ACCOUNT_DOC_PATH/$email")?.document(USER_INFO)?.set(userInfo)
                             ?.addOnSuccessListener {
                                 ToastMe.message(this, "Account info added!")
                             }
