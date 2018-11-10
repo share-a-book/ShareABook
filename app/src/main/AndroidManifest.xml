@@ -49,7 +49,8 @@
                 android:value=".book.BookSearchActivity" />
         </activity>
         <activity android:name=".book.BookEditActivity" />
-        <activity android:name=".user.PendingActivity"></activity>
+        <activity android:name=".user.tracking.TrackingActivity"
+            android:label="@string/tracking"></activity>
     </application>
 
 </manifest>

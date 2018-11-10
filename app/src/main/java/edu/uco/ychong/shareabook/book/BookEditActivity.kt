@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
 import edu.uco.ychong.shareabook.R
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.Genre
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Book
@@ -138,15 +139,13 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         val bookId = bookInfo.id
 
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)?.delete()
-                ?.addOnSuccessListener {
-
-                    ToastMe.message(this, "Book deleted successfully.")
-                    startActivity(Intent(this, ListingActivity::class.java))
-                    finish()
-
-                }
-                ?.addOnFailureListener {
-                    ToastMe.message(this, "Book delete failed.")
-                }
+            ?.addOnSuccessListener {
+                ToastMe.message(this, "Book deleted successfully.")
+                startActivity(Intent(this, ListingActivity::class.java))
+                finish()
+            }
+            ?.addOnFailureListener {
+                ToastMe.message(this, "Book delete failed.")
+            }
     }
 }

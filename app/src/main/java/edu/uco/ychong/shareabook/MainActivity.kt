@@ -17,11 +17,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.book.*
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
 import edu.uco.ychong.shareabook.model.Book
 import edu.uco.ychong.shareabook.model.User
 import edu.uco.ychong.shareabook.user.*
+import edu.uco.ychong.shareabook.user.tracking.TrackingActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -75,7 +77,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             layoutManager = viewManager
             adapter = bookAdapter
         }
-
     }
 
     private fun goToBookInfoActivity(selectedBook: Book) {
@@ -85,7 +86,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadAllAvailableBooks() {
-        mFireStore?.collection("$BOOKDOC_PATH")?.get()?.addOnSuccessListener {
+        mFireStore?.collection("$BOOKDOC_PATH")
+            ?.whereEqualTo("status", BookStatus.AVAILABLE)
+            ?.get()
+            ?.addOnSuccessListener {
             availableBooks.clear()
             for (bookSnapShot in it) {
                 val book =  bookSnapShot.toObject(Book::class.java)
@@ -101,7 +105,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
-        mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.get()
+        mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")
+            ?.document(USER_INFO)
+            ?.get()
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java)
                 if (userInfo == null) {
@@ -130,7 +136,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun navMenuForLoggedInUser() {
         val navMenu = findViewById<NavigationView>(R.id.nav_view).menu
         navMenu.findItem(R.id.nav_listing).isVisible = true
-        navMenu.findItem(R.id.nav_pending).isVisible = true
+        navMenu.findItem(R.id.nav_tracking).isVisible = true
         navMenu.findItem(R.id.nav_history).isVisible = true
         navMenu.findItem(R.id.nav_logout).isVisible = true
         navMenu.findItem(R.id.nav_accountInfo).isVisible = true
@@ -141,7 +147,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun navMenuForPublicUser() {
         val navMenu = findViewById<NavigationView>(R.id.nav_view).menu
         navMenu.findItem(R.id.nav_listing).isVisible = false
-        navMenu.findItem(R.id.nav_pending).isVisible = false
+        navMenu.findItem(R.id.nav_tracking).isVisible = false
         navMenu.findItem(R.id.nav_history).isVisible = false
         navMenu.findItem(R.id.nav_logout).isVisible = false
         navMenu.findItem(R.id.nav_accountInfo).isVisible = false
@@ -182,8 +188,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_listing -> {
                 startActivity(Intent(this, ListingActivity::class.java))
             }
-            R.id.nav_pending -> {
-
+            R.id.nav_tracking -> {
+                startActivity(Intent(this, TrackingActivity::class.java))
             }
             R.id.nav_history -> {
 
@@ -272,7 +278,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun updateLenderName(email: String, lenderName: String) {
-        mFireStore?.collection("$BOOKDOC_PATH")?.whereEqualTo("lenderEmail", email)?.get()
+        mFireStore?.collection("$BOOKDOC_PATH")
+            ?.whereEqualTo("lenderEmail", email)
+            ?.get()
             ?.addOnSuccessListener {
                 for (bookSnapshot in it) {
                     mFireStore?.collection("$BOOKDOC_PATH")?.document(bookSnapshot.id)

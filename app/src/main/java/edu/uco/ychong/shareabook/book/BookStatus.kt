@@ -3,8 +3,9 @@ package edu.uco.ychong.shareabook.book
 class BookStatus {
     companion object {
         val AVAILABLE = "available"
-        val CHECKOUT_PENDING = "checkout_pending"
-        val RESERVED = "reserved"
+        val REQUEST_PENDING = "request_pending"
+        val ACCEPTED = "accepted"
+        val REJECTED = "rejected"
         val UNAVAILABLE = "unavailable"
     }
 }

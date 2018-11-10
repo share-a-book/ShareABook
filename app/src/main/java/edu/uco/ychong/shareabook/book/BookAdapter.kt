@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.model.Book
 
 
@@ -14,7 +16,10 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
                   private val customItemClickListener: CustomItemClickListener) :
     RecyclerView.Adapter<BookAdapter.MyViewHolder>() {
 
+    private var mFireStore: FirebaseFirestore? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        mFireStore = FirebaseFirestore.getInstance()
         val rowView: View = LayoutInflater.from(parent.context)
                 .inflate(R.layout.book_card_layout, parent, false)
         val viewHolder = MyViewHolder(rowView)
@@ -56,7 +61,18 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         tempList.addAll(myDataSet)
         myDataSet.clear()
         if (text.isEmpty()) {
-            myDataSet.addAll(BookPublicData.originalBookDataList)
+            mFireStore?.collection("$BOOKDOC_PATH")
+                ?.whereEqualTo("status", BookStatus.AVAILABLE)
+                ?.get()
+                ?.addOnSuccessListener {
+                    myDataSet.clear()
+                    for (bookSnapShot in it) {
+                        val book = bookSnapShot.toObject(Book::class.java)
+                        book.id = bookSnapShot.id
+                        myDataSet.add(book)
+                    }
+                    notifyDataSetChanged()
+                }
         } else {
             for (item in tempList) {
                 if (bookTitleOrAuthorContainsText(item, text)) {
@@ -68,7 +84,6 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
     }
 
     private fun bookTitleOrAuthorContainsText(book: Book, text: String): Boolean {
-        return (book.title.toLowerCase().contains(text) ||
-                book.author.toLowerCase().contains(text))
+        return (book.title.toLowerCase().contains(text))
     }
 }

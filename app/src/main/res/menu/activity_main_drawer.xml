@@ -17,9 +17,9 @@
             android:icon="@drawable/ic_playlist_add_black_24dp"
             android:title="@string/menu_listing" />
         <item
-            android:id="@+id/nav_pending"
-            android:icon="@drawable/ic_sand_timer"
-            android:title="@string/menu_pending" />
+            android:id="@+id/nav_tracking"
+            android:icon="@drawable/ic_purchase_order_white_24"
+            android:title="@string/tracking" />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_history_black_24dp"

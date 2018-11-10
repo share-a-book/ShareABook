@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_pendingContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    android:paddingBottom="8dp">
+
+    <Button
+        android:id="@+id/id_acceptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:text="@string/accept"
+        android:textColor="@color/colorGreen"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/id_rejectButton"
+        app:layout_constraintTop_toTopOf="@+id/id_rejectButton" />
+
+    <Button
+        android:id="@+id/id_rejectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="188dp"
+        android:layout_marginTop="24dp"
+        android:background="@null"
+        android:text="@string/reject"
+        android:textColor="@color/colorLightGray"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_bookAuthor" />
+
+    <ImageView
+        android:id="@+id/id_lenderProfileImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/user_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/id_borrower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/id_accountInfoFirstNameText"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/id_lenderTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_lenderTitle"
+        app:layout_constraintTop_toBottomOf="@+id/id_lenderTitle" />
+
+    <TextView
+        android:id="@+id/id_lenderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/borrower"
+        android:textAlignment="textStart"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/id_lenderProfileImage"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_lenderProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/id_lenderProfileImage" />
+
+    <TextView
+        android:id="@+id/id_bookTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/book_title"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/id_lenderProfileImage"
+        app:layout_constraintTop_toTopOf="@+id/id_lenderProfileImage" />
+
+    <TextView
+        android:id="@+id/id_bookAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/author"
+        app:layout_constraintEnd_toEndOf="@+id/id_bookTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_bookTitle"
+        app:layout_constraintTop_toBottomOf="@+id/id_bookTitle" />
+
+</android.support.constraint.ConstraintLayout>

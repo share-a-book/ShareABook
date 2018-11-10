@@ -8,8 +8,8 @@ import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.BookAddFragment
-import edu.uco.ychong.shareabook.book.BookListingFragment
+import edu.uco.ychong.shareabook.book.fragments.BookAddFragment
+import edu.uco.ychong.shareabook.book.fragments.BookListingFragment
 import edu.uco.ychong.shareabook.helper.ToastMe
 
 
@@ -74,6 +74,10 @@ class ListingActivity : AppCompatActivity() {
         val fragment = BookAddFragment()
         val bookAddFragment = fragmentManager.findFragmentByTag(BOOK_ADD_FRAGMENT)
         val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.setCustomAnimations(
+                android.R.animator.fade_in,
+                android.R.animator.fade_out
+        )
         if (bookAddFragment == null) {
             fragmentTransaction.add(R.id.book_container, fragment, BOOK_ADD_FRAGMENT)
             fragmentTransaction.commit()
@@ -95,6 +99,10 @@ class ListingActivity : AppCompatActivity() {
         val fragment = BookListingFragment()
         val fragmentTransaction = fragmentManager.beginTransaction()
         val bookListingFragment = fragmentManager.findFragmentByTag(BOOK_LISTING_FRAGMENT)
+        fragmentTransaction.setCustomAnimations(
+                android.R.animator.fade_in,
+                android.R.animator.fade_out
+        )
         if (bookListingFragment == null) {
             fragmentTransaction.add(R.id.book_container, fragment, BOOK_LISTING_FRAGMENT)
             fragmentTransaction.commit()

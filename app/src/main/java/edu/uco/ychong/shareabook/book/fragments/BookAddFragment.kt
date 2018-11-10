@@ -1,4 +1,4 @@
-package edu.uco.ychong.shareabook.book
+package edu.uco.ychong.shareabook.book.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.USER_INFO
+import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.helper.Genre
 import edu.uco.ychong.shareabook.model.Book
 import edu.uco.ychong.shareabook.model.User
@@ -62,7 +63,7 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
                         lenderName,
                         userEmail,
                         "",
-                        BookStatus.AVAILABLE,
+                            BookStatus.AVAILABLE,
                         getCurrentDateWithFullFormat(),
                         "",
                         "")

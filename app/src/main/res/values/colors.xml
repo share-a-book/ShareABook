@@ -9,6 +9,9 @@
     <color name="colorBlueGray">#6C8286</color>
     <color name="colorDarkPurp">#1f151a</color>
     <color name="colorBlue">#6D5E9B</color>
-    <color name="colorFadeWhite">#F4F5FF</color>
-    <color name="colorFadeWhite2">#FEF5FF</color>
+    <color name="colorFadeWhite">#f4f5ff</color>
+    <color name="colorFadeWhite2">#fef5ff</color>
+    <color name="colorGreen">#81b55d</color>
+    <color name="colorLightGray">#8794a1</color>
+    <color name="colorGray">#6b757f</color>
 </resources>

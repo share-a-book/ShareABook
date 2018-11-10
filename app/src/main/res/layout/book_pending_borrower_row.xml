@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_pendingContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    android:paddingBottom="8dp">
+
+
+    <ImageView
+        android:id="@+id/id_lenderProfileImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/user_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/id_lenderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/id_accountInfoFirstNameText"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/id_lenderTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_lenderTitle"
+        app:layout_constraintTop_toBottomOf="@+id/id_lenderTitle" />
+
+    <TextView
+        android:id="@+id/id_lenderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/lender"
+        android:textAlignment="textStart"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/id_lenderProfileImage"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_lenderProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/id_lenderProfileImage" />
+
+    <TextView
+        android:id="@+id/id_bookTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:text="@string/book_title"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/id_lenderProfileImage"
+        app:layout_constraintTop_toTopOf="@+id/id_lenderProfileImage" />
+
+    <TextView
+        android:id="@+id/id_bookAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/author"
+        app:layout_constraintEnd_toEndOf="@+id/id_bookTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_bookTitle"
+        app:layout_constraintTop_toBottomOf="@+id/id_bookTitle" />
+
+    <TextView
+        android:id="@+id/id_requestTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/request_pending_status"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/id_bookAuthor"
+        app:layout_constraintTop_toTopOf="@+id/id_lenderTitle" />
+
+    <TextView
+        android:id="@+id/id_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/status"
+        app:layout_constraintStart_toStartOf="@+id/id_requestTitle"
+        app:layout_constraintTop_toBottomOf="@+id/id_requestTitle" />
+
+</android.support.constraint.ConstraintLayout>

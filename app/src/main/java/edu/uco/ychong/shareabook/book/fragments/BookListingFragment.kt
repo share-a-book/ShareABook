@@ -1,4 +1,4 @@
-package edu.uco.ychong.shareabook.book
+package edu.uco.ychong.shareabook.book.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
 import edu.uco.ychong.shareabook.R
+import edu.uco.ychong.shareabook.book.BookAdapter
+import edu.uco.ychong.shareabook.book.BookEditActivity
+import edu.uco.ychong.shareabook.book.CustomItemClickListener
+import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.model.Book
 import kotlinx.android.synthetic.main.fragment_book_listing.*
 import kotlinx.android.synthetic.main.fragment_book_listing.view.*
@@ -28,7 +32,7 @@ class BookListingFragment : Fragment() {
 
         var viewManager = LinearLayoutManager(context)
 
-        val bookAdapter = BookAdapter(allUserOwnedBooks, object: CustomItemClickListener {
+        val bookAdapter = BookAdapter(allUserOwnedBooks, object : CustomItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 val selectedBook = allUserOwnedBooks[position]
                 goToBookEditActivity(selectedBook)
