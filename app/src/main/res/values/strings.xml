@@ -49,7 +49,7 @@
     <string name="logo">Logo</string>
     <string name="create">Create</string>
     <string name="title_activity_listing">ListingActivity</string>
-    <string name="Add" />
+    <string name="Add"/>
     <string name="listing_books">Listing Books</string>
     <string name="registration">Registration</string>
     <string name="submit">Submit</string>
@@ -79,4 +79,6 @@
     <string name="user_profile">User profile picture</string>
     <string name="request_pending_status">Request status:</string>
     <string name="accepted_icon">accepted icon</string>
+    <string name="title_activity_cancel_book_request">CancelBookRequestActivity</string>
+    <string name="cancel_book_request">Cancel Book Request</string>
 </resources>

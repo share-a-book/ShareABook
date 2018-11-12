@@ -1,5 +1,6 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.pending
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -34,7 +35,8 @@ class PendingFragment: Fragment() {
 
         var viewManager = LinearLayoutManager(context)
         val bookAdapter = BookPendingBorrowerAdapter(pendingRequestedBooks, object : CustomItemClickListener {
-            override fun onItemClick(v: View, position: Int) {}
+            override fun onItemClick(v: View, position: Int) {
+            }
         })
 
         loadPendingRequestedBook()
