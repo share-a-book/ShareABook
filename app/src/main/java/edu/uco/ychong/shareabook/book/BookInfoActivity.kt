@@ -23,11 +23,11 @@ import kotlinx.android.synthetic.main.activity_book_info.*
 
 const val TESTTAG = "testtag"
 const val CODE_EMAIL_SEND = 1
+const val PLAIN_TEXT = "plain/text"
 
 class BookInfoActivity : Activity() {
     private var mAuth: FirebaseAuth?= null
     private var mFireStore: FirebaseFirestore? = null
-    private val PLAIN_TEXT = "plain/text"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,10 +105,8 @@ class BookInfoActivity : Activity() {
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
             ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document()?.set(borrowRequest)
             ?.addOnSuccessListener {
-                ToastMe.message(this, "Request pending successfully.")
             }
             ?.addOnFailureListener {
-                ToastMe.message(this, "Request pending failed.")
             }
 
         val userEmail = mAuth?.currentUser?.email
