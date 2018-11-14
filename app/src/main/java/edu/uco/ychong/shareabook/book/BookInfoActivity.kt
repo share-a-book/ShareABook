@@ -9,10 +9,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
+import edu.uco.ychong.shareabook.USER_INFO
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.BorrowRequest
+import edu.uco.ychong.shareabook.model.User
+import edu.uco.ychong.shareabook.user.ACCOUNT_DOC_PATH
 import kotlinx.android.synthetic.main.activity_book_info.*
 
 
@@ -40,7 +45,8 @@ class BookInfoActivity : Activity() {
         initializeRequestButtonVisibility()
 
         requestButton.setOnClickListener {
-            sendBookRequestToOwner(bookId)
+            getBorrowUserInfoAndRequestBorrow(bookId)
+            //sendBookRequestToOwner(bookId)
             sendBookRequestToOwnerEmail(
                 ownerEmail,
                 "Share-A-Book Request: ${selectedBookFromExtra.title}",
@@ -71,7 +77,40 @@ class BookInfoActivity : Activity() {
             requestButton.visibility = View.VISIBLE
     }
 
-    private fun sendBookRequestToOwner(bookId: String) {
+    private fun getBorrowUserInfoAndRequestBorrow(bookId: String) {
+        val userEmail = mAuth?.currentUser?.email
+        if (userEmail != null) {
+            mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.get()
+                ?.addOnSuccessListener {
+                    val userInfo = it.toObject(User::class.java)
+                    if (userInfo == null)
+                        return@addOnSuccessListener
+
+                    val borrowerName = "${userInfo?.firstName} ${userInfo.lastName}"
+                    val borrowerNumber = userInfo?.phoneNumber
+
+                    val borrowRequest = BorrowRequest(borrowerName,
+                                                        userEmail,
+                                                        borrowerNumber,
+                                                        BookStatus.REQUEST_PENDING,
+                                                        "",
+                                                        "")
+
+                    sendBookRequestToOwner(bookId, borrowRequest)
+                }
+        }
+    }
+
+    private fun sendBookRequestToOwner(bookId: String, borrowRequest: BorrowRequest) {
+        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
+            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document()?.set(borrowRequest)
+            ?.addOnSuccessListener {
+                ToastMe.message(this, "Request pending successfully.")
+            }
+            ?.addOnFailureListener {
+                ToastMe.message(this, "Request pending failed.")
+            }
+
         val userEmail = mAuth?.currentUser?.email
 
         mFireStore?.collection(BOOKDOC_PATH)

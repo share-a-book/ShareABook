@@ -10,9 +10,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.BookStatus
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.BorrowRequest
 import kotlinx.android.synthetic.main.activity_cancel_book_request.*
 
 class CancelBookRequestActivity : AppCompatActivity() {
@@ -55,7 +57,7 @@ class CancelBookRequestActivity : AppCompatActivity() {
         builder.setTitle("Cancel Book Request")
         builder.setMessage("Are you sure you want to cancel this book request?")
         builder.setPositiveButton("YES") { dialog, which ->
-            cancelBook(bookId)
+            getBorrowRequestId(bookId)
         }.setNegativeButton("NO") { dialog, which ->
         }.setNeutralButton("CANCEL") { dialog, which ->
         }
@@ -67,7 +69,30 @@ class CancelBookRequestActivity : AppCompatActivity() {
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.GRAY)
     }
 
-    private fun cancelBook(bookId: String) {
+    private fun getBorrowRequestId(bookId: String) {
+        mFireStore?.collection("$BOOKDOC_PATH")?.document(bookId)
+            ?.collection("$BOOKDOC_BORROW_REQUEST_PATH")
+            ?.whereEqualTo("borrowStatus", BookStatus.REQUEST_PENDING)
+            ?.get()
+            ?.addOnSuccessListener {
+                for (requestSnapShot in it) {
+                    cancelBook(bookId, requestSnapShot.id)
+                }
+            }
+            ?.addOnFailureListener {
+            }
+
+    }
+
+    private fun cancelBook(bookId: String, requestId: String) {
+        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
+            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document(requestId)
+            ?.update("borrowStatus", BookStatus.CANCELLED)
+            ?.addOnSuccessListener {
+            }
+            ?.addOnFailureListener {
+            }
+
         mFireStore?.collection("$BOOKDOC_PATH")?.document(bookId)
             ?.update("status", BookStatus.AVAILABLE, "borrower", "")
             ?.addOnSuccessListener {
