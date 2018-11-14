@@ -65,7 +65,7 @@ class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
         holder.borrowerName.text = bookRequest.borrower
         holder.imageProfile.setImageResource(R.drawable.emptyphoto)
         holder.bookId = bookRequest.id
-        }
+    }
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

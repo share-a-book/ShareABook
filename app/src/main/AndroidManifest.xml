@@ -48,12 +48,15 @@
                     android:name="android.app.default_searchable"
                     android:value=".book.BookSearchActivity"/>
         </activity>
-        <activity android:name=".book.BookEditActivity"/>
+        <activity
+                android:name=".book.BookEditActivity"
+                android:label="@string/edit_book"/>
         <activity
                 android:name=".user.tracking.TrackingActivity"
                 android:label="@string/tracking"/>
-        <activity android:name=".user.tracking.fragments.pending.CancelBookRequestActivity">
-        </activity>
+        <activity
+                android:name=".user.tracking.fragments.pending.CancelBookRequestActivity"
+                android:label="@string/cancel_book_request"/>
     </application>
 
 </manifest>

@@ -81,4 +81,5 @@
     <string name="accepted_icon">accepted icon</string>
     <string name="title_activity_cancel_book_request">CancelBookRequestActivity</string>
     <string name="cancel_book_request">Cancel Book Request</string>
+    <string name="check_out">Check Out</string>
 </resources>
