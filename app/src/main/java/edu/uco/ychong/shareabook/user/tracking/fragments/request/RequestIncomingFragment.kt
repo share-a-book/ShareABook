@@ -14,6 +14,7 @@ import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
 import edu.uco.ychong.shareabook.book.TESTTAG
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.model.Book
 import kotlinx.android.synthetic.main.fragment_request_incoming.*
@@ -51,23 +52,23 @@ class RequestIncomingFragment: Fragment() {
 
     private fun loadPendingRequestedBook() {
         mFireStore?.collection("$BOOKDOC_PATH")
-                ?.whereEqualTo("status", BookStatus.REQUEST_PENDING)
-                ?.get()
-                ?.addOnSuccessListener {
-                    pendingRequestedBooks.clear()
+            ?.whereEqualTo("status", BookStatus.REQUEST_PENDING)
+            ?.get()
+            ?.addOnSuccessListener {
+                pendingRequestedBooks.clear()
 
-                    for (bookSnapShot in it) {
-                        val book =  bookSnapShot.toObject(Book::class.java)
-                        book.id = bookSnapShot.id
-                        if (isOtherUserRequestToMe(book.lenderEmail))
-                            pendingRequestedBooks.add(book)
-                    }
-                    val bookAdapter = id_requestIncomingRecyclerView.adapter
-                    bookAdapter?.notifyDataSetChanged()
-
-                }?.addOnFailureListener {
-                    Log.d(TESTTAG, it.toString())
+                for (bookSnapShot in it) {
+                    val book =  bookSnapShot.toObject(Book::class.java)
+                    book.id = bookSnapShot.id
+                    if (isOtherUserRequestToMe(book.lenderEmail))
+                        pendingRequestedBooks.add(book)
                 }
+                val bookAdapter = id_requestIncomingRecyclerView.adapter
+                bookAdapter?.notifyDataSetChanged()
+
+            }?.addOnFailureListener {
+                Log.d(TESTTAG, it.toString())
+            }
     }
 
     private fun isOtherUserRequestToMe(lender: String): Boolean {

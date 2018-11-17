@@ -7,5 +7,8 @@ class BookStatus {
         val ACCEPTED = "accepted"
         val REJECTED = "rejected"
         val UNAVAILABLE = "unavailable"
+        val CHECKED_OUT = "checked_out"
+        val RETURNED = "returned"
+        val CANCELLED = "cancelled"
     }
 }

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.book.*
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
@@ -252,14 +253,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val userEmail = updatedAccountInfo.email
             val password = updatedAccountInfo.password
 
-            mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.set(updatedAccountInfo)
-                ?.addOnCompleteListener {
-                    ToastMe.message(this, "Account information updated successfully!")
-                    setAccountHeaderInfo(userEmail)
-                }?.addOnFailureListener {
-                    ToastMe.message(this, "Account information update failed!")
-                }
-
             val currentUser = mAuth?.currentUser
             currentUser?.updatePassword(password)
                 ?.addOnSuccessListener {
@@ -269,8 +262,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Log.d(TESTTAG, it.toString())
                 }
 
-            val lenderName = "${updatedAccountInfo.firstName} ${updatedAccountInfo.lastName}"
-            updateLenderName(userEmail, lenderName)
+            mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.set(updatedAccountInfo)
+                ?.addOnCompleteListener {
+                    ToastMe.message(this, "Account information updated successfully!")
+                    setAccountHeaderInfo(userEmail)
+                }?.addOnFailureListener {
+                    ToastMe.message(this, "Account information update failed!")
+                }
+
+            val userName = "${updatedAccountInfo.firstName} ${updatedAccountInfo.lastName}"
+            val userPhoneNumber = updatedAccountInfo.phoneNumber
+            updateLenderName(userEmail, userName)
+            updateBorrowerName(userEmail, userName, userPhoneNumber)
 
             val handler = Handler()
             handler.postDelayed({loadAllAvailableBooks()}, 3000)
@@ -296,5 +299,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ?.addOnFailureListener {
                 ToastMe.message(this, "Failed to retrieve user.")
             }
+    }
+
+    private fun updateBorrowerName(email: String, borrowerName: String, borrowerNumber: String) {
+        mFireStore?.collection("$BOOKDOC_PATH")?.get()?.addOnSuccessListener {
+            for (bookSnapshot in it) {
+                mFireStore?.collection("$BOOKDOC_PATH")?.document(bookSnapshot.id)
+                    ?.collection("$BOOKDOC_BORROW_REQUEST_PATH")
+                    ?.whereEqualTo("borrowerEmail", email)
+                    ?.get()
+                    ?.addOnSuccessListener {
+                        for (requestSnapshot in it) {
+                            mFireStore?.collection("$BOOKDOC_PATH")?.document(bookSnapshot.id)
+                                ?.collection("$BOOKDOC_BORROW_REQUEST_PATH")?.document(requestSnapshot.id)
+                                ?.update("borrowerName", borrowerName, "borrowerNumber", borrowerNumber)
+                                ?.addOnSuccessListener {  }
+                                ?.addOnFailureListener {  }
+                        }
+                    }
+            }
+        }
     }
 }

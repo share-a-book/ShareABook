@@ -1,5 +1,7 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.pending
 
+import android.content.Intent
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +11,10 @@ import android.widget.TextView
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
+import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Book
+
+const val CANCEL_BOOK_REQUEST = "CANCEL_BOOK_REQUEST"
 
 class BookPendingBorrowerAdapter(private val myDataSet: ArrayList<Book>,
                                  private val customItemClickListener: CustomItemClickListener) :
@@ -23,6 +28,12 @@ class BookPendingBorrowerAdapter(private val myDataSet: ArrayList<Book>,
 
         rowView.setOnClickListener {
             customItemClickListener.onItemClick(it, viewHolder.position)
+
+            val intent = Intent(parent.context, CancelBookRequestActivity::class.java)
+            val theBook = myDataSet[viewHolder.position]
+            intent.putExtra(CANCEL_BOOK_REQUEST, theBook)
+
+            parent.context.startActivity(intent)
         }
 
         return viewHolder

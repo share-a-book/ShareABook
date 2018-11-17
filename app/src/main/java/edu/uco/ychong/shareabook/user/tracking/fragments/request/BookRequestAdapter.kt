@@ -8,12 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
+import edu.uco.ychong.shareabook.R.id.id_requestIncomingRecyclerView
 import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.BorrowRequest
+import edu.uco.ychong.shareabook.user.ACCOUNT_DOC_PATH
 import kotlinx.android.synthetic.main.book_pending_row.view.*
+import kotlinx.android.synthetic.main.fragment_request_incoming.*
 
 class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
                          private val customItemClickListener: CustomItemClickListener) :
@@ -37,13 +42,15 @@ class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
 
         rowView.id_rejectButton.setOnClickListener {
             ToastMe.message(parent.context, "Reject request")
-            rejectRequest(viewHolder.bookId)
+            getBorrowRequestId(viewHolder.bookId, false)
+            //rejectRequest(viewHolder.bookId)
         }
 
         rowView.id_acceptButton.setOnClickListener {
             ToastMe.message(parent.context, "Accept request")
             ToastMe.message(parent.context, viewHolder.bookId)
-            acceptRequest(viewHolder.bookId)
+            getBorrowRequestId(viewHolder.bookId, true)
+            //acceptRequest(viewHolder.bookId)
         }
 
         return viewHolder
@@ -58,7 +65,7 @@ class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
         holder.borrowerName.text = bookRequest.borrower
         holder.imageProfile.setImageResource(R.drawable.emptyphoto)
         holder.bookId = bookRequest.id
-        }
+    }
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -69,7 +76,35 @@ class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
         var bookId = ""
     }
 
-    private fun acceptRequest(bookId: String) {
+    private fun getBorrowRequestId(bookId: String, acceptanceStatus: Boolean) {
+        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
+            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)
+            ?.whereEqualTo("borrowStatus", BookStatus.REQUEST_PENDING)
+            ?.get()
+            ?.addOnSuccessListener {
+                for (requestSnapShot in it) {
+                    if(acceptanceStatus == true) {
+                        acceptRequest(bookId, requestSnapShot.id)
+                    }
+                    else {
+                        rejectRequest(bookId, requestSnapShot.id)
+                    }
+                }
+            }
+            ?.addOnFailureListener {
+            }
+
+    }
+
+    private fun acceptRequest(bookId: String, requestId: String) {
+        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
+            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document(requestId)
+            ?.update("borrowStatus", BookStatus.ACCEPTED)
+            ?.addOnSuccessListener {
+            }
+            ?.addOnFailureListener {
+            }
+
         mFireStore?.collection(BOOKDOC_PATH)
                 ?.document(bookId)
                 ?.update("status", BookStatus.ACCEPTED)
@@ -79,10 +114,19 @@ class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
                 }
     }
 
-    private fun rejectRequest(bookId: String) {
+    private fun rejectRequest(bookId: String, requestId: String) {
+        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
+            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document(requestId)
+            ?.update("borrowStatus", BookStatus.REJECTED)
+            ?.addOnSuccessListener {
+            }
+            ?.addOnFailureListener {
+            }
+
         mFireStore?.collection(BOOKDOC_PATH)
                 ?.document(bookId)
-                ?.update("status", BookStatus.REJECTED)
+                ?.update("status", BookStatus.AVAILABLE,
+                    "borrower", "")
                 ?.addOnSuccessListener {
                     notifyDataSetChanged()
                 }?.addOnFailureListener {
