@@ -24,8 +24,6 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 const val ACCOUNT_DOC_PATH = "account/accountDoc"
 const val PROFILE_STORAGE_PATH = "account/accountDoc"
 const val PICK_FROM_GALLERY = 101
-const val READ_FILE_PERMISSION = 1
-
 
 class SignUpActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth ?= null
@@ -53,16 +51,13 @@ class SignUpActivity : AppCompatActivity() {
     private fun createUserAccount() {
         if (validateUserInputs()) {
             val userInfo = createUserInfo()
+            uploadProfileImageToFirebase(userInfo.email)
             mAuth?.createUserWithEmailAndPassword(userInfo.email, userInfo.password)
                 ?.addOnCompleteListener {
                     if(it.isSuccessful) {
                         ToastMe.message(this, "Account creation successful!")
                         saveUserInfo(userInfo)
-
                         uploadProfileImageToFirebase(userInfo.email)
-
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
                     } else {
                         ToastMe.message(this, "Account creation failed.\n${it.exception.toString()}")
                     }
@@ -171,12 +166,16 @@ class SignUpActivity : AppCompatActivity() {
                         ref.downloadUrl.addOnSuccessListener {
                             val downloadUrl = it.toString()
                             val uploadImageFile = Upload("user_profile", downloadUrl)
-                            Log.d(TESTTAG, "downloadUrl: $downloadUrl")
-                            Log.d(TESTTAG, "uploadImageFile URL: ${uploadImageFile.url}")
-
                             mFireStore?.collection("$ACCOUNT_DOC_PATH/$userId")
                                 ?.document(USER_PROFILE)
                                 ?.set(uploadImageFile)
+                                    ?.addOnSuccessListener {
+                                        Log.d(TESTTAG, "[SignUpActivity] url: $downloadUrl")
+                                        MainActivity.profileUrl = downloadUrl
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }
                         }
                     }
                 }

@@ -42,12 +42,15 @@ const val UPDATED_USER_PROFILE = "updated_user_profile"
 const val REQ_CODE_EDIT_ACCOUNT_INFO = 1
 const val EXTRA_SELECTED_BOOK = "extra_selected_book"
 
+
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth? = null
     private var mFireStore: FirebaseFirestore? = null
     private var availableBooks = ArrayList<Book>()
     private var mStorage: FirebaseStorage? = null
-    private lateinit var profileUrl: String
+    companion object {
+        var profileUrl: String = ""
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +63,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val currentUser = mAuth?.currentUser
 
         if (UserAccess.isLoggedIn(currentUser)) {
-            val email = currentUser?.email
-            if (email == null) return
+            val email = currentUser?.email ?: return
             setAccountHeaderInfo(email)
+            loadProfileImage()
         }
 
         setNavMenuLoginLogoutVisibility(currentUser)
@@ -74,7 +77,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         var viewManager = LinearLayoutManager(this)
-
         val bookAdapter = BookAdapter(availableBooks, object: CustomItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 val selectedBook = availableBooks[position]
@@ -83,7 +85,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
 
         loadAllAvailableBooks()
-        loadProfileImage()
 
         recyclerViewBooks.apply {
             setHasFixedSize(true)
@@ -96,6 +97,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val infoIntent = Intent(this, BookInfoActivity::class.java)
         infoIntent.putExtra(EXTRA_SELECTED_BOOK, selectedBook)
         startActivity(infoIntent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TESTTAG, "onResume()")
+        loadProfileImage()
     }
 
     private fun loadAllAvailableBooks() {
@@ -138,10 +145,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ?.document(USER_INFO)
             ?.get()
             ?.addOnSuccessListener {
-                val userInfo = it.toObject(User::class.java)
-                if (userInfo == null) {
-                    return@addOnSuccessListener
-                }
+                val userInfo = it.toObject(User::class.java) ?: return@addOnSuccessListener
                 val userName = "${userInfo.firstName} ${userInfo.lastName}"
                 val headerView = nav_view.getHeaderView(0)
                 val emailView = headerView.findViewById<TextView>(R.id.id_nav_email)
@@ -167,10 +171,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Picasso.get().load(userProfileImage.url).into(id_profile_image)
                 }
             }
+            ?.addOnFailureListener {
+                Log.d(TESTTAG, it.toString())
+            }
     }
 
     private fun setNavMenuLoginLogoutVisibility(currentUser: FirebaseUser?) {
-        if (UserAccess.isLoggedIn(currentUser))
+        val userEmail = currentUser?.email
+        if (userEmail != null)
             navMenuForLoggedInUser()
         else
             navMenuForPublicUser()
@@ -185,6 +193,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navMenu.findItem(R.id.nav_accountInfo).isVisible = true
         navMenu.findItem(R.id.nav_login).isVisible = false
         navMenu.findItem(R.id.nav_sign_up).isVisible = false
+
+        if (!profileUrl.isNullOrEmpty() && id_profile_image != null)
+            Picasso.get().load(profileUrl).noFade().into(id_profile_image)
+
+
     }
 
     private fun navMenuForPublicUser() {
