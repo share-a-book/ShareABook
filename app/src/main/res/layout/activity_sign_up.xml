@@ -27,16 +27,17 @@
         android:id="@+id/id_firstNameInput"
         android:layout_width="254dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:ems="10"
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_firstNameText"
         android:inputType="textPersonName"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/id_createAccountText"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@+id/id_createAccountText"
-        app:layout_constraintTop_toBottomOf="@+id/id_createAccountText" />
+        app:layout_constraintTop_toBottomOf="@+id/id_editImageText" />
 
     <EditText
         android:id="@+id/id_lastNameInput"
@@ -48,7 +49,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_lastNameText"
         android:inputType="textPersonName"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/id_firstNameInput"
         app:layout_constraintStart_toStartOf="@+id/id_firstNameInput"
         app:layout_constraintTop_toBottomOf="@+id/id_firstNameInput" />
@@ -63,7 +64,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_phoneNumberText"
         android:inputType="phone"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/id_lastNameInput"
         app:layout_constraintStart_toStartOf="@+id/id_lastNameInput"
         app:layout_constraintTop_toBottomOf="@+id/id_lastNameInput" />
@@ -78,7 +79,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_emailText"
         android:inputType="textEmailAddress"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/id_phoneNumberInput"
         app:layout_constraintStart_toStartOf="@+id/id_phoneNumberInput"
         app:layout_constraintTop_toBottomOf="@+id/id_phoneNumberInput" />
@@ -93,7 +94,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/hint_password"
         android:inputType="textPassword"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/id_signUpEmailInput"
         app:layout_constraintStart_toStartOf="@+id/id_signUpEmailInput"
         app:layout_constraintTop_toBottomOf="@+id/id_signUpEmailInput" />
@@ -108,7 +109,7 @@
         android:fontFamily="@font/quicksand"
         android:hint="@string/id_accountInfoPasswordConfirmationText"
         android:inputType="textPassword"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/id_signUpPasswordInput"
         app:layout_constraintStart_toStartOf="@+id/id_signUpPasswordInput"
         app:layout_constraintTop_toBottomOf="@+id/id_signUpPasswordInput" />
@@ -118,15 +119,41 @@
         android:id="@+id/id_createAccountButton"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/button_corner"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/submit"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintEnd_toEndOf="@+id/id_signUpPasswordConfirmInput"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/id_signUpPasswordConfirmInput"
         app:layout_constraintTop_toBottomOf="@+id/id_signUpPasswordConfirmInput" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/id_editProfileImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/user_profile"
+        app:civ_border_color="@color/colorPrimaryDark"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="@+id/id_createAccountText"
+        app:layout_constraintStart_toStartOf="@+id/id_createAccountText"
+        app:layout_constraintTop_toBottomOf="@+id/id_createAccountText" />
+
+
+    <TextView
+        android:id="@+id/id_editImageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/upload_profile_image"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_editProfileImage"
+        app:layout_constraintStart_toStartOf="@+id/id_editProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/id_editProfileImage" />
 
 
 </android.support.constraint.ConstraintLayout>

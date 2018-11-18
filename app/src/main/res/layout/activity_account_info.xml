@@ -7,6 +7,32 @@
     tools:context=".user.AccountInfoActivity">
 
 
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/id_editProfileImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/user_profile"
+        app:civ_border_color="@color/colorPrimaryDark"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoText"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoText"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoText" />
+
+
+    <TextView
+        android:id="@+id/id_editImageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/upload_profile_image"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_editProfileImage"
+        app:layout_constraintStart_toStartOf="@+id/id_editProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/id_editProfileImage" />
+
+
     <TextView
         android:id="@+id/id_accountInfoText"
         android:layout_width="wrap_content"
@@ -22,196 +48,180 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollView3"
-        android:layout_width="355dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+    <TextView
+        android:id="@+id/id_accountInfoFirstNameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/id_accountInfoFirstNameText"
+        android:textColor="@color/colorGray"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoText">
+        app:layout_constraintTop_toBottomOf="@+id/id_editImageText" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <EditText
+        android:id="@+id/id_accountInfoFirstNameInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/id_accountInfoFirstNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="textPersonName"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoFirstNameText"
+        app:layout_constraintHorizontal_bias="0.283"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoFirstNameText"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoFirstNameText" />
 
-                android:layout_marginEnd="6dp"
-                android:fontFamily="@font/quicksand"
-                android:text="@string/id_accountInfoFirstNameText"
-                android:textColor="@color/colorGray"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/id_accountInfoLastNameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/id_accountInfoLastNameText"
+        android:textColor="@color/colorGray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoFirstNameInput"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoFirstNameInput"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoFirstNameInput" />
 
-            <EditText
-                android:id="@+id/id_accountInfoFirstNameInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
+    <EditText
+        android:id="@+id/id_accountInfoLastNameInput"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="textPersonName"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoLastNameText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoLastNameText"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoLastNameText" />
 
-                android:ems="10"
-                android:fontFamily="@font/quicksand"
-                android:inputType="textPersonName"
-                android:textColor="@color/colorDarkPurp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/id_accountInfoPhoneNumberText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/id_accountInfoPhoneNumberText"
+        android:textColor="@color/colorGray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoLastNameInput"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoLastNameInput"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoLastNameInput" />
 
-            <TextView
-                android:id="@+id/id_accountInfoLastNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:fontFamily="@font/quicksand"
-                android:text="@string/id_accountInfoLastNameText"
-                android:textColor="@color/colorGray"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/id_accountInfoPhoneNumberInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="phone"
+        android:textColor="@color/colorDarkPurp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoPhoneNumberText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoPhoneNumberText"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoPhoneNumberText" />
 
-            <EditText
-                android:id="@+id/id_accountInfoLastNameInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:ems="10"
-                android:fontFamily="@font/quicksand"
-                android:inputType="textPersonName"
-                android:textColor="@color/colorDarkPurp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/id_accountInfoEmailText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/id_accountInfoEmailText"
+        android:textColor="@color/colorGray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoPhoneNumberInput"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoPhoneNumberInput"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoPhoneNumberInput" />
 
-            <TextView
-                android:id="@+id/id_accountInfoPhoneNumberText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:fontFamily="@font/quicksand"
-                android:text="@string/id_accountInfoPhoneNumberText"
-                android:textColor="@color/colorGray"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/id_accountInfoEmailInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="textPersonName"
+        android:textColor="@color/colorDarkPurp"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoEmailText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoEmailText"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoEmailText" />
 
-            <EditText
-                android:id="@+id/id_accountInfoPhoneNumberInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:ems="10"
-                android:fontFamily="@font/quicksand"
-                android:inputType="phone"
-                android:textColor="@color/colorDarkPurp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/id_accountInfoPasswordText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/id_accountInfoPasswordText"
+        android:textColor="@color/colorGray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoEmailInput"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoEmailInput"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoEmailInput" />
 
-            <TextView
-                android:id="@+id/id_accountInfoEmailText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:fontFamily="@font/quicksand"
-                android:text="@string/id_accountInfoEmailText"
-                android:textColor="@color/colorGray"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/id_accountInfoPasswordInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="textPassword"
+        android:textColor="@color/colorDarkPurp"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoPasswordText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoPasswordText"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoPasswordText" />
 
-            <EditText
-                android:id="@+id/id_accountInfoEmailInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:ems="10"
-                android:fontFamily="@font/quicksand"
-                android:inputType="textPersonName"
-                android:textColor="@color/colorDarkPurp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/id_accountInfoPasswordConfirmationText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/quicksand"
+        android:text="@string/id_accountInfoPasswordConfirmationText"
+        android:textColor="@color/colorGray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoPasswordInput"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoPasswordInput"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoPasswordInput" />
 
-            <TextView
-                android:id="@+id/id_accountInfoPasswordText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:fontFamily="@font/quicksand"
-                android:text="@string/id_accountInfoPasswordText"
-                android:textColor="@color/colorGray"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/id_accountInfoPasswordInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:ems="10"
-                android:fontFamily="@font/quicksand"
-                android:inputType="textPassword"
-                android:textColor="@color/colorDarkPurp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/id_accountInfoPasswordConfirmationText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:fontFamily="@font/quicksand"
-                android:text="@string/id_accountInfoPasswordConfirmationText"
-                android:textColor="@color/colorGray"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/id_accountInfoPasswordConfirmationInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="6dp"
-                android:ems="10"
-                android:fontFamily="@font/quicksand"
-                android:inputType="textPassword"
-                android:textColor="@color/colorDarkPurp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.283"
-                app:layout_constraintStart_toStartOf="parent" />
-        </LinearLayout>
-    </ScrollView>
+    <EditText
+        android:id="@+id/id_accountInfoPasswordConfirmationInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/quicksand"
+        android:inputType="textPassword"
+        android:textColor="@color/colorDarkPurp"
+        app:layout_constraintEnd_toEndOf="@+id/id_accountInfoPasswordConfirmationText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_accountInfoPasswordConfirmationText"
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoPasswordConfirmationText" />
 
     <Button
         android:id="@+id/id_updateAccountInfoButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:background="@null"
         android:text="@string/id_updateAccountInfoButton"
@@ -225,14 +235,14 @@
         android:id="@+id/id_cancelUpdateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@null"
         android:text="@string/id_cancelButton"
         android:textColor="@color/colorLightGray"
         app:layout_constraintEnd_toStartOf="@+id/id_updateAccountInfoButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+        app:layout_constraintTop_toBottomOf="@+id/id_accountInfoPasswordConfirmationInput" />
 
 
 </android.support.constraint.ConstraintLayout>

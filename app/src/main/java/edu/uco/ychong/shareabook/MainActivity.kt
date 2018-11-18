@@ -16,22 +16,29 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import edu.uco.ychong.shareabook.book.*
-import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
+import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.Upload
 import edu.uco.ychong.shareabook.model.User
 import edu.uco.ychong.shareabook.user.*
 import edu.uco.ychong.shareabook.user.tracking.TrackingActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import java.util.*
 
 const val USER_INFO = "user_info"
+const val USER_PROFILE = "user_profile"
+const val USER_PROFILE_URL = "user_profile_url"
 const val UPDATED_USER_INFO = "updated_user_info"
+const val UPDATED_USER_PROFILE = "updated_user_profile"
 const val REQ_CODE_EDIT_ACCOUNT_INFO = 1
 const val EXTRA_SELECTED_BOOK = "extra_selected_book"
 
@@ -39,13 +46,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var mAuth: FirebaseAuth? = null
     private var mFireStore: FirebaseFirestore? = null
     private var availableBooks = ArrayList<Book>()
+    private var mStorage: FirebaseStorage? = null
+    private lateinit var profileUrl: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
         mAuth = FirebaseAuth.getInstance()
         mFireStore = FirebaseFirestore.getInstance()
+        mStorage = FirebaseStorage.getInstance()
         val currentUser = mAuth?.currentUser
 
         if (UserAccess.isLoggedIn(currentUser)) {
@@ -72,6 +83,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
 
         loadAllAvailableBooks()
+        loadProfileImage()
 
         recyclerViewBooks.apply {
             setHasFixedSize(true)
@@ -103,6 +115,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }?.addOnFailureListener {
             Log.d(TESTTAG, it.toString())
         }
+
+        mFireStore?.collection("$BOOKDOC_PATH")
+            ?.whereEqualTo("status", BookStatus.REQUEST_PENDING)
+            ?.get()
+            ?.addOnSuccessListener {
+                for (bookSnapShot in it) {
+                    val book =  bookSnapShot.toObject(Book::class.java)
+                    book.id = bookSnapShot.id
+                    availableBooks.add(book)
+                }
+                val bookAdapter = recyclerViewBooks.adapter
+                bookAdapter?.notifyDataSetChanged()
+
+            }?.addOnFailureListener {
+                Log.d(TESTTAG, it.toString())
+            }
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
@@ -118,12 +146,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val headerView = nav_view.getHeaderView(0)
                 val emailView = headerView.findViewById<TextView>(R.id.id_nav_email)
                 emailView.text = userEmail
-
                 val nameView = headerView.findViewById<TextView>(R.id.id_nav_account_name)
                 nameView.text = userName
             }
             ?.addOnFailureListener {
                 ToastMe.message(this, "Failed to get name of the account user!")
+            }
+    }
+
+    private fun loadProfileImage() {
+        val userEmail = mAuth?.currentUser?.email
+        mFireStore?.collection("$PROFILE_STORAGE_PATH/$userEmail")
+            ?.document(USER_PROFILE)
+            ?.get()
+            ?.addOnSuccessListener {
+                val userProfileImage = it.toObject(Upload::class.java)
+                if (userProfileImage != null) {
+                    Log.d(TESTTAG, "got url: ${userProfileImage.url}")
+                    profileUrl = userProfileImage.url
+                    Picasso.get().load(userProfileImage.url).into(id_profile_image)
+                }
             }
     }
 
@@ -205,9 +247,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_accountInfo -> {
                 if (UserAccess.isLoggedIn(currentUser)) {
-                    val email = currentUser?.email
-                    if(email == null)
-                        return false
+                    val email = currentUser?.email ?: return false
                     editAccountInfo(email)
                 }
             }
@@ -225,16 +265,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun editAccountInfo(userEmail: String) {
-        mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.get()
+        mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")
+            ?.document(USER_INFO)
+            ?.get()
             ?.addOnSuccessListener {
-                val userInfo = it.toObject(User::class.java)
-
-                if (userInfo == null)
-                    return@addOnSuccessListener
-
-
+                val userInfo = it.toObject(User::class.java) ?: return@addOnSuccessListener
                 val intent = Intent(this, AccountInfoActivity::class.java)
                 intent.putExtra(USER_INFO, userInfo)
+
+                Log.d(TESTTAG, "current profile url: $profileUrl")
+                val userProfile = Upload(USER_PROFILE, profileUrl)
+                intent.putExtra(USER_PROFILE, userProfile)
                 startActivityForResult(intent, REQ_CODE_EDIT_ACCOUNT_INFO)
             }
             ?.addOnFailureListener {
@@ -246,10 +287,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
         if (data == null) return
         if(requestCode == REQ_CODE_EDIT_ACCOUNT_INFO) {
-            val updatedAccountInfo = data.getParcelableExtra<User>(UPDATED_USER_INFO)
-
-            if (updatedAccountInfo == null) return
-
+            val updatedAccountInfo = data.getParcelableExtra<User>(UPDATED_USER_INFO) ?: return
             val userEmail = updatedAccountInfo.email
             val password = updatedAccountInfo.password
 
@@ -259,7 +297,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     ToastMe.message(this, "Password updated successfully.")
                 }
                 ?.addOnFailureListener {
-                    Log.d(TESTTAG, it.toString())
                 }
 
             mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.set(updatedAccountInfo)
@@ -276,7 +313,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             updateBorrowerName(userEmail, userName, userPhoneNumber)
 
             val handler = Handler()
-            handler.postDelayed({loadAllAvailableBooks()}, 3000)
+//            handler.postDelayed({loadAllAvailableBooks()}, 3000)
         }
     }
 
@@ -305,13 +342,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mFireStore?.collection("$BOOKDOC_PATH")?.get()?.addOnSuccessListener {
             for (bookSnapshot in it) {
                 mFireStore?.collection("$BOOKDOC_PATH")?.document(bookSnapshot.id)
-                    ?.collection("$BOOKDOC_BORROW_REQUEST_PATH")
+                    ?.collection("$REQUESTDOC_PATH")
                     ?.whereEqualTo("borrowerEmail", email)
                     ?.get()
                     ?.addOnSuccessListener {
                         for (requestSnapshot in it) {
                             mFireStore?.collection("$BOOKDOC_PATH")?.document(bookSnapshot.id)
-                                ?.collection("$BOOKDOC_BORROW_REQUEST_PATH")?.document(requestSnapshot.id)
+                                ?.collection("$REQUESTDOC_PATH")?.document(requestSnapshot.id)
                                 ?.update("borrowerName", borrowerName, "borrowerNumber", borrowerNumber)
                                 ?.addOnSuccessListener {  }
                                 ?.addOnFailureListener {  }
@@ -320,4 +357,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
+
 }

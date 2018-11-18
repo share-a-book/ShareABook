@@ -4,14 +4,15 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 
-class BorrowRequest(var borrowerName: String,
-                    var borrowerEmail: String,
-                    var borrowerNumber: String,
+class BorrowRequest(var bookId: String,
+                    var lenderId: String,
+                    var borrowerId: String,
                     var borrowStatus: String,
                     var borrowDate: String,
                     var returnedDate: String) : Parcelable {
 
-    constructor() : this("",
+    constructor() : this(
+        "",
         "",
         "",
         "",
@@ -31,9 +32,9 @@ class BorrowRequest(var borrowerName: String,
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(borrowerName)
-        parcel.writeString(borrowerEmail)
-        parcel.writeString(borrowerNumber)
+        parcel.writeString(bookId)
+        parcel.writeString(lenderId)
+        parcel.writeString(borrowerId)
         parcel.writeString(borrowStatus)
         parcel.writeString(borrowDate)
         parcel.writeString(returnedDate)

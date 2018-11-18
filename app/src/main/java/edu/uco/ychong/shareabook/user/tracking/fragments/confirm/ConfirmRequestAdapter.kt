@@ -10,7 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
-import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
+import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Book
@@ -48,7 +48,7 @@ class ConfirmRequestAdapter(private val myDataSet: ArrayList<Book>,
 
     private fun getBorrowRequestId(bookId: String) {
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)
+            ?.collection(REQUESTDOC_PATH)
             ?.whereEqualTo("borrowStatus", BookStatus.ACCEPTED)
             ?.get()
             ?.addOnSuccessListener {
@@ -63,7 +63,7 @@ class ConfirmRequestAdapter(private val myDataSet: ArrayList<Book>,
 
     private fun checkOutBook(bookId: String, requestId: String) {
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document(requestId)
+            ?.collection(REQUESTDOC_PATH)?.document(requestId)
             ?.update("borrowStatus", BookStatus.CHECKED_OUT,
                 "borrowDate", getCurrentDateWithFullFormat())
             ?.addOnSuccessListener {

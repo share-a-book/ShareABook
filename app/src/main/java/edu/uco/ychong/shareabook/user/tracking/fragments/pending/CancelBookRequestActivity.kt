@@ -1,6 +1,5 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.pending
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -11,7 +10,7 @@ import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.PLAIN_TEXT
-import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
+import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Book
@@ -76,7 +75,7 @@ class CancelBookRequestActivity : AppCompatActivity() {
 
     private fun getBorrowRequestId(bookId: String, email: String, title: String, author: String) {
         mFireStore?.collection("$BOOKDOC_PATH")?.document(bookId)
-            ?.collection("$BOOKDOC_BORROW_REQUEST_PATH")
+            ?.collection("$REQUESTDOC_PATH")
             ?.whereEqualTo("borrowStatus", BookStatus.REQUEST_PENDING)
             ?.get()
             ?.addOnSuccessListener {
@@ -91,7 +90,7 @@ class CancelBookRequestActivity : AppCompatActivity() {
 
     private fun cancelBook(bookId: String, requestId: String, email: String, title: String, author: String) {
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document(requestId)
+            ?.collection(REQUESTDOC_PATH)?.document(requestId)
             ?.update("borrowStatus", BookStatus.CANCELLED)
             ?.addOnSuccessListener {
             }

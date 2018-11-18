@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 const val BOOKDOC_PATH = "public/bookDoc/books"
-const val BOOKDOC_BORROW_REQUEST_PATH = "borrowRequests"
+const val REQUESTDOC_PATH = "public/requestDoc/requests"
 
 class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
     private var mAuth: FirebaseAuth?= null

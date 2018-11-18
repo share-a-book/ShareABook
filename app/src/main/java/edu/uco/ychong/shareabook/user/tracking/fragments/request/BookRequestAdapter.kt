@@ -8,17 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.R.id.id_requestIncomingRecyclerView
 import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
-import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_BORROW_REQUEST_PATH
+import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Book
-import edu.uco.ychong.shareabook.model.BorrowRequest
-import edu.uco.ychong.shareabook.user.ACCOUNT_DOC_PATH
 import kotlinx.android.synthetic.main.book_pending_row.view.*
-import kotlinx.android.synthetic.main.fragment_request_incoming.*
 
 class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
                          private val customItemClickListener: CustomItemClickListener) :
@@ -78,7 +74,7 @@ class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
 
     private fun getBorrowRequestId(bookId: String, acceptanceStatus: Boolean) {
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)
+            ?.collection(REQUESTDOC_PATH)
             ?.whereEqualTo("borrowStatus", BookStatus.REQUEST_PENDING)
             ?.get()
             ?.addOnSuccessListener {
@@ -98,7 +94,7 @@ class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
 
     private fun acceptRequest(bookId: String, requestId: String) {
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document(requestId)
+            ?.collection(REQUESTDOC_PATH)?.document(requestId)
             ?.update("borrowStatus", BookStatus.ACCEPTED)
             ?.addOnSuccessListener {
             }
@@ -116,7 +112,7 @@ class BookRequestAdapter(private val myDataSet: ArrayList<Book>,
 
     private fun rejectRequest(bookId: String, requestId: String) {
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-            ?.collection(BOOKDOC_BORROW_REQUEST_PATH)?.document(requestId)
+            ?.collection(REQUESTDOC_PATH)?.document(requestId)
             ?.update("borrowStatus", BookStatus.REJECTED)
             ?.addOnSuccessListener {
             }
