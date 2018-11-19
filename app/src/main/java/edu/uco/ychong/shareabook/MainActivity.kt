@@ -36,12 +36,9 @@ import java.util.*
 
 const val USER_INFO = "user_info"
 const val USER_PROFILE = "user_profile"
-const val USER_PROFILE_URL = "user_profile_url"
 const val UPDATED_USER_INFO = "updated_user_info"
-const val UPDATED_USER_PROFILE = "updated_user_profile"
 const val REQ_CODE_EDIT_ACCOUNT_INFO = 1
 const val EXTRA_SELECTED_BOOK = "extra_selected_book"
-
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth? = null
