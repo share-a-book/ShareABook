@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_book_add.view.*
 
 const val BOOKDOC_PATH = "public/bookDoc/books"
 const val REQUESTDOC_PATH = "public/requestDoc/requests"
+const val HISTORYDOC_PATH = "public/historyDoc/histories"
 
 class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
     private var mAuth: FirebaseAuth?= null

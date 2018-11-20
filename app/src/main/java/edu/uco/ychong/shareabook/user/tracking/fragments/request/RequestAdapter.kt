@@ -1,6 +1,7 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.request
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.CustomItemClickListener
+import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.model.Request
+import kotlinx.android.synthetic.main.book_request_row.view.*
 
-class RequestAdapter(private val myDataSet: ArrayList<Request>,
-                     private val customItemClickListener: CustomItemClickListener) :
+class RequestAdapter(private val myDataSet: ArrayList<Request>, private val requestFragment: RequestFragment) :
         RecyclerView.Adapter<RequestAdapter.MyViewHolder>() {
 
     private var mFireStore: FirebaseFirestore? = null
@@ -22,14 +23,21 @@ class RequestAdapter(private val myDataSet: ArrayList<Request>,
         mFireStore = FirebaseFirestore.getInstance()
 
         val rowView: View = LayoutInflater.from(parent.context)
-                .inflate(R.layout.book_pending_row, parent, false)
+                .inflate(R.layout.book_request_row, parent, false)
 
         val viewHolder = MyViewHolder(rowView)
 
-        rowView.setOnClickListener {
-            customItemClickListener.onItemClick(it, viewHolder.position)
+        rowView.id_acceptButton.setOnClickListener {
+            Log.d(TESTTAG, "accept ${myDataSet[viewHolder.layoutPosition]}")
+            Log.d(TESTTAG, "layout position: ${viewHolder.layoutPosition}")
+            requestFragment.acceptRequest(myDataSet[viewHolder.layoutPosition])
         }
 
+        rowView.id_rejectButton.setOnClickListener {
+            Log.d(TESTTAG, "reject ${myDataSet[viewHolder.layoutPosition]}")
+            Log.d(TESTTAG, "layout position: ${viewHolder.layoutPosition}")
+            requestFragment.rejectRequest(myDataSet[viewHolder.layoutPosition])
+        }
         return viewHolder
     }
 

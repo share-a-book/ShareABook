@@ -78,6 +78,7 @@ class ConfirmFragment: Fragment() {
 
     fun checkout(request: Request) {
         Log.d(TESTTAG, "Check out")
+        Log.d(TESTTAG, "Check out")
 
         /**Implement confirmation here***/
 

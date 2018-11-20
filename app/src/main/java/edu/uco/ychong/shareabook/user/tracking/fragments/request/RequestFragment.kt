@@ -12,13 +12,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.CustomItemClickListener
 import edu.uco.ychong.shareabook.book.TESTTAG
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
+import edu.uco.ychong.shareabook.model.BookStatus
 import edu.uco.ychong.shareabook.model.Request
 import edu.uco.ychong.shareabook.model.RequestStatus
-import kotlinx.android.synthetic.main.book_pending_row.view.*
 import kotlinx.android.synthetic.main.fragment_request_incoming.*
 import kotlinx.android.synthetic.main.fragment_request_incoming.view.*
 
@@ -37,19 +37,7 @@ class RequestFragment: Fragment() {
         val inflatedView = inflater.inflate(R.layout.fragment_request_incoming, container, false)
 
         var viewManager = LinearLayoutManager(context)
-        val requestAdapter = RequestAdapter(requestedBooks, object : CustomItemClickListener {
-            override fun onItemClick(v: View, position: Int) {
-                v.id_acceptButton.setOnClickListener {
-                    Log.d(TESTTAG, "accepted $${requestedBooks[position].id}")
-                    val requestToAccept = requestedBooks[position]
-                    acceptRequest(requestToAccept)
-                }
-
-                v.id_rejectButton.setOnClickListener {
-                    Log.d(TESTTAG, "rejected")
-                }
-            }
-        })
+        val requestAdapter = RequestAdapter(requestedBooks, this)
 
         loadRequests()
 
@@ -92,7 +80,7 @@ class RequestFragment: Fragment() {
         bookAdapter?.notifyDataSetChanged()
     }
 
-    private fun acceptRequest(request: Request) {
+    fun acceptRequest(request: Request) {
         Log.d(TESTTAG, "accepted request: ${request.id}")
         mFireStore?.collection(REQUESTDOC_PATH)?.document(request.id)
             ?.update("requestStatus", RequestStatus.REQUEST_ACCEPTED)
@@ -101,9 +89,29 @@ class RequestFragment: Fragment() {
                 if (parentContext != null)
                     ToastMe.message(parentContext, "Accepted successful")
             }
+
+        setBookStatusToUnavailable(request.bookId)
     }
 
-    private fun rejectRequest(request: Request) {
+    private fun setBookStatusToUnavailable(bookId: String) {
+        Log.d(TESTTAG, "(setBookStatusToUnavailable) bookId = $bookId")
+        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
+            ?.update("status", BookStatus.UNAVAILABLE)
+            ?.addOnSuccessListener {
+                val parentContext = activity?.applicationContext
+                if (parentContext != null)
+                    ToastMe.message(parentContext, "Book remove from public")
+            }
+    }
 
+    fun rejectRequest(request: Request) {
+        Log.d(TESTTAG, "reject request: ${request.id}")
+        mFireStore?.collection(REQUESTDOC_PATH)?.document(request.id)
+            ?.update("requestStatus", RequestStatus.REQUEST_REJECTED)
+            ?.addOnSuccessListener {
+                val parentContext = activity?.applicationContext
+                if (parentContext != null)
+                    ToastMe.message(parentContext, "Rejected request")
+            }
     }
 }
