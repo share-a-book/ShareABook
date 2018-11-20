@@ -24,6 +24,7 @@ import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.BookStatus
 import edu.uco.ychong.shareabook.model.Upload
 import edu.uco.ychong.shareabook.model.User
 import edu.uco.ychong.shareabook.user.*
@@ -39,6 +40,7 @@ const val USER_PROFILE = "user_profile"
 const val UPDATED_USER_INFO = "updated_user_info"
 const val REQ_CODE_EDIT_ACCOUNT_INFO = 1
 const val EXTRA_SELECTED_BOOK = "extra_selected_book"
+const val EXTRA_SELECTED_BOOK_ID = "extra_selected_book_id"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth? = null
@@ -47,6 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var mStorage: FirebaseStorage? = null
     companion object {
         var profileUrl: String = ""
+        var globalUserName: String = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +94,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun goToBookInfoActivity(selectedBook: Book) {
+        Log.d(TESTTAG, "selected book $selectedBook")
         val infoIntent = Intent(this, BookInfoActivity::class.java)
+        val id = selectedBook.id
+        Log.d(TESTTAG, "ID: $id")
+        infoIntent.putExtra(EXTRA_SELECTED_BOOK_ID, id)
         infoIntent.putExtra(EXTRA_SELECTED_BOOK, selectedBook)
         startActivity(infoIntent)
     }
@@ -99,15 +106,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
         Log.d(TESTTAG, "onResume()")
-        loadProfileImage()
+        if (!profileUrl.isNullOrEmpty())
+            loadProfileImage()
     }
 
     private fun loadAllAvailableBooks() {
+        availableBooks.clear()
         mFireStore?.collection("$BOOKDOC_PATH")
             ?.whereEqualTo("status", BookStatus.AVAILABLE)
             ?.get()
             ?.addOnSuccessListener {
-            availableBooks.clear()
             for (bookSnapShot in it) {
                 val book =  bookSnapShot.toObject(Book::class.java)
                 book.id = bookSnapShot.id
@@ -115,26 +123,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             val bookAdapter = recyclerViewBooks.adapter
             bookAdapter?.notifyDataSetChanged()
-
         }?.addOnFailureListener {
             Log.d(TESTTAG, it.toString())
         }
-
-        mFireStore?.collection("$BOOKDOC_PATH")
-            ?.whereEqualTo("status", BookStatus.REQUEST_PENDING)
-            ?.get()
-            ?.addOnSuccessListener {
-                for (bookSnapShot in it) {
-                    val book =  bookSnapShot.toObject(Book::class.java)
-                    book.id = bookSnapShot.id
-                    availableBooks.add(book)
-                }
-                val bookAdapter = recyclerViewBooks.adapter
-                bookAdapter?.notifyDataSetChanged()
-
-            }?.addOnFailureListener {
-                Log.d(TESTTAG, it.toString())
-            }
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
@@ -144,6 +135,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java) ?: return@addOnSuccessListener
                 val userName = "${userInfo.firstName} ${userInfo.lastName}"
+                globalUserName = userName
                 val headerView = nav_view.getHeaderView(0)
                 val emailView = headerView.findViewById<TextView>(R.id.id_nav_email)
                 emailView.text = userEmail
@@ -334,7 +326,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ?.addOnSuccessListener {
                 for (bookSnapshot in it) {
                     mFireStore?.collection("$BOOKDOC_PATH")?.document(bookSnapshot.id)
-                        ?.update("lender", lenderName)
+                        ?.update("lenderName", lenderName)
                         ?.addOnSuccessListener {
                             ToastMe.message(this, "Update name successfully.")
                         }

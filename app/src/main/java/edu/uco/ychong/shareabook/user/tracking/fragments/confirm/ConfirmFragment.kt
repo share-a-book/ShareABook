@@ -11,11 +11,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
 import edu.uco.ychong.shareabook.book.TESTTAG
-import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
+import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.RequestStatus
 import kotlinx.android.synthetic.main.fragment_confirm.*
 import kotlinx.android.synthetic.main.fragment_confirm.view.*
 
@@ -34,7 +34,7 @@ class ConfirmFragment: Fragment() {
         val inflatedView = inflater.inflate(R.layout.fragment_confirm, container, false)
 
         var viewManager = LinearLayoutManager(context)
-        val bookAdapter = ConfirmRequestAdapter(acceptedRequestedBooks, object : CustomItemClickListener {
+        val bookAdapter = ConfirmAdapter(acceptedRequestedBooks, object : CustomItemClickListener {
             override fun onItemClick(v: View, position: Int) {}
         })
 
@@ -52,9 +52,9 @@ class ConfirmFragment: Fragment() {
 
     private fun loadAcceptedRequestedBook() {
         val userEmail = mAuth?.currentUser?.email
-        mFireStore?.collection("$BOOKDOC_PATH")
-                ?.whereEqualTo("status", BookStatus.ACCEPTED)
-                ?.whereEqualTo("borrower",userEmail)
+        mFireStore?.collection("$REQUESTDOC_PATH")
+                ?.whereEqualTo("requestStatus", RequestStatus.REQUEST_ACCEPTED)
+                ?.whereEqualTo("borrowerEmail",userEmail)
                 ?.get()
                 ?.addOnSuccessListener {
 

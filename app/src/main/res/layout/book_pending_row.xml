@@ -40,7 +40,7 @@
     <ImageView
         android:id="@+id/id_lenderProfileImage"
         android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_height="72dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/user_profile"
@@ -66,7 +66,7 @@
         android:id="@+id/id_lenderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/quicksand"
         android:text="@string/borrower"
         android:textAlignment="textStart"

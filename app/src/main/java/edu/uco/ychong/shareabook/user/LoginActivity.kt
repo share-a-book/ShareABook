@@ -40,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
                 ?.addOnCompleteListener {
                     if(it.isSuccessful) {
                         updatePasswordAfterReset(email, password)
-
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         ToastMe.message(this, "Logged in successful")
@@ -66,13 +65,10 @@ class LoginActivity : AppCompatActivity() {
     private fun updatePasswordAfterReset(email: String, password: String) {
         mFireStore?.collection(email)?.document("User Info")?.get()
             ?.addOnSuccessListener {
-                val userInfo = it.toObject(User::class.java)
-
-                if (userInfo == null) return@addOnSuccessListener
-
+                val userInfo = it.toObject(User::class.java) ?: return@addOnSuccessListener
                 val userPassword = userInfo.password
 
-                if (!userPassword.equals(password)) {
+                if (userPassword != password) {
                     mFireStore?.collection(email)?.document("User Info")
                         ?.update("password", password, "passwordConfirm", password)
                         ?.addOnCompleteListener {

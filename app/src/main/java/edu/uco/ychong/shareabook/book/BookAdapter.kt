@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.BookStatus
 
 
 class BookAdapter(private val myDataSet: ArrayList<Book>,
@@ -39,7 +40,7 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         holder.datePosted.text = "Date posted: ${book.datePosted}"
         holder.status.text = "Status: ${book.status}"
         holder.image.setImageResource(R.drawable.emptyphoto)
-        holder.postedBy.text = "Posted By: ${book.lender}"
+        holder.postedBy.text = "Posted By: ${book.lenderName}"
         holder.genre.text = "Genre: ${book.genre}"
         holder.description.text = "Description: ${book.description}"
     }

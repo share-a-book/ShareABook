@@ -6,15 +6,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.USER_INFO
 import edu.uco.ychong.shareabook.USER_PROFILE
-import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.helper.FormValidator
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Upload
@@ -49,27 +51,50 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun createUserAccount() {
-        if (validateUserInputs()) {
-            val userInfo = createUserInfo()
-            mAuth?.createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+
+        //For testing purposes
+        val userInfo = createUserInfo()
+        mAuth?.createUserWithEmailAndPassword(userInfo.email, userInfo.password)
                 ?.addOnCompleteListener {
-                    if(it.isSuccessful) {
-                        ToastMe.message(this, "Account creation successful!")
-                        saveUserInfo(userInfo)
-
-                        if (fileUriPath != null) {
-                            uploadProfileImageToFirebase(userInfo.email)
-                        } else {
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-
-                    } else {
-                        ToastMe.message(this, "Account creation failed.\n${it.exception.toString()}")
-                    }
+                    handleAccountCreationSuccess(it, userInfo)
                 }
+
+//        if (validateUserInputs()) {
+//            val userInfo = createUserInfo()
+//            mAuth?.createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+//                ?.addOnCompleteListener {
+//                    handleAccountCreationSuccess(it, userInfo)
+//                }
+//        }
+    }
+
+    private fun handleAccountCreationSuccess(it: Task<AuthResult>, userInfo: User) {
+        if(it.isSuccessful) {
+            ToastMe.message(this, "Account creation successful!")
+            saveUserInfo(userInfo)
+            handleUploadProfileImage(userInfo.email)
+        } else {
+            ToastMe.message(this, "Account creation failed.\n${it.exception.toString()}")
         }
+    }
+
+    private fun handleUploadProfileImage(userEmail: String) {
+        if (isUploadFileExist())
+            uploadProfileImageToFirebaseStorage(userEmail)
+        else
+            goToMainActivity()
+    }
+
+    private fun isUploadFileExist(): Boolean {
+        if (fileUriPath != null)
+            return true
+        return false
+    }
+
+    private fun goToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun saveUserInfo(userInfo: User) {
@@ -137,6 +162,16 @@ class SignUpActivity : AppCompatActivity() {
         val password = id_signUpPasswordInput.text.toString().trim()
         val passwordConfirmation = id_signUpPasswordConfirmInput.text.toString().trim()
         return User(fName, lName, pNumber, email, password, passwordConfirmation)
+
+
+    //For quick testing purposes
+//        val random = Random().nextInt(61) + 20
+//        return User("abc",
+//                "abc",
+//                "1231231234",
+//                "tom$random@gmail.com",
+//                "password",
+//                "password")
     }
 
     private fun openGallery() {
@@ -164,30 +199,29 @@ class SignUpActivity : AppCompatActivity() {
         id_editImageText.text = "Looking good!"
     }
 
-    private fun uploadProfileImageToFirebase(userId: String) {
-        if (fileUriPath != null) {
+    private fun uploadProfileImageToFirebaseStorage(userId: String) {
+        if (isUploadFileExist()) {
             val ref = mStorage?.reference?.child("$PROFILE_STORAGE_PATH/$userId/user_profile")
             ref?.putFile(fileUriPath as Uri)
                 ?.addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        ref.downloadUrl.addOnSuccessListener {
-                            val downloadUrl = it.toString()
-                            val uploadImageFile = Upload("user_profile", downloadUrl)
-                            mFireStore?.collection("$ACCOUNT_DOC_PATH/$userId")
-                                ?.document(USER_PROFILE)
-                                ?.set(uploadImageFile)
-                                    ?.addOnSuccessListener {
-                                        Log.d(TESTTAG, "[SignUpActivity] url: $downloadUrl")
-                                        MainActivity.profileUrl = downloadUrl
-                                        val intent = Intent(this, MainActivity::class.java)
-                                        startActivity(intent)
-                                        finish()
-                                    }
-                        }
+                    handleUploadImageSuccess(it, ref, userId)
+                }
+        }
+    }
+
+    private fun handleUploadImageSuccess(it: Task<UploadTask.TaskSnapshot>, ref: StorageReference, userId: String) {
+        if (it.isSuccessful) {
+            ref.downloadUrl.addOnSuccessListener {
+                val downloadUrl = it.toString()
+                val uploadImageFile = Upload("user_profile", downloadUrl)
+                mFireStore?.collection("$ACCOUNT_DOC_PATH/$userId")
+                    ?.document(USER_PROFILE)
+                    ?.set(uploadImageFile)
+                    ?.addOnSuccessListener {
+                        MainActivity.profileUrl = downloadUrl
+                        goToMainActivity()
                     }
-                }
-                ?.addOnFailureListener {
-                }
+            }
         }
     }
 }

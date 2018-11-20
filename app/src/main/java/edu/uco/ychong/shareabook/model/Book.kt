@@ -2,20 +2,17 @@ package edu.uco.ychong.shareabook.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.firebase.firestore.Exclude
 
 
 class Book(var title: String,
            var author: String,
            var description: String,
            var genre: String,
-           var lender: String,
+           var lenderName: String,
            var lenderEmail: String,
-           var borrower: String,
            var status: String,
            var datePosted: String,
-           var checkedoutDate: String,
-           var checkedoutDuration: String) : Parcelable {
+           var imageUrl: String) : Parcelable {
 
     constructor(): this("",
         "",
@@ -23,13 +20,11 @@ class Book(var title: String,
         "other",
         "",
         "",
-        "",
-        "available",
-        "",
+        BookStatus.AVAILABLE,
         "",
         "")
 
-    @get:Exclude
+//    @get:Exclude
     var id: String = ""
 
     constructor(parcel: Parcel) : this(
@@ -41,15 +36,11 @@ class Book(var title: String,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
         parcel.readString()
-    ) {
-        id = parcel.readString()
-    }
+    )
 
     override fun toString(): String {
-        return "$title\n$author"
+        return "$title\n$author $id"
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -57,14 +48,12 @@ class Book(var title: String,
         parcel.writeString(author)
         parcel.writeString(description)
         parcel.writeString(genre)
-        parcel.writeString(lender)
+        parcel.writeString(lenderName)
         parcel.writeString(lenderEmail)
-        parcel.writeString(borrower)
         parcel.writeString(status)
         parcel.writeString(datePosted)
-        parcel.writeString(checkedoutDate)
-        parcel.writeString(checkedoutDuration)
         parcel.writeString(id)
+        parcel.writeString(imageUrl)
     }
 
     override fun describeContents(): Int {

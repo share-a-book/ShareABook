@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.user.tracking.fragments.confirm.ConfirmFragment
 import edu.uco.ychong.shareabook.user.tracking.fragments.pending.PendingFragment
-import edu.uco.ychong.shareabook.user.tracking.fragments.request.RequestIncomingFragment
+import edu.uco.ychong.shareabook.user.tracking.fragments.request.RequestFragment
 import kotlinx.android.synthetic.main.activity_tracking.*
 
 class TrackingActivity : AppCompatActivity() {
@@ -26,7 +26,7 @@ class TrackingActivity : AppCompatActivity() {
 
         trackingTabAdapter = TrackingTabAdapter(supportFragmentManager)
         trackingTabAdapter.addFragment(PendingFragment(), "Pending")
-        trackingTabAdapter.addFragment(RequestIncomingFragment(), "Request")
+        trackingTabAdapter.addFragment(RequestFragment(), "Request")
         trackingTabAdapter.addFragment(ConfirmFragment(), "Confirmed")
 
         id_viewPager.adapter = trackingTabAdapter

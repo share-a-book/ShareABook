@@ -8,21 +8,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
-import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
+import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.RequestStatus
 import kotlinx.android.synthetic.main.book_confirm_row.view.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class ConfirmRequestAdapter(private val myDataSet: ArrayList<Book>,
-                            private val customItemClickListener: CustomItemClickListener) :
-        RecyclerView.Adapter<ConfirmRequestAdapter.MyViewHolder>() {
+class ConfirmAdapter(private val myDataSet: ArrayList<Book>,
+                     private val customItemClickListener: CustomItemClickListener) :
+        RecyclerView.Adapter<ConfirmAdapter.MyViewHolder>() {
 
     private var mFireStore: FirebaseFirestore? = null
 
@@ -49,7 +49,7 @@ class ConfirmRequestAdapter(private val myDataSet: ArrayList<Book>,
     private fun getBorrowRequestId(bookId: String) {
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
             ?.collection(REQUESTDOC_PATH)
-            ?.whereEqualTo("borrowStatus", BookStatus.ACCEPTED)
+            ?.whereEqualTo("requestStatus", RequestStatus.REQUEST_ACCEPTED)
             ?.get()
             ?.addOnSuccessListener {
                 for (requestSnapShot in it) {
@@ -58,27 +58,26 @@ class ConfirmRequestAdapter(private val myDataSet: ArrayList<Book>,
             }
             ?.addOnFailureListener {
             }
-
     }
 
     private fun checkOutBook(bookId: String, requestId: String) {
-        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-            ?.collection(REQUESTDOC_PATH)?.document(requestId)
-            ?.update("borrowStatus", BookStatus.CHECKED_OUT,
-                "borrowDate", getCurrentDateWithFullFormat())
-            ?.addOnSuccessListener {
-            }
-            ?.addOnFailureListener {
-            }
-
-        mFireStore?.collection(BOOKDOC_PATH)
-            ?.document(bookId)
-            ?.update("status", BookStatus.CHECKED_OUT,
-                "checkedoutDate", getCurrentDateWithFullFormat())
-            ?.addOnSuccessListener {
-                notifyDataSetChanged()
-            }?.addOnFailureListener {
-            }
+//        mFireStore?.collection(REQUESTDOC_PATH)?.document(bookId)
+//            ?.collection(REQUESTDOC_PATH)?.document(requestId)
+//            ?.update("requestStatus", RequestStatus.REQUEST_ACCEPTED,
+//                "requestDate", getCurrentDateWithFullFormat())
+//            ?.addOnSuccessListener {
+//            }
+//            ?.addOnFailureListener {
+//            }
+//
+//        mFireStore?.collection(BOOKDOC_PATH)
+//            ?.document(bookId)
+//            ?.update("status", BookStatus.CHECKED_OUT,
+//                "checkedoutDate", getCurrentDateWithFullFormat())
+//            ?.addOnSuccessListener {
+//                notifyDataSetChanged()
+//            }?.addOnFailureListener {
+//            }
     }
 
     private fun getCurrentDateWithFullFormat(): String {
@@ -94,11 +93,7 @@ class ConfirmRequestAdapter(private val myDataSet: ArrayList<Book>,
         val bookRequested = myDataSet[position]
         holder.bookTitle.text = bookRequested.title
         holder.bookAuthor.text = bookRequested.author
-        holder.lenderName.text = bookRequested.lender
-
-        if (bookRequested.status == BookStatus.ACCEPTED)
-            holder.status.text = "Accepted"
-
+        holder.lenderName.text = bookRequested.lenderName
         holder.lenderProfileImage.setImageResource(R.drawable.emptyphoto)
         holder.bookId = bookRequested.id
     }

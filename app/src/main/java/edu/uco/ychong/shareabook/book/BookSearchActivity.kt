@@ -16,6 +16,7 @@ import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.BookStatus
 import kotlinx.android.synthetic.main.activity_book_search.*
 
 class BookSearchActivity : AppCompatActivity() {

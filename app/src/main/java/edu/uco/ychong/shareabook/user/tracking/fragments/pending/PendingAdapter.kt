@@ -1,7 +1,6 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.pending
 
 import android.content.Intent
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.BookStatus
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
-import edu.uco.ychong.shareabook.helper.ToastMe
-import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.Request
+import edu.uco.ychong.shareabook.model.RequestStatus
 
 const val CANCEL_BOOK_REQUEST = "CANCEL_BOOK_REQUEST"
 
-class BookPendingBorrowerAdapter(private val myDataSet: ArrayList<Book>,
-                                 private val customItemClickListener: CustomItemClickListener) :
-        RecyclerView.Adapter<BookPendingBorrowerAdapter.MyViewHolder>() {
+class PendingAdapter(private val myDataSet: ArrayList<Request>,
+                     private val customItemClickListener: CustomItemClickListener) :
+        RecyclerView.Adapter<PendingAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val rowView: View = LayoutInflater.from(parent.context)
@@ -43,13 +41,13 @@ class BookPendingBorrowerAdapter(private val myDataSet: ArrayList<Book>,
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val bookRequested = myDataSet[position]
-        holder.bookTitle.text = bookRequested.title
-        holder.bookAuthor.text = bookRequested.author
-        holder.lenderName.text = bookRequested.lender
-
-        if (bookRequested.status == BookStatus.REQUEST_PENDING)
-            holder.status.text = "Waiting for owner response..."
+        holder.bookTitle.text = bookRequested.bookTitle
+        holder.bookAuthor.text = bookRequested.bookAuthor
+        holder.lenderName.text = bookRequested.lenderEmail
         holder.lenderProfile.setImageResource(R.drawable.emptyphoto)
+
+        if (bookRequested.requestStatus == RequestStatus.REQUEST_PENDING)
+            holder.status.text = "Waiting for owner response..."
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

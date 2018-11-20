@@ -7,14 +7,18 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
+import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK_ID
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
+import edu.uco.ychong.shareabook.helper.DateManager
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
 import edu.uco.ychong.shareabook.model.Book
-import edu.uco.ychong.shareabook.model.BorrowRequest
+import edu.uco.ychong.shareabook.model.BookStatus
+import edu.uco.ychong.shareabook.model.Request
+import edu.uco.ychong.shareabook.model.RequestStatus
 import kotlinx.android.synthetic.main.activity_book_info.*
 
 const val TESTTAG = "testtag"
@@ -34,19 +38,20 @@ class BookInfoActivity : Activity() {
 
         populateBookInformation()
 
-        val selectedBookFromExtra = intent.getParcelableExtra<Book>(EXTRA_SELECTED_BOOK)
-        val lenderEmail = selectedBookFromExtra.lenderEmail
-        val bookId = selectedBookFromExtra.id
+        val selectedBook = intent.getParcelableExtra<Book>(EXTRA_SELECTED_BOOK)
+        val bookId = intent.getStringExtra(EXTRA_SELECTED_BOOK_ID)
+        selectedBook.id = bookId
+        val lenderEmail = selectedBook.lenderEmail
 
         initializeRequestButtonVisibility()
 
-        requestButton.setOnClickListener {
-            sendBookRequestToLender(bookId)
+        id_requestButton.setOnClickListener {
+            sendBookRequestToLender(selectedBook)
             if (id_emailLender.isChecked) {
                 sendBookRequestToOwnerEmail(
                     lenderEmail,
-                    "Share-A-Book Request: ${selectedBookFromExtra.title}",
-                    "Request to borrow ${selectedBookFromExtra.title} by ${selectedBookFromExtra.author}"
+                    "Share-A-Book Request: ${selectedBook.title}",
+                    "Request to borrow ${selectedBook.title} by ${selectedBook.author}"
                 )
             }
         }
@@ -59,7 +64,7 @@ class BookInfoActivity : Activity() {
         info_bookDatePosted.text = selectedBookFromExtra.datePosted
         id_infoBookStatus.text = "Status: ${selectedBookFromExtra.status}"
         info_bookDescription.text = selectedBookFromExtra.description
-        info_bookPostedBy.text = "Posted by: ${selectedBookFromExtra.lender}"
+        info_bookPostedBy.text = "Posted by: ${selectedBookFromExtra.lenderName}"
     }
 
     private fun initializeRequestButtonVisibility() {
@@ -68,50 +73,50 @@ class BookInfoActivity : Activity() {
         val lenderEmail = selectedBookFromExtra.lenderEmail
 
         if (!UserAccess.isLoggedIn(currentUser) || currentUser?.email == lenderEmail)
-            requestButton.visibility = View.GONE
+            id_requestButton.visibility = View.GONE
         else
-            requestButton.visibility = View.VISIBLE
+            id_requestButton.visibility = View.VISIBLE
     }
 
-    private fun sendBookRequestToLender(bookId: String) {
+    private fun sendBookRequestToLender(bookInfo: Book) {
         val userEmail = mAuth?.currentUser?.email
         if (userEmail != null) {
-            mFireStore?.collection("$BOOKDOC_PATH")
-                ?.document(bookId)
-                ?.get()
-                ?.addOnSuccessListener {
-                    val bookInfo = it.toObject(Book::class.java) ?: return@addOnSuccessListener
-                    val borrowRequest = BorrowRequest(
-                            bookId,
-                            bookInfo.lenderEmail,
-                            userEmail,
-                            BookStatus.REQUEST_PENDING,
-                            "",
-                            ""
-                    )
-                    sendBookRequestToLender(borrowRequest)
-                }
+            val borrowRequest = Request(
+                    bookInfo.id,
+                    bookInfo.title,
+                    bookInfo.author,
+                    bookInfo.imageUrl,
+                    bookInfo.lenderEmail,
+                    userEmail,
+                    "${MainActivity.globalUserName}",
+                    RequestStatus.REQUEST_PENDING,
+                    DateManager.getCurrentDateWithFullFormat()
+            )
+            sendBookRequestToLender(borrowRequest)
         }
     }
 
-    private fun sendBookRequestToLender(borrowRequest: BorrowRequest) {
-        mFireStore?.collection(REQUESTDOC_PATH)?.document()?.set(borrowRequest)
+    private fun sendBookRequestToLender(request: Request) {
+        mFireStore?.collection(REQUESTDOC_PATH)?.document()?.set(request)
             ?.addOnSuccessListener {
                 startActivity(Intent(this, MainActivity::class.java))
             }
             ?.addOnFailureListener {
             }
 
+        updateBookStatusAfterRequestSent(request)
+    }
+
+    private fun updateBookStatusAfterRequestSent(request: Request) {
         mFireStore?.collection(BOOKDOC_PATH)
-                ?.document(borrowRequest.bookId)
-                ?.update(
-                    "status", BookStatus.REQUEST_PENDING)
-                ?.addOnSuccessListener {
-                    ToastMe.message(this, "Request sent successfully.")
-                }
-                ?.addOnFailureListener {
-                    ToastMe.message(this, "Request sent failed.")
-                }
+            ?.document(request.bookId)
+            ?.update("status", BookStatus.INTEREST)
+            ?.addOnSuccessListener {
+                ToastMe.message(this, "Request sent successfully.")
+            }
+            ?.addOnFailureListener {
+                ToastMe.message(this, "Request sent failed.")
+            }
     }
 
     private fun sendBookRequestToOwnerEmail(ownerEmail: String, subject: String, message: String) {

@@ -13,17 +13,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.USER_INFO
-import edu.uco.ychong.shareabook.book.BookStatus
+import edu.uco.ychong.shareabook.helper.DateManager
 import edu.uco.ychong.shareabook.helper.Genre
 import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.BookStatus
 import edu.uco.ychong.shareabook.model.User
 import edu.uco.ychong.shareabook.user.ACCOUNT_DOC_PATH
 import edu.uco.ychong.shareabook.user.ListingActivity
 import kotlinx.android.synthetic.main.fragment_book_add.*
 import kotlinx.android.synthetic.main.fragment_book_add.view.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 const val BOOKDOC_PATH = "public/bookDoc/books"
 const val REQUESTDOC_PATH = "public/requestDoc/requests"
@@ -45,14 +43,19 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
         return inflatedView
     }
 
+    private fun setupBookAddFragmentView(addBookFragmentView: View) {
+        addBookFragmentView.id_currentDate.text = DateManager.getCurrentDateWithFullFormat()
+        addBookFragmentView.id_submitButton.setOnClickListener {
+            getUserInfoAndAddBook()
+        }
+    }
+
     private fun getUserInfoAndAddBook() {
         val userEmail = mAuth?.currentUser?.email
         if (userEmail != null) {
             mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.get()
                 ?.addOnSuccessListener {
-                    val userInfo = it.toObject(User::class.java)
-                    if (userInfo == null)
-                        return@addOnSuccessListener
+                    val userInfo = it.toObject(User::class.java) ?: return@addOnSuccessListener
 
                     val lenderName = "${userInfo?.firstName} ${userInfo.lastName}"
 
@@ -63,10 +66,8 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
                         selectedGenre,
                         lenderName,
                         userEmail,
-                        "",
-                            BookStatus.AVAILABLE,
-                        getCurrentDateWithFullFormat(),
-                        "",
+                        BookStatus.AVAILABLE,
+                        DateManager.getCurrentDateWithFullFormat(),
                         "")
 
                     addNewBookToFireStore(newBook)
@@ -74,23 +75,6 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
         }
     }
 
-    private fun setupSpinner(addBookFragmentView: View, container: ViewGroup?) {
-        initializeSpinnerItems()
-        val spinner = addBookFragmentView.findViewById<Spinner>(R.id.id_editCategorySpinner)
-        spinner.onItemSelectedListener = this
-        val arrayAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, genres)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-        spinner.apply {
-            adapter = arrayAdapter
-        }
-    }
-
-    private fun setupBookAddFragmentView(addBookFragmentView: View) {
-        addBookFragmentView.id_currentDate.text = getCurrentDateWithFullFormat()
-        addBookFragmentView.id_submitButton.setOnClickListener {
-            getUserInfoAndAddBook()
-        }
-    }
 
     private fun addNewBookToFireStore(newBook: Book) {
         val parentActivity = activity as ListingActivity
@@ -103,10 +87,15 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
             }
     }
 
-    private fun getCurrentDateWithFullFormat(): String {
-        return LocalDateTime.now()
-            .format(DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.FULL))
+    private fun setupSpinner(addBookFragmentView: View, container: ViewGroup?) {
+        initializeSpinnerItems()
+        val spinner = addBookFragmentView.findViewById<Spinner>(R.id.id_editCategorySpinner)
+        spinner.onItemSelectedListener = this
+        val arrayAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, genres)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+        spinner.apply {
+            adapter = arrayAdapter
+        }
     }
 
     private fun initializeSpinnerItems() {
