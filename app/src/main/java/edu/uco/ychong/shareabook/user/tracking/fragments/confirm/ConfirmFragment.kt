@@ -9,12 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.CustomItemClickListener
 import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
-import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.model.Request
 import edu.uco.ychong.shareabook.model.RequestStatus
 import kotlinx.android.synthetic.main.fragment_confirm.*
 import kotlinx.android.synthetic.main.fragment_confirm.view.*
@@ -24,7 +24,9 @@ class ConfirmFragment: Fragment() {
     private var mAuth: FirebaseAuth?= null
     private var mFireStore: FirebaseFirestore? = null
     private var mStorage: FirebaseStorage? = null
-    private val acceptedRequestedBooks = ArrayList<Book>()
+    private val acceptedRequestedBooks = ArrayList<Request>()
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mAuth = FirebaseAuth.getInstance()
@@ -32,45 +34,57 @@ class ConfirmFragment: Fragment() {
         mStorage = FirebaseStorage.getInstance()
 
         val inflatedView = inflater.inflate(R.layout.fragment_confirm, container, false)
-
+        Log.d(TESTTAG, "confirm fragment")
         var viewManager = LinearLayoutManager(context)
-        val bookAdapter = ConfirmAdapter(acceptedRequestedBooks, object : CustomItemClickListener {
-            override fun onItemClick(v: View, position: Int) {}
-        })
+        val confirmAdapter = ConfirmAdapter(acceptedRequestedBooks, this)
 
-        loadAcceptedRequestedBook()
+        loadConfirmedRequests()
 
         inflatedView.id_confirmRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
-            adapter = bookAdapter
+            adapter = confirmAdapter
         }
 
         return inflatedView
     }
 
 
-    private fun loadAcceptedRequestedBook() {
+    private fun loadConfirmedRequests() {
         val userEmail = mAuth?.currentUser?.email
         mFireStore?.collection("$REQUESTDOC_PATH")
-                ?.whereEqualTo("requestStatus", RequestStatus.REQUEST_ACCEPTED)
-                ?.whereEqualTo("borrowerEmail",userEmail)
-                ?.get()
-                ?.addOnSuccessListener {
-
-                    acceptedRequestedBooks.clear()
-
-                    for (bookSnapShot in it) {
-                        val book =  bookSnapShot.toObject(Book::class.java)
-                        book.id = bookSnapShot.id
-                        acceptedRequestedBooks.add(book)
-                    }
-                    val bookAdapter = id_confirmRecyclerView.adapter
-                    bookAdapter?.notifyDataSetChanged()
-
-                }?.addOnFailureListener {
-                    Log.d(TESTTAG, it.toString())
-                }
+            ?.whereEqualTo("requestStatus", RequestStatus.REQUEST_ACCEPTED)
+            ?.whereEqualTo("borrowerEmail",userEmail)
+            ?.get()
+            ?.addOnSuccessListener {
+                acceptedRequestedBooks.clear()
+                loadConfirmedSnapshot(it)
+                notifyAdapterDataChange()
+            }
     }
 
+    private fun loadConfirmedSnapshot(it: QuerySnapshot) {
+        for (requestSnapshot in it) {
+            val request =  requestSnapshot.toObject(Request::class.java)
+            request.id = requestSnapshot.id
+            acceptedRequestedBooks.add(request)
+        }
+    }
+
+    private fun notifyAdapterDataChange() {
+        val confirmAdapter = id_confirmRecyclerView.adapter
+        confirmAdapter?.notifyDataSetChanged()
+    }
+
+    fun checkout(request: Request) {
+        Log.d(TESTTAG, "Check out")
+
+        /**Implement confirmation here***/
+
+
+
+
+
+
+    }
 }

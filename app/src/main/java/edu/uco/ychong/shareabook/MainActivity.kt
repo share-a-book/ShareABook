@@ -2,7 +2,6 @@ package edu.uco.ychong.shareabook
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -28,6 +27,7 @@ import edu.uco.ychong.shareabook.model.BookStatus
 import edu.uco.ychong.shareabook.model.Upload
 import edu.uco.ychong.shareabook.model.User
 import edu.uco.ychong.shareabook.user.*
+import edu.uco.ychong.shareabook.user.tracking.HistoryActivity
 import edu.uco.ychong.shareabook.user.tracking.TrackingActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, TrackingActivity::class.java))
             }
             R.id.nav_history -> {
-
+                startActivity(Intent(this, HistoryActivity::class.java))
             }
             R.id.nav_sign_up -> {
                 startActivity(Intent(this, SignUpActivity::class.java))
@@ -309,9 +309,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val userPhoneNumber = updatedAccountInfo.phoneNumber
             updateLenderName(userEmail, userName)
             updateBorrowerName(userEmail, userName, userPhoneNumber)
-
-            val handler = Handler()
-//            handler.postDelayed({loadAllAvailableBooks()}, 3000)
         }
     }
 

@@ -49,7 +49,7 @@
     <string name="logo">Logo</string>
     <string name="create">Create</string>
     <string name="title_activity_listing">ListingActivity</string>
-    <string name="Add"/>
+    <string name="Add" />
     <string name="listing_books">Listing Books</string>
     <string name="registration">Registration</string>
     <string name="submit">Submit</string>
@@ -82,4 +82,5 @@
     <string name="check_out">Check Out</string>
     <string name="email_to_lender">Email to lender</string>
     <string name="upload_profile_image">Upload profile image</string>
+    <string name="history">History</string>
 </resources>

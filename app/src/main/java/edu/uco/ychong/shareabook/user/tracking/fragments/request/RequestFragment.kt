@@ -37,7 +37,7 @@ class RequestFragment: Fragment() {
         val inflatedView = inflater.inflate(R.layout.fragment_request_incoming, container, false)
 
         var viewManager = LinearLayoutManager(context)
-        val bookAdapter = RequestAdapter(requestedBooks, object : CustomItemClickListener {
+        val requestAdapter = RequestAdapter(requestedBooks, object : CustomItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 v.id_acceptButton.setOnClickListener {
                     Log.d(TESTTAG, "accepted $${requestedBooks[position].id}")
@@ -56,7 +56,7 @@ class RequestFragment: Fragment() {
         inflatedView.id_requestIncomingRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
-            adapter = bookAdapter
+            adapter = requestAdapter
         }
 
         return inflatedView
@@ -101,5 +101,9 @@ class RequestFragment: Fragment() {
                 if (parentContext != null)
                     ToastMe.message(parentContext, "Accepted successful")
             }
+    }
+
+    private fun rejectRequest(request: Request) {
+
     }
 }

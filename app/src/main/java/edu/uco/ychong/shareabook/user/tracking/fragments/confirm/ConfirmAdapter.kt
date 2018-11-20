@@ -1,6 +1,7 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.confirm
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,20 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.CustomItemClickListener
-import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
-import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
-import edu.uco.ychong.shareabook.helper.ToastMe
-import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.book.TESTTAG
+import edu.uco.ychong.shareabook.model.Request
 import edu.uco.ychong.shareabook.model.RequestStatus
 import kotlinx.android.synthetic.main.book_confirm_row.view.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 
-class ConfirmAdapter(private val myDataSet: ArrayList<Book>,
-                     private val customItemClickListener: CustomItemClickListener) :
+class ConfirmAdapter(private val myDataSet: ArrayList<Request>, private val confirmFragment: ConfirmFragment) :
         RecyclerView.Adapter<ConfirmAdapter.MyViewHolder>() {
 
     private var mFireStore: FirebaseFirestore? = null
@@ -34,68 +28,28 @@ class ConfirmAdapter(private val myDataSet: ArrayList<Book>,
 
         val viewHolder = MyViewHolder(rowView)
 
-        rowView.setOnClickListener {
-            customItemClickListener.onItemClick(it, viewHolder.position)
-        }
-
-        rowView.id_checkOutButton.setOnClickListener {
-            ToastMe.message(parent.context, "Check Out")
-            getBorrowRequestId(viewHolder.bookId)
+        rowView.id_checkoutButton.setOnClickListener {
+            Log.d(TESTTAG, "checkout ${myDataSet[viewHolder.layoutPosition]}")
+            Log.d(TESTTAG, "layout position: ${viewHolder.layoutPosition}")
+            confirmFragment.checkout(myDataSet[viewHolder.layoutPosition])
         }
 
         return viewHolder
     }
 
-    private fun getBorrowRequestId(bookId: String) {
-        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-            ?.collection(REQUESTDOC_PATH)
-            ?.whereEqualTo("requestStatus", RequestStatus.REQUEST_ACCEPTED)
-            ?.get()
-            ?.addOnSuccessListener {
-                for (requestSnapShot in it) {
-                    checkOutBook(bookId, requestSnapShot.id)
-                }
-            }
-            ?.addOnFailureListener {
-            }
-    }
-
-    private fun checkOutBook(bookId: String, requestId: String) {
-//        mFireStore?.collection(REQUESTDOC_PATH)?.document(bookId)
-//            ?.collection(REQUESTDOC_PATH)?.document(requestId)
-//            ?.update("requestStatus", RequestStatus.REQUEST_ACCEPTED,
-//                "requestDate", getCurrentDateWithFullFormat())
-//            ?.addOnSuccessListener {
-//            }
-//            ?.addOnFailureListener {
-//            }
-//
-//        mFireStore?.collection(BOOKDOC_PATH)
-//            ?.document(bookId)
-//            ?.update("status", BookStatus.CHECKED_OUT,
-//                "checkedoutDate", getCurrentDateWithFullFormat())
-//            ?.addOnSuccessListener {
-//                notifyDataSetChanged()
-//            }?.addOnFailureListener {
-//            }
-    }
-
-    private fun getCurrentDateWithFullFormat(): String {
-        return LocalDateTime.now()
-            .format(
-                DateTimeFormatter
-                    .ofLocalizedDate(FormatStyle.FULL))
-    }
-
     override fun getItemCount(): Int = myDataSet.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val bookRequested = myDataSet[position]
-        holder.bookTitle.text = bookRequested.title
-        holder.bookAuthor.text = bookRequested.author
-        holder.lenderName.text = bookRequested.lenderName
+        val request = myDataSet[position]
+        holder.bookTitle.text = request.bookTitle
+        holder.bookAuthor.text = "By ${request.bookAuthor}"
+        holder.lenderName.text = request.lenderEmail
         holder.lenderProfileImage.setImageResource(R.drawable.emptyphoto)
-        holder.bookId = bookRequested.id
+        holder.bookId = request.bookId
+
+        val status = request. requestStatus
+        if (status == RequestStatus.REQUEST_ACCEPTED)
+            holder.status.text = "Request Accepted"
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

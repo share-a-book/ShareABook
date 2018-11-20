@@ -56,7 +56,6 @@ class BookAddFragment: Fragment(), AdapterView.OnItemSelectedListener  {
             mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.get()
                 ?.addOnSuccessListener {
                     val userInfo = it.toObject(User::class.java) ?: return@addOnSuccessListener
-
                     val lenderName = "${userInfo?.firstName} ${userInfo.lastName}"
 
                     val newBook = Book(

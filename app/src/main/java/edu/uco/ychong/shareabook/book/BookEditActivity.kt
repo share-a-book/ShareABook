@@ -119,11 +119,11 @@ class BookEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         val builder = AlertDialog.Builder(this@BookEditActivity)
         builder.setTitle("Delete Book Listing")
         builder.setMessage("Are you sure you want to delete this listing?")
-        builder.setPositiveButton("YES") { dialog, which ->
+        builder.setPositiveButton("YES") { _, _ ->
             deleteBook()
-        }.setNegativeButton("NO") { dialog, which ->
+        }.setNegativeButton("NO") { _, _ ->
             ToastMe.message(this, "You do not want to delete this listing.")
-        }.setNeutralButton("CANCEL") { dialog, which ->
+        }.setNeutralButton("CANCEL") { _, _ ->
             ToastMe.message(this, "Canceled book delete.")
         }
 
