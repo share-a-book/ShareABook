@@ -13,6 +13,7 @@ import edu.uco.ychong.shareabook.model.Request
 import edu.uco.ychong.shareabook.model.RequestStatus
 
 const val CANCEL_BOOK_REQUEST = "CANCEL_BOOK_REQUEST"
+const val CANCEL_BOOK_REQUEST_ID = "CANCEL_BOOK_REQUEST_ID"
 
 class PendingAdapter(private val myDataSet: ArrayList<Request>,
                      private val customItemClickListener: CustomItemClickListener) :
@@ -30,6 +31,7 @@ class PendingAdapter(private val myDataSet: ArrayList<Request>,
             val intent = Intent(parent.context, CancelBookRequestActivity::class.java)
             val theBook = myDataSet[viewHolder.position]
             intent.putExtra(CANCEL_BOOK_REQUEST, theBook)
+            intent.putExtra(CANCEL_BOOK_REQUEST_ID, theBook.id)
 
             parent.context.startActivity(intent)
         }

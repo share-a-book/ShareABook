@@ -5,6 +5,6 @@ class RequestStatus {
         val REQUEST_PENDING = "request_pending"
         val REQUEST_REJECTED = "request_rejected"
         val REQUEST_ACCEPTED = "request_accepted"
-        val request_CANCELED = "request_canceled"
+        val REQUEST_CANCELED = "request_canceled"
     }
 }
