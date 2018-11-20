@@ -33,7 +33,6 @@ class ConfirmAdapter(private val myDataSet: ArrayList<Request>, private val conf
             Log.d(TESTTAG, "layout position: ${viewHolder.layoutPosition}")
             confirmFragment.checkout(myDataSet[viewHolder.layoutPosition])
         }
-
         return viewHolder
     }
 

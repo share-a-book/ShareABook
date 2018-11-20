@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var mStorage: FirebaseStorage? = null
     companion object {
         var profileUrl: String = ""
-        var globalUserName: String = ""
+        var userFullName: String = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ?.addOnSuccessListener {
                 val userInfo = it.toObject(User::class.java) ?: return@addOnSuccessListener
                 val userName = "${userInfo.firstName} ${userInfo.lastName}"
-                globalUserName = userName
+                userFullName = userName
                 val headerView = nav_view.getHeaderView(0)
                 val emailView = headerView.findViewById<TextView>(R.id.id_nav_email)
                 emailView.text = userEmail

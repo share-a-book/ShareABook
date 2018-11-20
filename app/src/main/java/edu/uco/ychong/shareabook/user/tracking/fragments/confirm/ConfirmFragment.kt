@@ -76,15 +76,29 @@ class ConfirmFragment: Fragment() {
         confirmAdapter?.notifyDataSetChanged()
     }
 
+    //don't make it private, the ConfirmAdapter need to call this function
     fun checkout(request: Request) {
-        Log.d(TESTTAG, "Check out")
-        Log.d(TESTTAG, "Check out")
+        Log.d(TESTTAG, "(checkout) $request")
 
         /**Implement confirmation here***/
-
-
-
-
+         /**
+          * Create a history object and set it to the database.
+          * Use HISTORYDOC_PATH as the path.
+          * There's no adapter for this fragment yet,
+          * you can make one if you want.
+          * Or you can just present database that it shows a history document
+          * was made after the user checked out.
+          * **/
+//         val history = History(var historyId: String,
+//                       var bookTitle: String,
+//                       var bookAuthor: String,
+//                       var bookImageUrl: String,
+//                       var lenderEmail: String,
+//                       var lenderName: String,
+//                       var borrowerEmail: String,
+//                       MainActivity.userFullName,  <-- use this so you don't have to make another db call to get user name
+//                       var historyStatus: String,
+//                       var lastUpdatedDate: String)
 
 
     }

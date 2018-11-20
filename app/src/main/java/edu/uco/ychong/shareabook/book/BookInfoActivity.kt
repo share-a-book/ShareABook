@@ -85,7 +85,7 @@ class BookInfoActivity : Activity() {
                     bookInfo.imageUrl,
                     bookInfo.lenderEmail,
                     userEmail,
-                    "${MainActivity.globalUserName}",
+                    "${MainActivity.userFullName}",
                     RequestStatus.REQUEST_PENDING,
                     DateManager.getCurrentDateWithFullFormat()
             )

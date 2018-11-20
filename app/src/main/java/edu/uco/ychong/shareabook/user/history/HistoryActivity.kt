@@ -28,7 +28,7 @@ class HistoryActivity : AppCompatActivity() {
         historyTrackingAdapter = HistoryTabAdapter(supportFragmentManager)
         historyTrackingAdapter.addFragment(CheckedOutFragment(), "Checked Out")
         historyTrackingAdapter.addFragment(ReturnedFragment(), "Returned")
-        historyTrackingAdapter.addFragment(LendedFragment(), "Lend History")
+        historyTrackingAdapter.addFragment(LendedFragment(), "Lended")
 
         id_viewPager.adapter = historyTrackingAdapter
         id_tabLayout.setupWithViewPager(id_viewPager)
