@@ -51,13 +51,20 @@ class SignUpActivity : AppCompatActivity() {
     private fun createUserAccount() {
         if (validateUserInputs()) {
             val userInfo = createUserInfo()
-            uploadProfileImageToFirebase(userInfo.email)
             mAuth?.createUserWithEmailAndPassword(userInfo.email, userInfo.password)
                 ?.addOnCompleteListener {
                     if(it.isSuccessful) {
                         ToastMe.message(this, "Account creation successful!")
                         saveUserInfo(userInfo)
-                        uploadProfileImageToFirebase(userInfo.email)
+
+                        if (fileUriPath != null) {
+                            uploadProfileImageToFirebase(userInfo.email)
+                        } else {
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+
                     } else {
                         ToastMe.message(this, "Account creation failed.\n${it.exception.toString()}")
                     }
