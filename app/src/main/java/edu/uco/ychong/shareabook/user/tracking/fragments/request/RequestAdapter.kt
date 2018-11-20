@@ -9,9 +9,7 @@ import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
-import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Request
-import kotlinx.android.synthetic.main.book_pending_row.view.*
 
 class RequestAdapter(private val myDataSet: ArrayList<Request>,
                      private val customItemClickListener: CustomItemClickListener) :
@@ -30,19 +28,6 @@ class RequestAdapter(private val myDataSet: ArrayList<Request>,
 
         rowView.setOnClickListener {
             customItemClickListener.onItemClick(it, viewHolder.position)
-        }
-
-        rowView.id_rejectButton.setOnClickListener {
-            ToastMe.message(parent.context, "Reject request")
-            getBorrowRequestId(viewHolder.bookId, false)
-            //rejectRequest(viewHolder.bookId)
-        }
-
-        rowView.id_acceptButton.setOnClickListener {
-            ToastMe.message(parent.context, "Accept request")
-            ToastMe.message(parent.context, viewHolder.bookId)
-            getBorrowRequestId(viewHolder.bookId, true)
-            //acceptRequest(viewHolder.bookId)
         }
 
         return viewHolder
@@ -66,59 +51,5 @@ class RequestAdapter(private val myDataSet: ArrayList<Request>,
         val borrowerName = itemView.findViewById<TextView>(R.id.id_borrower)
         val imageProfile = itemView.findViewById<ImageView>(R.id.id_lenderProfileImage)
         var bookId = ""
-    }
-
-    private fun getBorrowRequestId(bookId: String, acceptanceStatus: Boolean) {
-//        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-//            ?.collection(REQUESTDOC_PATH)
-//            ?.whereEqualTo("requestStatus", BookStatus.REQUEST_PENDING)
-//            ?.get()
-//            ?.addOnSuccessListener {
-//                for (requestSnapShot in it) {
-//                    if(acceptanceStatus == true) {
-//                        acceptRequest(bookId, requestSnapShot.id)
-//                    }
-//                    else {
-//                        rejectRequest(bookId, requestSnapShot.id)
-//                    }
-//                }
-//            }
-    }
-
-    private fun acceptRequest(bookId: String, requestId: String) {
-//        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-//            ?.collection(REQUESTDOC_PATH)?.document(requestId)
-//            ?.update("requestStatus", BookStatus.ACCEPTED)
-//            ?.addOnSuccessListener {
-//            }
-//            ?.addOnFailureListener {
-//            }
-//
-//        mFireStore?.collection(BOOKDOC_PATH)
-//                ?.document(bookId)
-//                ?.update("status", BookStatus.ACCEPTED)
-//                ?.addOnSuccessListener {
-//                    notifyDataSetChanged()
-//                }?.addOnFailureListener {
-//                }
-    }
-
-    private fun rejectRequest(bookId: String, requestId: String) {
-//        mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
-//            ?.collection(REQUESTDOC_PATH)?.document(requestId)
-//            ?.update("requestStatus", BookStatus.REJECTED)
-//            ?.addOnSuccessListener {
-//            }
-//            ?.addOnFailureListener {
-//            }
-//
-//        mFireStore?.collection(BOOKDOC_PATH)
-//                ?.document(bookId)
-//                ?.update("status", BookStatus.AVAILABLE,
-//                    "borrower", "")
-//                ?.addOnSuccessListener {
-//                    notifyDataSetChanged()
-//                }?.addOnFailureListener {
-//                }
     }
 }

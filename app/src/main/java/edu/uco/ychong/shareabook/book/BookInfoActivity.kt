@@ -10,13 +10,10 @@ import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK_ID
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.helper.DateManager
-import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
 import edu.uco.ychong.shareabook.model.Book
-import edu.uco.ychong.shareabook.model.BookStatus
 import edu.uco.ychong.shareabook.model.Request
 import edu.uco.ychong.shareabook.model.RequestStatus
 import kotlinx.android.synthetic.main.activity_book_info.*
@@ -102,20 +99,6 @@ class BookInfoActivity : Activity() {
                 startActivity(Intent(this, MainActivity::class.java))
             }
             ?.addOnFailureListener {
-            }
-
-        updateBookStatusAfterRequestSent(request)
-    }
-
-    private fun updateBookStatusAfterRequestSent(request: Request) {
-        mFireStore?.collection(BOOKDOC_PATH)
-            ?.document(request.bookId)
-            ?.update("status", BookStatus.INTEREST)
-            ?.addOnSuccessListener {
-                ToastMe.message(this, "Request sent successfully.")
-            }
-            ?.addOnFailureListener {
-                ToastMe.message(this, "Request sent failed.")
             }
     }
 

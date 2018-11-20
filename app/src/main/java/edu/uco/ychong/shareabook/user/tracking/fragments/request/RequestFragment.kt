@@ -15,7 +15,10 @@ import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
 import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
+import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.Request
+import edu.uco.ychong.shareabook.model.RequestStatus
+import kotlinx.android.synthetic.main.book_pending_row.view.*
 import kotlinx.android.synthetic.main.fragment_request_incoming.*
 import kotlinx.android.synthetic.main.fragment_request_incoming.view.*
 
@@ -35,10 +38,20 @@ class RequestFragment: Fragment() {
 
         var viewManager = LinearLayoutManager(context)
         val bookAdapter = RequestAdapter(requestedBooks, object : CustomItemClickListener {
-            override fun onItemClick(v: View, position: Int) {}
+            override fun onItemClick(v: View, position: Int) {
+                v.id_acceptButton.setOnClickListener {
+                    Log.d(TESTTAG, "accepted $${requestedBooks[position].id}")
+                    val requestToAccept = requestedBooks[position]
+                    acceptRequest(requestToAccept)
+                }
+
+                v.id_rejectButton.setOnClickListener {
+                    Log.d(TESTTAG, "rejected")
+                }
+            }
         })
 
-        loadPendingRequestedBook()
+        loadRequests()
 
         inflatedView.id_requestIncomingRecyclerView.apply {
             setHasFixedSize(true)
@@ -49,30 +62,44 @@ class RequestFragment: Fragment() {
         return inflatedView
     }
 
-    private fun loadPendingRequestedBook() {
+    private fun loadRequests() {
         val userEmail = mAuth?.currentUser?.email
         if (userEmail != null)
         mFireStore?.collection("$REQUESTDOC_PATH")
             ?.whereEqualTo("lenderEmail", userEmail)
+            ?.whereEqualTo("requestStatus", RequestStatus.REQUEST_PENDING)
             ?.get()
             ?.addOnSuccessListener {
-                displayAllRequestToLender(it)
+                requestedBooks.clear()
+                loadRequestSnapshot(it)
             }?.addOnFailureListener {
                 Log.d(TESTTAG, it.toString())
             }
 
     }
 
-    private fun displayAllRequestToLender(it: QuerySnapshot) {
-        requestedBooks.clear()
+    private fun loadRequestSnapshot(it: QuerySnapshot) {
         for (requestSnapshot in it) {
             val request =  requestSnapshot.toObject(Request::class.java)
             request.id = requestSnapshot.id
             requestedBooks.add(request)
         }
-        val bookAdapter = id_requestIncomingRecyclerView.adapter
-        bookAdapter?.notifyDataSetChanged()
-
+        notifyAdapterDataChange()
     }
 
+    private fun notifyAdapterDataChange() {
+        val bookAdapter = id_requestIncomingRecyclerView.adapter
+        bookAdapter?.notifyDataSetChanged()
+    }
+
+    private fun acceptRequest(request: Request) {
+        Log.d(TESTTAG, "accepted request: ${request.id}")
+        mFireStore?.collection(REQUESTDOC_PATH)?.document(request.id)
+            ?.update("requestStatus", RequestStatus.REQUEST_ACCEPTED)
+            ?.addOnSuccessListener {
+                val parentContext = activity?.applicationContext
+                if (parentContext != null)
+                    ToastMe.message(parentContext, "Accepted successful")
+            }
+    }
 }

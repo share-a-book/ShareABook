@@ -35,11 +35,9 @@ class PendingFragment: Fragment() {
 
         var viewManager = LinearLayoutManager(context)
         val pendingAdapter = PendingAdapter(pendingRequestedBooks, object : CustomItemClickListener {
-            override fun onItemClick(v: View, position: Int) {
-            }
+            override fun onItemClick(v: View, position: Int) {}
         })
 
-        Log.d(TESTTAG, "Pending Fragment")
         loadPendingRequests()
 
         inflatedView.id_pendingRecyclerView.apply {

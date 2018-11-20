@@ -123,8 +123,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             val bookAdapter = recyclerViewBooks.adapter
             bookAdapter?.notifyDataSetChanged()
-        }?.addOnFailureListener {
-            Log.d(TESTTAG, it.toString())
         }
     }
 
@@ -274,8 +272,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val userInfo = it.toObject(User::class.java) ?: return@addOnSuccessListener
                 val intent = Intent(this, AccountInfoActivity::class.java)
                 intent.putExtra(USER_INFO, userInfo)
-
-                Log.d(TESTTAG, "current profile url: $profileUrl")
                 val userProfile = Upload(USER_PROFILE, profileUrl)
                 intent.putExtra(USER_PROFILE, userProfile)
                 startActivityForResult(intent, REQ_CODE_EDIT_ACCOUNT_INFO)
