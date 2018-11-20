@@ -4,8 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 
-class History(var historyId: String,
-              var bookTitle: String,
+class History(var bookTitle: String,
               var bookAuthor: String,
               var bookImageUrl: String,
               var lenderEmail: String,
@@ -16,7 +15,6 @@ class History(var historyId: String,
               var lastUpdatedDate: String) : Parcelable {
 
     constructor() : this(
-        "",
         "",
         "",
         "",
@@ -40,12 +38,9 @@ class History(var historyId: String,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString(),
-            parcel.readString()) {
-    }
+            parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(historyId)
         parcel.writeString(bookTitle)
         parcel.writeString(bookAuthor)
         parcel.writeString(bookImageUrl)

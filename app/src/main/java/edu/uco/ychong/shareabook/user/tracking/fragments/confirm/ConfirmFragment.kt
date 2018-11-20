@@ -11,11 +11,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
+import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.TESTTAG
+import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
+import edu.uco.ychong.shareabook.book.fragments.HISTORYDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
-import edu.uco.ychong.shareabook.model.Request
-import edu.uco.ychong.shareabook.model.RequestStatus
+import edu.uco.ychong.shareabook.helper.DateManager
+import edu.uco.ychong.shareabook.helper.ToastMe
+import edu.uco.ychong.shareabook.model.*
 import kotlinx.android.synthetic.main.fragment_confirm.*
 import kotlinx.android.synthetic.main.fragment_confirm.view.*
 
@@ -79,6 +83,46 @@ class ConfirmFragment: Fragment() {
     //don't make it private, the ConfirmAdapter need to call this function
     fun checkout(request: Request) {
         Log.d(TESTTAG, "(checkout) $request")
+
+        mFireStore?.collection(REQUESTDOC_PATH)?.document(request.id)
+            ?.update("requestStatus", HistoryStatus.CHECKED_OUT)
+            ?.addOnSuccessListener {
+
+                mFireStore?.collection(BOOKDOC_PATH)?.document(request.bookId)?.get()
+                    ?.addOnSuccessListener {
+                        val bookInfo = it.toObject(Book::class.java)
+
+                        if (bookInfo == null) return@addOnSuccessListener
+
+                        val lenderName = bookInfo.lenderName
+
+                        val history = History(request.bookTitle,
+                            request.bookAuthor,
+                            request.bookImageUrl,
+                            request.lenderEmail,
+                            lenderName,
+                            request.borrowerEmail,
+                            MainActivity.userFullName,
+                            HistoryStatus.CHECKED_OUT,
+                            DateManager.getCurrentDateWithFullFormat())
+
+                        mFireStore?.collection(HISTORYDOC_PATH)?.document()?.set(history)
+                            ?.addOnSuccessListener {
+                                val parentContext = activity?.applicationContext
+                                if (parentContext != null)
+                                    ToastMe.message(parentContext, "Set in History")
+                            }
+
+                    }
+
+                val parentContext = activity?.applicationContext
+                if (parentContext != null)
+                    ToastMe.message(parentContext, "Checked Out")
+            }
+
+
+
+
 
         /**Implement confirmation here***/
          /**
