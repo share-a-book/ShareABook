@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
+import edu.uco.ychong.shareabook.EXTRA_ADD_BOOK_FRAGMENT
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.BookAddFragment
@@ -25,8 +26,15 @@ class ListingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listing)
         mAuth = FirebaseAuth.getInstance()
+        handleInitialFragment()
+    }
 
-        displayBookListingFragment()
+    private fun handleInitialFragment() {
+        val addBook = intent.getStringExtra(EXTRA_ADD_BOOK_FRAGMENT)
+        if (addBook == "addBook")
+            displayBookAddFragment()
+        else
+            displayBookListingFragment()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

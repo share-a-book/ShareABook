@@ -28,6 +28,7 @@ import edu.uco.ychong.shareabook.user.tracking.HistoryActivity
 import edu.uco.ychong.shareabook.user.tracking.TrackingActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
 const val USER_INFO = "user_info"
@@ -36,12 +37,14 @@ const val UPDATED_USER_INFO = "updated_user_info"
 const val REQ_CODE_EDIT_ACCOUNT_INFO = 1
 const val EXTRA_SELECTED_BOOK = "extra_selected_book"
 const val EXTRA_SELECTED_BOOK_ID = "extra_selected_book_id"
+const val EXTRA_ADD_BOOK_FRAGMENT = "extra_add_book_fragment"
+const val EXTRA_CONFIRMED_FRAGMENT = "extra_checkout_fragment"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth? = null
     private var mFireStore: FirebaseFirestore? = null
     private var mStorage: FirebaseStorage? = null
-    
+
     companion object {
         var profileUrl: String = ""
         var userFullName: String = ""
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         setNavMenuLoginLogoutVisibility(currentUser)
+        handleHomeNavigation()
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
@@ -77,6 +81,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.d(TESTTAG, "onResume()")
         if (!profileUrl.isNullOrEmpty())
             loadProfileImage()
+    }
+
+    private fun handleHomeNavigation() {
+        id_searchIcon.setOnClickListener {
+            startActivity(Intent(this, BookSearchActivity::class.java))
+        }
+
+        id_addBookIcon.setOnClickListener {
+            val intent = Intent(this, ListingActivity::class.java)
+            intent.putExtra(EXTRA_ADD_BOOK_FRAGMENT, "addBook")
+            startActivity(intent)
+        }
+
+        id_checkoutIcon.setOnClickListener {
+            val intent = Intent(this, TrackingActivity::class.java)
+            intent.putExtra(EXTRA_CONFIRMED_FRAGMENT, "confirmed")
+            startActivity(intent)
+        }
+
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {

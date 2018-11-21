@@ -2,7 +2,10 @@ package edu.uco.ychong.shareabook.user.tracking
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import edu.uco.ychong.shareabook.EXTRA_CONFIRMED_FRAGMENT
 import edu.uco.ychong.shareabook.R
+import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.user.tracking.fragments.confirm.ConfirmFragment
 import edu.uco.ychong.shareabook.user.tracking.fragments.pending.PendingFragment
 import edu.uco.ychong.shareabook.user.tracking.fragments.request.RequestFragment
@@ -35,6 +38,16 @@ class TrackingActivity : AppCompatActivity() {
         id_tabLayout.getTabAt(0)?.setIcon(tabIcons[0])
         id_tabLayout.getTabAt(1)?.setIcon(tabIcons[1])
         id_tabLayout.getTabAt(2)?.setIcon(tabIcons[2])
+
+        handleInitialTab()
+    }
+
+    private fun handleInitialTab() {
+        val tab = intent.getStringExtra(EXTRA_CONFIRMED_FRAGMENT)
+        Log.d(TESTTAG, tab)
+        when (tab) {
+            "confirmed" -> id_viewPager.currentItem = 1
+        }
     }
 
     private fun removeActionBarShadow() {
