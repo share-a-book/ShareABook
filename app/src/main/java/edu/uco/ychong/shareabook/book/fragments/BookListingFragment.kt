@@ -41,7 +41,7 @@ class BookListingFragment : Fragment() {
 
         loadUserOwnedBooks()
 
-        inflatedView.recyclerViewUserOwnedBooks.apply {
+        inflatedView.id_bookListingRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = bookAdapter
@@ -72,11 +72,16 @@ class BookListingFragment : Fragment() {
                 book.id = bookSnapShot.id
                 allUserOwnedBooks.add(book)
             }
-            val bookAdapter = recyclerViewUserOwnedBooks.adapter
-            bookAdapter?.notifyDataSetChanged()
-
+            notifyAdapterDataChange()
         }?.addOnFailureListener {
             Log.d(TESTTAG, it.toString())
+        }
+    }
+
+    private fun notifyAdapterDataChange() {
+        if (id_bookListingRecyclerView != null) {
+            val bookAdapter = id_bookListingRecyclerView.adapter
+            bookAdapter?.notifyDataSetChanged()
         }
     }
 }

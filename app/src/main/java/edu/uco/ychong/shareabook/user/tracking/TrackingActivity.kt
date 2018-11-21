@@ -14,8 +14,8 @@ class TrackingActivity : AppCompatActivity() {
 
     private var tabIcons = arrayListOf(
             R.drawable.ic_hourglass_white_24,
-            R.drawable.ic_ask_question_24,
-            R.drawable.ic_confirm_white_24
+            R.drawable.ic_confirm_white_24,
+            R.drawable.ic_ask_question_24
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +26,8 @@ class TrackingActivity : AppCompatActivity() {
 
         trackingTabAdapter = TrackingTabAdapter(supportFragmentManager)
         trackingTabAdapter.addFragment(PendingFragment(), "Pending")
-        trackingTabAdapter.addFragment(RequestFragment(), "Request")
         trackingTabAdapter.addFragment(ConfirmFragment(), "Confirmed")
+        trackingTabAdapter.addFragment(RequestFragment(), "Request")
 
         id_viewPager.adapter = trackingTabAdapter
         id_tabLayout.setupWithViewPager(id_viewPager)

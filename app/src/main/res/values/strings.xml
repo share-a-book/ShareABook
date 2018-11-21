@@ -84,4 +84,6 @@
     <string name="upload_profile_image">Upload profile image</string>
     <string name="history">History</string>
     <string name="history_status">History status:</string>
+    <string name="add_book">Add Book</string>
+    <string name="return_book">Return Book</string>
 </resources>

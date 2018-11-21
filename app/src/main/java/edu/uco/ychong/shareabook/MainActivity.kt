@@ -6,24 +6,21 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import edu.uco.ychong.shareabook.book.*
+import edu.uco.ychong.shareabook.book.BookSearchActivity
+import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
 import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.helper.UserAccess
-import edu.uco.ychong.shareabook.model.Book
-import edu.uco.ychong.shareabook.model.BookStatus
 import edu.uco.ychong.shareabook.model.Upload
 import edu.uco.ychong.shareabook.model.User
 import edu.uco.ychong.shareabook.user.*
@@ -31,9 +28,7 @@ import edu.uco.ychong.shareabook.user.tracking.HistoryActivity
 import edu.uco.ychong.shareabook.user.tracking.TrackingActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import java.util.*
 
 const val USER_INFO = "user_info"
 const val USER_PROFILE = "user_profile"
@@ -45,8 +40,8 @@ const val EXTRA_SELECTED_BOOK_ID = "extra_selected_book_id"
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth? = null
     private var mFireStore: FirebaseFirestore? = null
-    private var availableBooks = ArrayList<Book>()
     private var mStorage: FirebaseStorage? = null
+    
     companion object {
         var profileUrl: String = ""
         var userFullName: String = ""
@@ -75,32 +70,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-
-        var viewManager = LinearLayoutManager(this)
-        val bookAdapter = BookAdapter(availableBooks, object: CustomItemClickListener {
-            override fun onItemClick(v: View, position: Int) {
-                val selectedBook = availableBooks[position]
-                goToBookInfoActivity(selectedBook)
-            }
-        })
-
-        loadAllAvailableBooks()
-
-        recyclerViewBooks.apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = bookAdapter
-        }
-    }
-
-    private fun goToBookInfoActivity(selectedBook: Book) {
-        Log.d(TESTTAG, "selected book $selectedBook")
-        val infoIntent = Intent(this, BookInfoActivity::class.java)
-        val id = selectedBook.id
-        Log.d(TESTTAG, "ID: $id")
-        infoIntent.putExtra(EXTRA_SELECTED_BOOK_ID, id)
-        infoIntent.putExtra(EXTRA_SELECTED_BOOK, selectedBook)
-        startActivity(infoIntent)
     }
 
     override fun onResume() {
@@ -108,22 +77,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.d(TESTTAG, "onResume()")
         if (!profileUrl.isNullOrEmpty())
             loadProfileImage()
-    }
-
-    private fun loadAllAvailableBooks() {
-        availableBooks.clear()
-        mFireStore?.collection("$BOOKDOC_PATH")
-            ?.whereEqualTo("status", BookStatus.AVAILABLE)
-            ?.get()
-            ?.addOnSuccessListener {
-            for (bookSnapShot in it) {
-                val book =  bookSnapShot.toObject(Book::class.java)
-                book.id = bookSnapShot.id
-                availableBooks.add(book)
-            }
-            val bookAdapter = recyclerViewBooks.adapter
-            bookAdapter?.notifyDataSetChanged()
-        }
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
@@ -189,6 +142,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun navMenuForPublicUser() {
         val navMenu = findViewById<NavigationView>(R.id.nav_view).menu
+        navMenu.findItem(R.id.nav_home).isVisible = false
         navMenu.findItem(R.id.nav_listing).isVisible = false
         navMenu.findItem(R.id.nav_tracking).isVisible = false
         navMenu.findItem(R.id.nav_history).isVisible = false
@@ -295,6 +249,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     ToastMe.message(this, "Password updated successfully.")
                 }
                 ?.addOnFailureListener {
+                    ToastMe.message(this, "Password updated failed.")
                 }
 
             mFireStore?.collection("$ACCOUNT_DOC_PATH/$userEmail")?.document(USER_INFO)?.set(updatedAccountInfo)

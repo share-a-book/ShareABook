@@ -76,8 +76,10 @@ class RequestFragment: Fragment() {
     }
 
     private fun notifyAdapterDataChange() {
-        val bookAdapter = id_requestIncomingRecyclerView.adapter
-        bookAdapter?.notifyDataSetChanged()
+        if (id_requestIncomingRecyclerView != null) {
+            val bookAdapter = id_requestIncomingRecyclerView.adapter
+            bookAdapter?.notifyDataSetChanged()
+        }
     }
 
     fun acceptRequest(request: Request) {
