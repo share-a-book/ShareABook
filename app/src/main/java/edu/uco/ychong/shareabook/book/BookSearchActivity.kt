@@ -38,6 +38,8 @@ class BookSearchActivity : AppCompatActivity() {
         bookAdapter = BookAdapter(availableBooks, object: CustomItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 val selectedBook = availableBooks[position]
+                Log.d(TESTTAG, "[BookSearchActivity]: selectedBook = ${selectedBook.id}")
+                Log.d(TESTTAG, "[BookSearchActivity]: selectedBook.imageUrl = ${selectedBook.imageUrl}")
                 goToBookInfoActivity(selectedBook)
             }
         })
@@ -63,6 +65,7 @@ class BookSearchActivity : AppCompatActivity() {
             for (bookSnapShot in it) {
                 val book =  bookSnapShot.toObject(Book::class.java)
                 book.id = bookSnapShot.id
+                Log.d(TESTTAG, "[BookSearchActivity]: book.id = ${book.id}")
                 availableBooks.add(book)
                 BookPublicData.originalBookDataList.add(book)
             }

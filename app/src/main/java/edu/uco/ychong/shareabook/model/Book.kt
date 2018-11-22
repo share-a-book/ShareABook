@@ -2,6 +2,7 @@ package edu.uco.ychong.shareabook.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.firestore.Exclude
 
 
 class Book(var title: String,
@@ -24,7 +25,7 @@ class Book(var title: String,
         "",
         "")
 
-//    @get:Exclude
+    @get:Exclude
     var id: String = ""
 
     constructor(parcel: Parcel) : this(
@@ -52,7 +53,6 @@ class Book(var title: String,
         parcel.writeString(lenderEmail)
         parcel.writeString(status)
         parcel.writeString(datePosted)
-        parcel.writeString(id)
         parcel.writeString(imageUrl)
     }
 

@@ -44,11 +44,10 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         holder.genre.text = "Genre: ${book.genre}"
         holder.description.text = "Description: ${book.description}"
         if (!book.imageUrl.isNullOrEmpty())
-            Picasso.get().load(book.imageUrl).into(holder.image)
+            Picasso.get().load(book.imageUrl).fit().centerCrop().into(holder.image)
         else
-            Picasso.get().load(R.drawable.emptyphoto).into(holder.image)
+            holder.image.setImageResource(R.drawable.emptyphoto)
     }
-
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tile = itemView.findViewById<TextView>(R.id.id_infoBookTitle)

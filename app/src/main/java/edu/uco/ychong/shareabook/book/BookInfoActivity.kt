@@ -3,11 +3,12 @@ package edu.uco.ychong.shareabook.book
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
-import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK_ID
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
@@ -36,20 +37,16 @@ class BookInfoActivity : Activity() {
         populateBookInformation()
 
         val selectedBook = intent.getParcelableExtra<Book>(EXTRA_SELECTED_BOOK)
-        val bookId = intent.getStringExtra(EXTRA_SELECTED_BOOK_ID)
-        selectedBook.id = bookId
         val lenderEmail = selectedBook.lenderEmail
 
         initializeRequestButtonVisibility()
 
         id_requestButton.setOnClickListener {
+
             sendBookRequestToLender(selectedBook)
+
             if (id_emailLender.isChecked) {
-                sendBookRequestToOwnerEmail(
-                    lenderEmail,
-                    "Share-A-Book Request: ${selectedBook.title}",
-                    "Request to borrow ${selectedBook.title} by ${selectedBook.author}"
-                )
+                sendBookRequestToOwnerEmail(lenderEmail, selectedBook)
             }
         }
     }
@@ -60,8 +57,17 @@ class BookInfoActivity : Activity() {
         id_infoBookAuthor.text = selectedBookFromExtra.author
         info_bookDatePosted.text = selectedBookFromExtra.datePosted
         id_infoBookStatus.text = "Status: ${selectedBookFromExtra.status}"
-        info_bookDescription.text = selectedBookFromExtra.description
-        info_bookPostedBy.text = "Posted by: ${selectedBookFromExtra.lenderName}"
+        id_bookDescription.text = selectedBookFromExtra.description
+        id_bookPostedBy.text = "Posted by: ${selectedBookFromExtra.lenderName}"
+
+        Log.d(TESTTAG, "[BookInfoActivity]: selectedBookFromExtra = ${selectedBookFromExtra.imageUrl}")
+
+        if (!selectedBookFromExtra.imageUrl.isNullOrEmpty()) {
+            Picasso.get()
+                .load(selectedBookFromExtra.imageUrl)
+                .into(id_bookImage)
+        }
+
     }
 
     private fun initializeRequestButtonVisibility() {
@@ -76,6 +82,7 @@ class BookInfoActivity : Activity() {
     }
 
     private fun sendBookRequestToLender(bookInfo: Book) {
+        Log.d(TESTTAG, "[BookInfoActivity]: bookInfo.id = ${bookInfo.id}")
         val userEmail = mAuth?.currentUser?.email
         if (userEmail != null) {
             val borrowRequest = Request(
@@ -102,12 +109,12 @@ class BookInfoActivity : Activity() {
             }
     }
 
-    private fun sendBookRequestToOwnerEmail(ownerEmail: String, subject: String, message: String) {
+    private fun sendBookRequestToOwnerEmail(ownerEmail: String, book: Book) {
         val sendEmailIntent = Intent(Intent.ACTION_SEND)
         sendEmailIntent.type = PLAIN_TEXT
         sendEmailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(ownerEmail))
-        sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-        sendEmailIntent.putExtra(Intent.EXTRA_TEXT,message)
+        sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Share-A-Book Request: ${book.title}")
+        sendEmailIntent.putExtra(Intent.EXTRA_TEXT, "Request to borrow ${book.title} by ${book.author}")
         startActivityForResult(Intent.createChooser(sendEmailIntent, "Sending email..."), CODE_EMAIL_SEND)
     }
 
