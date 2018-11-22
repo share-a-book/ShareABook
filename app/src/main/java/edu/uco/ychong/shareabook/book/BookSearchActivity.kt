@@ -50,7 +50,7 @@ class BookSearchActivity : AppCompatActivity() {
 
         id_homeIcon.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
-            overridePendingTransition(R.anim.slide_out, R.anim.slide_in)
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
         }
     }
 
