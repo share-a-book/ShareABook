@@ -7,7 +7,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
@@ -38,7 +37,8 @@ const val REQ_CODE_EDIT_ACCOUNT_INFO = 1
 const val EXTRA_SELECTED_BOOK = "extra_selected_book"
 const val EXTRA_SELECTED_BOOK_ID = "extra_selected_book_id"
 const val EXTRA_ADD_BOOK_FRAGMENT = "extra_add_book_fragment"
-const val EXTRA_CONFIRMED_FRAGMENT = "extra_checkout_fragment"
+const val EXTRA_TRACKING_TAB = "extra_tracking_tab"
+const val EXTRA_HISTORY_TAB = "extra_history_tab"
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mAuth: FirebaseAuth? = null
@@ -96,9 +96,40 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         id_checkoutIcon.setOnClickListener {
             val intent = Intent(this, TrackingActivity::class.java)
-            intent.putExtra(EXTRA_CONFIRMED_FRAGMENT, "confirmed")
+            intent.putExtra(EXTRA_TRACKING_TAB, "confirmed")
             startActivity(intent)
         }
+
+        id_requestIcon.setOnClickListener {
+            val intent = Intent(this, TrackingActivity::class.java)
+            intent.putExtra(EXTRA_TRACKING_TAB, "request")
+            startActivity(intent)
+        }
+
+        id_historyIcon.setOnClickListener {
+            val intent = Intent(this, HistoryActivity::class.java)
+            intent.putExtra(EXTRA_HISTORY_TAB, "returned")
+            startActivity(intent)
+        }
+
+        id_pendingIcon.setOnClickListener {
+            val intent = Intent(this, TrackingActivity::class.java)
+            intent.putExtra(EXTRA_TRACKING_TAB, "pending")
+            startActivity(intent)
+        }
+
+        id_settingsIcon.setOnClickListener {
+            val email = mAuth?.currentUser?.email
+            if (email != null)
+                editAccountInfo(email)
+        }
+
+        id_returnBookIcon.setOnClickListener {
+            val intent = Intent(this, HistoryActivity::class.java)
+            intent.putExtra(EXTRA_HISTORY_TAB, "checked_out")
+            startActivity(intent)
+        }
+
 
     }
 
@@ -180,20 +211,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawer_layout.closeDrawer(GravityCompat.START)
         else
             super.onBackPressed()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_settings ->
-                return true
-            else ->
-                return super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -330,5 +347,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
-
 }

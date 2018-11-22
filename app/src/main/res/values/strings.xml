@@ -86,4 +86,5 @@
     <string name="history_status">History status:</string>
     <string name="add_book">Add Book</string>
     <string name="return_book">Return Book</string>
+    <string name="request">Request</string>
 </resources>

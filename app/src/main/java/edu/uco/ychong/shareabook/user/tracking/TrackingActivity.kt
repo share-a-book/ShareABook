@@ -2,10 +2,8 @@ package edu.uco.ychong.shareabook.user.tracking
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import edu.uco.ychong.shareabook.EXTRA_CONFIRMED_FRAGMENT
+import edu.uco.ychong.shareabook.EXTRA_TRACKING_TAB
 import edu.uco.ychong.shareabook.R
-import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.user.tracking.fragments.confirm.ConfirmFragment
 import edu.uco.ychong.shareabook.user.tracking.fragments.pending.PendingFragment
 import edu.uco.ychong.shareabook.user.tracking.fragments.request.RequestFragment
@@ -43,10 +41,12 @@ class TrackingActivity : AppCompatActivity() {
     }
 
     private fun handleInitialTab() {
-        val tab = intent.getStringExtra(EXTRA_CONFIRMED_FRAGMENT)
-        Log.d(TESTTAG, tab)
+        val tab = intent.getStringExtra(EXTRA_TRACKING_TAB)
         when (tab) {
+            "pending" -> id_viewPager.currentItem = 0
             "confirmed" -> id_viewPager.currentItem = 1
+            "request" -> id_viewPager.currentItem = 2
+            else -> id_viewPager.currentItem = 0
         }
     }
 

@@ -2,6 +2,7 @@ package edu.uco.ychong.shareabook.user.tracking
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import edu.uco.ychong.shareabook.EXTRA_HISTORY_TAB
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.user.history.HistoryTabAdapter
 import edu.uco.ychong.shareabook.user.history.checkout.CheckedOutFragment
@@ -36,6 +37,17 @@ class HistoryActivity : AppCompatActivity() {
         id_tabLayout.getTabAt(0)?.setIcon(tabIcons[0])
         id_tabLayout.getTabAt(1)?.setIcon(tabIcons[1])
         id_tabLayout.getTabAt(2)?.setIcon(tabIcons[2])
+
+        handleInitialTab()
+    }
+
+    private fun handleInitialTab() {
+        val tab = intent.getStringExtra(EXTRA_HISTORY_TAB)
+        when (tab) {
+            "returned" -> id_viewPager.currentItem = 1
+            "checked_out" -> id_viewPager.currentItem = 0
+            else -> id_viewPager.currentItem = 0
+        }
     }
 
     private fun removeActionBarShadow() {
