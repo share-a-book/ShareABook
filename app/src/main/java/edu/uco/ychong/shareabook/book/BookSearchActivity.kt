@@ -13,6 +13,7 @@ import android.widget.SearchView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
+import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.model.Book
@@ -41,10 +42,15 @@ class BookSearchActivity : AppCompatActivity() {
             }
         })
 
-        recyclerSearchViewBooks.apply {
+        id_filteredBooksRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = bookAdapter
+        }
+
+        id_homeIcon.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            overridePendingTransition(R.anim.slide_out, R.anim.slide_in)
         }
     }
 
@@ -60,7 +66,7 @@ class BookSearchActivity : AppCompatActivity() {
                 availableBooks.add(book)
                 BookPublicData.originalBookDataList.add(book)
             }
-            val bookAdapter = recyclerSearchViewBooks.adapter
+            val bookAdapter = id_filteredBooksRecyclerView.adapter
             bookAdapter?.notifyDataSetChanged()
         }?.addOnFailureListener {
             Log.d(TESTTAG, it.toString())

@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
     }
 
     override fun onResume() {
@@ -86,48 +87,57 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun handleHomeNavigation() {
         id_searchIcon.setOnClickListener {
             startActivity(Intent(this, BookSearchActivity::class.java))
+            overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
         }
 
         id_addBookIcon.setOnClickListener {
             val intent = Intent(this, ListingActivity::class.java)
             intent.putExtra(EXTRA_ADD_BOOK_FRAGMENT, "addBook")
             startActivity(intent)
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }
 
         id_checkoutIcon.setOnClickListener {
             val intent = Intent(this, TrackingActivity::class.java)
             intent.putExtra(EXTRA_TRACKING_TAB, "confirmed")
             startActivity(intent)
+            overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
         }
 
         id_requestIcon.setOnClickListener {
             val intent = Intent(this, TrackingActivity::class.java)
             intent.putExtra(EXTRA_TRACKING_TAB, "request")
             startActivity(intent)
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }
 
         id_historyIcon.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
             intent.putExtra(EXTRA_HISTORY_TAB, "returned")
             startActivity(intent)
+            overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
         }
 
         id_pendingIcon.setOnClickListener {
             val intent = Intent(this, TrackingActivity::class.java)
             intent.putExtra(EXTRA_TRACKING_TAB, "pending")
             startActivity(intent)
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }
 
         id_settingsIcon.setOnClickListener {
             val email = mAuth?.currentUser?.email
-            if (email != null)
+            if (email != null) {
                 editAccountInfo(email)
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
+            }
         }
 
         id_returnBookIcon.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
             intent.putExtra(EXTRA_HISTORY_TAB, "checked_out")
             startActivity(intent)
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }
 
 
