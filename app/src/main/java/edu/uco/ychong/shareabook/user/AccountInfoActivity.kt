@@ -60,7 +60,6 @@ class AccountInfoActivity : AppCompatActivity() {
         val userInfo = intent.getParcelableExtra<User>(USER_INFO)
         val profileUrl = intent.getParcelableExtra<Upload>(USER_PROFILE)
 
-
         Log.d(TESTTAG, "populateAccountInfoField: ${profileUrl.url}")
         populateProfileImage()
         id_accountInfoFirstNameInput.setText(userInfo.firstName)

@@ -29,7 +29,7 @@ class BookInfoActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_info)
-        id_infoBookImage.setImageResource(R.drawable.emptyphoto)
+        id_bookImage.setImageResource(R.drawable.emptyphoto)
         mAuth = FirebaseAuth.getInstance()
         mFireStore = FirebaseFirestore.getInstance()
 

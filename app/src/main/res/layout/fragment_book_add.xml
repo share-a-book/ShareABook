@@ -84,7 +84,7 @@
             app:layout_constraintEnd_toEndOf="@+id/id_bookDescription"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/id_bookDescription"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/id_imageUrl"/>
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/id_attachImage"/>
 
     <Spinner
         android:id="@+id/id_editCategorySpinner"
@@ -106,7 +106,7 @@
     <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp" app:srcCompat="@drawable/emptyphoto"
-            android:id="@+id/id_imageUrl" android:layout_marginTop="8dp"
+            android:id="@+id/id_attachImage" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/id_editCategorySpinner"
             app:layout_constraintEnd_toEndOf="@+id/id_editCategorySpinner"/>
 </android.support.constraint.ConstraintLayout>

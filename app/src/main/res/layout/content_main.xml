@@ -15,11 +15,13 @@
             android:layout_height="80dp" app:srcCompat="@drawable/ic_close_book"
             android:id="@+id/id_addBookIcon"
             android:elevation="5dp"
+            android:contentDescription="@string/add_book"
             app:layout_constraintTop_toTopOf="@+id/id_searchIcon"
             app:layout_constraintStart_toEndOf="@+id/id_searchIcon"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"/>
     <ImageView
             android:layout_width="80dp"
+            android:contentDescription="@string/search"
             android:layout_height="80dp" app:srcCompat="@drawable/ic_search"
             android:id="@+id/id_searchIcon" android:layout_marginTop="36dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +31,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp" app:srcCompat="@drawable/ic_checkout"
             android:id="@+id/id_checkoutIcon"
+            android:contentDescription="@string/check_out"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/id_requestIcon"
             android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/id_searchText"/>
@@ -54,6 +57,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp" app:srcCompat="@drawable/ic_return_book"
             android:id="@+id/id_returnBookIcon"
+            android:contentDescription="@string/return_book"
             app:layout_constraintStart_toEndOf="@+id/id_settingsIcon" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/id_settingsIcon"/>
@@ -69,12 +73,14 @@
             android:layout_height="80dp" app:srcCompat="@drawable/ic_history"
             android:id="@+id/id_historyIcon"
             android:layout_marginTop="32dp"
+            android:contentDescription="@string/history"
             app:layout_constraintTop_toBottomOf="@+id/id_checkoutText" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/id_pendingIcon"/>
     <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp" app:srcCompat="@drawable/ic_settings"
             android:id="@+id/id_settingsIcon"
+            android:contentDescription="@string/action_settings"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/id_returnBookIcon"
             android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/id_historyText"/>
@@ -82,6 +88,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp" app:srcCompat="@drawable/ic_hourglass"
             android:id="@+id/id_pendingIcon"
+            android:contentDescription="@string/pending"
             app:layout_constraintTop_toTopOf="@+id/id_historyIcon"
             app:layout_constraintStart_toEndOf="@+id/id_historyIcon" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"/>

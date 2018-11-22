@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
 import edu.uco.ychong.shareabook.model.Book
@@ -39,10 +40,13 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         holder.author.text = "Author: ${book.author}"
         holder.datePosted.text = "Date posted: ${book.datePosted}"
         holder.status.text = "Status: ${book.status}"
-        holder.image.setImageResource(R.drawable.emptyphoto)
         holder.postedBy.text = "Posted By: ${book.lenderName}"
         holder.genre.text = "Genre: ${book.genre}"
         holder.description.text = "Description: ${book.description}"
+        if (!book.imageUrl.isNullOrEmpty())
+            Picasso.get().load(book.imageUrl).into(holder.image)
+        else
+            Picasso.get().load(R.drawable.emptyphoto).into(holder.image)
     }
 
 
@@ -51,7 +55,7 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         val author = itemView.findViewById<TextView>(R.id.id_infoBookAuthor)
         val datePosted = itemView.findViewById<TextView>(R.id.id_infoBookDatePosted)
         val status = itemView.findViewById<TextView>(R.id.id_infoBookStatus)
-        val image = itemView.findViewById<ImageView>(R.id.id_infoBookImage)
+        val image = itemView.findViewById<ImageView>(R.id.id_bookImage)
         val postedBy = itemView.findViewById<TextView>(R.id.id_BookPostedBy)
         val genre = itemView.findViewById<TextView>(R.id.id_infoBookGenre)
         val description = itemView.findViewById<TextView>(R.id.id_infoBookDescription)

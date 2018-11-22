@@ -10,30 +10,30 @@
     android:paddingBottom="16dp">
 
     <TextView
-        android:id="@+id/id_infoBookTitle"
-        android:layout_width="173dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="@string/book_title"
-        android:textColor="@color/colorDarkPurp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.343"
-        app:layout_constraintStart_toEndOf="@+id/id_infoBookImage"
-        app:layout_constraintTop_toTopOf="@+id/id_infoBookImage" />
+            android:id="@+id/id_infoBookTitle"
+            android:layout_width="173dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="@string/book_title"
+            android:textColor="@color/colorDarkPurp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.343"
+            app:layout_constraintStart_toEndOf="@+id/id_bookImage"
+            app:layout_constraintTop_toTopOf="@+id/id_bookImage"/>
 
     <ImageView
-        android:id="@+id/id_infoBookImage"
-        android:layout_width="102dp"
-        android:layout_height="116dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="40dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+            android:id="@+id/id_bookImage"
+            android:layout_width="100dp"
+            android:layout_height="114dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="40dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars"/>
 
     <TextView
         android:id="@+id/id_infoBookAuthor"
@@ -86,7 +86,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/id_infoBookDatePosted"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/id_infoBookImage"
+        app:layout_constraintStart_toStartOf="@+id/id_bookImage"
         app:layout_constraintTop_toBottomOf="@+id/id_infoBookStatus" />
 
     <TextView

@@ -44,8 +44,8 @@
             android:padding="8dp"
             android:textColor="@color/colorDarkPurp"
             app:layout_constraintEnd_toEndOf="@+id/id_infoBookStatus"
-            app:layout_constraintStart_toStartOf="@+id/id_infoBookImage"
-            app:layout_constraintTop_toBottomOf="@+id/id_infoBookImage" />
+            app:layout_constraintStart_toStartOf="@+id/id_bookImage"
+            app:layout_constraintTop_toBottomOf="@+id/id_bookImage" />
 
         <TextView
             android:id="@+id/id_bookInfo"
@@ -73,8 +73,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/id_infoBookImage"
-            app:layout_constraintTop_toTopOf="@+id/id_infoBookImage" />
+            app:layout_constraintStart_toEndOf="@+id/id_bookImage"
+            app:layout_constraintTop_toTopOf="@+id/id_bookImage" />
 
         <Button
             android:id="@+id/id_requestButton"
@@ -125,7 +125,7 @@
             app:layout_constraintTop_toBottomOf="@+id/id_infoBookAuthor" />
 
         <ImageView
-            android:id="@+id/id_infoBookImage"
+            android:id="@+id/id_bookImage"
             android:layout_width="109dp"
             android:layout_height="135dp"
             android:layout_marginStart="8dp"

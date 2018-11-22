@@ -74,12 +74,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TESTTAG, "onResume()")
         if (!profileUrl.isNullOrEmpty())
             loadProfileImage()
     }

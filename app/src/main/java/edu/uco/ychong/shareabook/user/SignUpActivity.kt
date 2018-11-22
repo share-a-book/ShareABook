@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 
 const val ACCOUNT_DOC_PATH = "account/accountDoc"
 const val PROFILE_STORAGE_PATH = "account/accountDoc"
+const val BOOK_IMAGE_STORAGE_PATH = "book/bookDoc"
 const val PICK_FROM_GALLERY = 101
 
 class SignUpActivity : AppCompatActivity() {
@@ -83,12 +84,6 @@ class SignUpActivity : AppCompatActivity() {
             uploadProfileImageToFirebaseStorage(userEmail)
         else
             goToMainActivity()
-    }
-
-    private fun isUploadFileExist(): Boolean {
-        if (fileUriPath != null)
-            return true
-        return false
     }
 
     private fun goToMainActivity() {
@@ -162,16 +157,6 @@ class SignUpActivity : AppCompatActivity() {
         val password = id_signUpPasswordInput.text.toString().trim()
         val passwordConfirmation = id_signUpPasswordConfirmInput.text.toString().trim()
         return User(fName, lName, pNumber, email, password, passwordConfirmation)
-
-
-    //For quick testing purposes
-//        val random = Random().nextInt(61) + 20
-//        return User("abc",
-//                "abc",
-//                "1231231234",
-//                "tom$random@gmail.com",
-//                "password",
-//                "password")
     }
 
     private fun openGallery() {
@@ -223,5 +208,11 @@ class SignUpActivity : AppCompatActivity() {
                     }
             }
         }
+    }
+
+    private fun isUploadFileExist(): Boolean {
+        if (fileUriPath != null)
+            return true
+        return false
     }
 }
