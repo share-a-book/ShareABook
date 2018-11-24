@@ -1,5 +1,6 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.confirm
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -29,8 +30,7 @@ class ConfirmFragment: Fragment() {
     private var mFireStore: FirebaseFirestore? = null
     private var mStorage: FirebaseStorage? = null
     private val acceptedRequestedBooks = ArrayList<Request>()
-
-
+    private var parentContext: Context? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mAuth = FirebaseAuth.getInstance()
@@ -80,22 +80,14 @@ class ConfirmFragment: Fragment() {
         confirmAdapter?.notifyDataSetChanged()
     }
 
-    //don't make it private, the ConfirmAdapter need to call this function
     fun checkout(request: Request) {
-        Log.d(TESTTAG, "(checkout) $request")
-
         mFireStore?.collection(REQUESTDOC_PATH)?.document(request.id)
             ?.update("requestStatus", HistoryStatus.CHECKED_OUT)
             ?.addOnSuccessListener {
-
                 mFireStore?.collection(BOOKDOC_PATH)?.document(request.bookId)?.get()
                     ?.addOnSuccessListener {
-                        val bookInfo = it.toObject(Book::class.java)
-
-                        if (bookInfo == null) return@addOnSuccessListener
-
+                        val bookInfo = it.toObject(Book::class.java) ?: return@addOnSuccessListener
                         val lenderName = bookInfo.lenderName
-
                         val history = History(request.bookTitle,
                             request.bookAuthor,
                             request.bookImageUrl,
@@ -105,12 +97,11 @@ class ConfirmFragment: Fragment() {
                             MainActivity.userFullName,
                             HistoryStatus.CHECKED_OUT,
                             DateManager.getCurrentDateWithFullFormat())
-
                         mFireStore?.collection(HISTORYDOC_PATH)?.document()?.set(history)
                             ?.addOnSuccessListener {
-                                val parentContext = activity?.applicationContext
                                 if (parentContext != null)
-                                    ToastMe.message(parentContext, "Set in History")
+                                    ToastMe.message(parentContext as Context, "Checkout successful")
+                                loadConfirmedRequests()
                             }
 
                     }
@@ -119,31 +110,10 @@ class ConfirmFragment: Fragment() {
                 if (parentContext != null)
                     ToastMe.message(parentContext, "Checked Out")
             }
+    }
 
-
-
-
-
-        /**Implement confirmation here***/
-         /**
-          * Create a history object and set it to the database.
-          * Use HISTORYDOC_PATH as the path.
-          * There's no adapter for this fragment yet,
-          * you can make one if you want.
-          * Or you can just present database that it shows a history document
-          * was made after the user checked out.
-          * **/
-//         val history = History(var historyId: String,
-//                       var bookTitle: String,
-//                       var bookAuthor: String,
-//                       var bookImageUrl: String,
-//                       var lenderEmail: String,
-//                       var lenderName: String,
-//                       var borrowerEmail: String,
-//                       MainActivity.userFullName,  <-- use this so you don't have to make another db call to get user name
-//                       var historyStatus: String,
-//                       var lastUpdatedDate: String)
-
-
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        parentContext = context
     }
 }

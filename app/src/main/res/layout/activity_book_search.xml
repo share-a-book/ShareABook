@@ -23,7 +23,7 @@
                 app:layout_constraintVertical_bias="0.0"/>
         <ImageView
                 android:layout_width="80dp"
-                android:layout_height="80dp" app:srcCompat="@drawable/ic_home_roof"
+                android:layout_height="50dp" app:srcCompat="@drawable/ic_home_roof"
                 android:id="@+id/id_homeIcon"
                 android:contentDescription="@string/home"
                 android:layout_gravity="bottom|center_horizontal"

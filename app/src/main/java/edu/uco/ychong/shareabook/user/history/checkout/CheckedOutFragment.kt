@@ -1,5 +1,6 @@
 package edu.uco.ychong.shareabook.user.history.checkout
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,13 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.book.fragments.HISTORYDOC_PATH
-import edu.uco.ychong.shareabook.model.Book
+import edu.uco.ychong.shareabook.helper.ToastMe
 import edu.uco.ychong.shareabook.model.History
 import edu.uco.ychong.shareabook.model.HistoryStatus
 import kotlinx.android.synthetic.main.fragment_checkedout.*
@@ -26,6 +26,7 @@ class CheckedOutFragment: Fragment() {
     private var mFireStore: FirebaseFirestore? = null
     private var mStorage: FirebaseStorage? = null
     private val checkedOutBooks = ArrayList<History>()
+    private var parentContext: Context ?= null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mAuth = FirebaseAuth.getInstance()
@@ -33,7 +34,6 @@ class CheckedOutFragment: Fragment() {
         mStorage = FirebaseStorage.getInstance()
 
         val inflatedView = inflater.inflate(R.layout.fragment_checkedout, container, false)
-        Log.d(TESTTAG, "checked out fragment")
         var viewManager = LinearLayoutManager(context)
         val checkedOutAdapter = CheckedOutAdapter(checkedOutBooks, this)
 
@@ -50,7 +50,6 @@ class CheckedOutFragment: Fragment() {
 
     private fun loadCheckedOutBooks() {
         val userEmail = mAuth?.currentUser?.email
-
         mFireStore?.collection(HISTORYDOC_PATH)
             ?.whereEqualTo("borrowerEmail", userEmail)
             ?.whereEqualTo("historyStatus", HistoryStatus.CHECKED_OUT)
@@ -61,6 +60,15 @@ class CheckedOutFragment: Fragment() {
                 notifyAdapterDataChange()
 
             }
+        mFireStore?.collection(HISTORYDOC_PATH)
+                ?.whereEqualTo("borrowerEmail", userEmail)
+                ?.whereEqualTo("historyStatus", HistoryStatus.RETURN_PROCESSING)
+                ?.get()
+                ?.addOnSuccessListener {
+                    loadCheckedOutSnapshot(it)
+                    notifyAdapterDataChange()
+
+                }
     }
 
     private fun loadCheckedOutSnapshot(it: QuerySnapshot) {
@@ -74,5 +82,23 @@ class CheckedOutFragment: Fragment() {
     private fun notifyAdapterDataChange() {
         val checkedOutAdapter = id_checkedOutRecyclerView.adapter
         checkedOutAdapter?.notifyDataSetChanged()
+    }
+
+    fun returnBook(position: Int) {
+        val historyId = checkedOutBooks[position].id
+        Log.d(TESTTAG, "[CheckedOutFragmnet]: historyId = $historyId")
+        mFireStore?.collection(HISTORYDOC_PATH)
+            ?.document(historyId)
+            ?.update("historyStatus", HistoryStatus.RETURN_PROCESSING)
+            ?.addOnSuccessListener {
+                if (parentContext != null)
+                    ToastMe.message(parentContext as Context,"Request to return success")
+                loadCheckedOutBooks()
+            }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        parentContext = context
     }
 }

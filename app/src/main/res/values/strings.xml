@@ -87,4 +87,6 @@
     <string name="add_book">Add Book</string>
     <string name="return_book">Return Book</string>
     <string name="request">Request</string>
+    <string name="return_text">Return</string>
+    <string name="confirm_returned">Confirm Returned</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.model.Request
@@ -48,7 +49,17 @@ class RequestAdapter(private val myDataSet: ArrayList<Request>, private val requ
         holder.tile.text = "Title: ${request.bookTitle}"
         holder.author.text = "Author: ${request.bookAuthor}"
         holder.borrowerName.text = request.borrowerName
-        holder.imageProfile.setImageResource(R.drawable.emptyphoto)
+
+        if (request.bookImageUrl.isNullOrEmpty()) {
+            holder.bookImage.setImageResource(R.drawable.emptyphoto)
+        }
+        else {
+            Picasso.get().load(request.bookImageUrl)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.bookImage)
+        }
+
         holder.bookId = request.bookId
     }
 
@@ -57,7 +68,7 @@ class RequestAdapter(private val myDataSet: ArrayList<Request>, private val requ
         val tile = itemView.findViewById<TextView>(R.id.id_bookTitle)
         val author = itemView.findViewById<TextView>(R.id.id_bookAuthor)
         val borrowerName = itemView.findViewById<TextView>(R.id.id_borrower)
-        val imageProfile = itemView.findViewById<ImageView>(R.id.id_lenderProfileImage)
+        val bookImage = itemView.findViewById<ImageView>(R.id.id_bookImage)
         var bookId = ""
     }
 }

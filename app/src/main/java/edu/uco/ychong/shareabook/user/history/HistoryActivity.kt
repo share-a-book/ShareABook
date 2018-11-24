@@ -6,7 +6,7 @@ import edu.uco.ychong.shareabook.EXTRA_HISTORY_TAB
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.user.history.HistoryTabAdapter
 import edu.uco.ychong.shareabook.user.history.checkout.CheckedOutFragment
-import edu.uco.ychong.shareabook.user.history.lended.LendedFragment
+import edu.uco.ychong.shareabook.user.history.history.HistoryFragment
 import edu.uco.ychong.shareabook.user.history.returned.ReturnedFragment
 import kotlinx.android.synthetic.main.activity_history.*
 
@@ -28,8 +28,8 @@ class HistoryActivity : AppCompatActivity() {
 
         historyTrackingAdapter = HistoryTabAdapter(supportFragmentManager)
         historyTrackingAdapter.addFragment(CheckedOutFragment(), "Checked Out")
-        historyTrackingAdapter.addFragment(ReturnedFragment(), "Returned")
-        historyTrackingAdapter.addFragment(LendedFragment(), "Lended")
+        historyTrackingAdapter.addFragment(ReturnedFragment(), "Returning")
+        historyTrackingAdapter.addFragment(HistoryFragment(), "History")
 
         id_viewPager.adapter = historyTrackingAdapter
         id_tabLayout.setupWithViewPager(id_viewPager)
@@ -44,7 +44,7 @@ class HistoryActivity : AppCompatActivity() {
     private fun handleInitialTab() {
         val tab = intent.getStringExtra(EXTRA_HISTORY_TAB)
         when (tab) {
-            "returned" -> id_viewPager.currentItem = 1
+            "history" -> id_viewPager.currentItem = 2
             "checked_out" -> id_viewPager.currentItem = 0
             else -> id_viewPager.currentItem = 0
         }

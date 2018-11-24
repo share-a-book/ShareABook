@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.TESTTAG
 import edu.uco.ychong.shareabook.model.Request
@@ -43,7 +44,17 @@ class ConfirmAdapter(private val myDataSet: ArrayList<Request>, private val conf
         holder.bookTitle.text = request.bookTitle
         holder.bookAuthor.text = "By ${request.bookAuthor}"
         holder.lenderName.text = request.lenderEmail
-        holder.lenderProfileImage.setImageResource(R.drawable.emptyphoto)
+
+        if (request.bookImageUrl.isNullOrEmpty()) {
+            holder.bookImage.setImageResource(R.drawable.emptyphoto)
+        } else {
+            Picasso.get()
+                    .load(request.bookImageUrl)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.bookImage)
+        }
+
         holder.bookId = request.bookId
 
         val status = request. requestStatus
@@ -52,7 +63,7 @@ class ConfirmAdapter(private val myDataSet: ArrayList<Request>, private val conf
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val lenderProfileImage = itemView.findViewById<ImageView>(R.id.id_lenderProfileImage)
+        val bookImage = itemView.findViewById<ImageView>(R.id.id_bookImage)
         val lenderName = itemView.findViewById<TextView>(R.id.id_lenderName)
         val bookTitle = itemView.findViewById<TextView>(R.id.id_bookTitle)
         val bookAuthor = itemView.findViewById<TextView>(R.id.id_bookAuthor)

@@ -27,7 +27,7 @@ class BookAdapter(private val myDataSet: ArrayList<Book>,
         val viewHolder = MyViewHolder(rowView)
 
         rowView.setOnClickListener {
-            customItemClickListener.onItemClick(it, viewHolder.position)
+            customItemClickListener.onItemClick(it, viewHolder.layoutPosition)
         }
         return viewHolder
     }

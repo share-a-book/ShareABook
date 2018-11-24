@@ -29,7 +29,7 @@
         app:layout_constraintVertical_bias="0.593" />
 
     <ImageView
-        android:id="@+id/id_lenderProfileImage"
+        android:id="@+id/id_bookImage"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="32dp"
@@ -47,23 +47,23 @@
         android:text="@string/id_accountInfoFirstNameText"
         android:textAlignment="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/id_lenderTitle"
+        app:layout_constraintEnd_toEndOf="@+id/id_borrowerTitle"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/id_lenderTitle"
-        app:layout_constraintTop_toBottomOf="@+id/id_lenderTitle" />
+        app:layout_constraintStart_toStartOf="@+id/id_borrowerTitle"
+        app:layout_constraintTop_toBottomOf="@+id/id_borrowerTitle" />
 
     <TextView
-        android:id="@+id/id_lenderTitle"
+        android:id="@+id/id_borrowerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/lender"
         android:textAlignment="textStart"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/id_lenderProfileImage"
+        app:layout_constraintEnd_toEndOf="@+id/id_bookImage"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/id_lenderProfileImage"
-        app:layout_constraintTop_toBottomOf="@+id/id_lenderProfileImage" />
+        app:layout_constraintStart_toStartOf="@+id/id_bookImage"
+        app:layout_constraintTop_toBottomOf="@+id/id_bookImage" />
 
     <TextView
         android:id="@+id/id_bookTitle"
@@ -72,8 +72,8 @@
         android:layout_marginStart="16dp"
         android:text="@string/book_title"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/id_lenderProfileImage"
-        app:layout_constraintTop_toTopOf="@+id/id_lenderProfileImage" />
+        app:layout_constraintStart_toEndOf="@+id/id_bookImage"
+        app:layout_constraintTop_toTopOf="@+id/id_bookImage" />
 
     <TextView
         android:id="@+id/id_bookAuthor"

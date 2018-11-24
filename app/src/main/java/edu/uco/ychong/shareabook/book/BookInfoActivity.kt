@@ -1,5 +1,6 @@
 package edu.uco.ychong.shareabook.book
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
+import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK_ID
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.REQUESTDOC_PATH
@@ -37,13 +39,16 @@ class BookInfoActivity : Activity() {
         populateBookInformation()
 
         val selectedBook = intent.getParcelableExtra<Book>(EXTRA_SELECTED_BOOK)
+        val selectedBookId = intent.getStringExtra(EXTRA_SELECTED_BOOK_ID)
         val lenderEmail = selectedBook.lenderEmail
 
         initializeRequestButtonVisibility()
 
         id_requestButton.setOnClickListener {
 
-            sendBookRequestToLender(selectedBook)
+            Log.d(TESTTAG, "[BookInfoActivity]: selectedBook = ${selectedBook.id}")
+            Log.d(TESTTAG, "[BookInfoActivity]: selectedBookId = ${selectedBookId}")
+            sendBookRequestToLender(selectedBook, selectedBookId)
 
             if (id_emailLender.isChecked) {
                 sendBookRequestToOwnerEmail(lenderEmail, selectedBook)
@@ -59,7 +64,6 @@ class BookInfoActivity : Activity() {
         id_infoBookStatus.text = "Status: ${selectedBookFromExtra.status}"
         id_bookDescription.text = selectedBookFromExtra.description
         id_bookPostedBy.text = "Posted by: ${selectedBookFromExtra.lenderName}"
-
         Log.d(TESTTAG, "[BookInfoActivity]: selectedBookFromExtra = ${selectedBookFromExtra.imageUrl}")
 
         if (!selectedBookFromExtra.imageUrl.isNullOrEmpty()) {
@@ -75,18 +79,23 @@ class BookInfoActivity : Activity() {
         val selectedBookFromExtra = intent.getParcelableExtra<Book>(EXTRA_SELECTED_BOOK)
         val lenderEmail = selectedBookFromExtra.lenderEmail
 
-        if (!UserAccess.isLoggedIn(currentUser) || currentUser?.email == lenderEmail)
+        if (!UserAccess.isLoggedIn(currentUser) || currentUser?.email == lenderEmail) {
             id_requestButton.visibility = View.GONE
-        else
+            id_emailLender.visibility = View.GONE
+        }
+        else {
             id_requestButton.visibility = View.VISIBLE
+            id_emailLender.visibility = View.VISIBLE
+        }
     }
 
-    private fun sendBookRequestToLender(bookInfo: Book) {
-        Log.d(TESTTAG, "[BookInfoActivity]: bookInfo.id = ${bookInfo.id}")
+    @SuppressLint("LogConditional")
+    private fun sendBookRequestToLender(bookInfo: Book, bookId: String) {
+        Log.d(TESTTAG, "[BookInfoActivity]: bookInfo = $bookId")
         val userEmail = mAuth?.currentUser?.email
         if (userEmail != null) {
             val borrowRequest = Request(
-                    bookInfo.id,
+                    bookId,
                     bookInfo.title,
                     bookInfo.author,
                     bookInfo.imageUrl,

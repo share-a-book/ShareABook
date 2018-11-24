@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.CustomItemClickListener
 import edu.uco.ychong.shareabook.model.Request
@@ -46,14 +47,22 @@ class PendingAdapter(private val myDataSet: ArrayList<Request>,
         holder.bookTitle.text = bookRequested.bookTitle
         holder.bookAuthor.text = bookRequested.bookAuthor
         holder.lenderName.text = bookRequested.lenderEmail
-        holder.lenderProfile.setImageResource(R.drawable.emptyphoto)
+
+        if (bookRequested.bookImageUrl.isNullOrEmpty()) {
+            holder.bookImage.setImageResource(R.drawable.emptyphoto)
+        } else {
+            Picasso.get().load(bookRequested.bookImageUrl)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.bookImage)
+        }
 
         if (bookRequested.requestStatus == RequestStatus.REQUEST_PENDING)
             holder.status.text = "Waiting for owner response..."
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val lenderProfile = itemView.findViewById<ImageView>(R.id.id_lenderProfileImage)
+        val bookImage = itemView.findViewById<ImageView>(R.id.id_bookImage)
         val lenderName = itemView.findViewById<TextView>(R.id.id_lenderName)
         val bookTitle = itemView.findViewById<TextView>(R.id.id_bookTitle)
         val bookAuthor = itemView.findViewById<TextView>(R.id.id_bookAuthor)

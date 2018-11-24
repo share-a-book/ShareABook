@@ -1,5 +1,6 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.request
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -28,6 +29,7 @@ class RequestFragment: Fragment() {
     private var mFireStore: FirebaseFirestore? = null
     private var mStorage: FirebaseStorage? = null
     private val requestedBooks = ArrayList<Request>()
+    private var parentContext: Context? = null
 
     override fun onCreateView(inflater: LayoutInflater, container:
     ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -83,31 +85,27 @@ class RequestFragment: Fragment() {
     }
 
     fun acceptRequest(request: Request) {
-        Log.d(TESTTAG, "accepted request: ${request.id}")
+        Log.d(TESTTAG, "[RequestFragment]: accepted request: ${request.id}")
         mFireStore?.collection(REQUESTDOC_PATH)?.document(request.id)
             ?.update("requestStatus", RequestStatus.REQUEST_ACCEPTED)
             ?.addOnSuccessListener {
-                val parentContext = activity?.applicationContext
                 if (parentContext != null)
-                    ToastMe.message(parentContext, "Accepted successful")
+                    ToastMe.message(parentContext as Context, "Accepted successful")
+                loadRequests()
             }
-
         setBookStatusToUnavailable(request.bookId)
     }
 
     private fun setBookStatusToUnavailable(bookId: String) {
-        Log.d(TESTTAG, "(setBookStatusToUnavailable) bookId = $bookId")
+        Log.d(TESTTAG, "[RequestFragment]: (setBookStatusToUnavailable) bookId = $bookId")
         mFireStore?.collection(BOOKDOC_PATH)?.document(bookId)
             ?.update("status", BookStatus.UNAVAILABLE)
             ?.addOnSuccessListener {
-                val parentContext = activity?.applicationContext
-                if (parentContext != null)
-                    ToastMe.message(parentContext, "Book remove from public")
             }
     }
 
     fun rejectRequest(request: Request) {
-        Log.d(TESTTAG, "reject request: ${request.id}")
+        Log.d(TESTTAG, "[RequestFragment]: reject request: ${request.id}")
         mFireStore?.collection(REQUESTDOC_PATH)?.document(request.id)
             ?.update("requestStatus", RequestStatus.REQUEST_REJECTED)
             ?.addOnSuccessListener {
@@ -115,5 +113,10 @@ class RequestFragment: Fragment() {
                 if (parentContext != null)
                     ToastMe.message(parentContext, "Rejected request")
             }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        parentContext = context
     }
 }

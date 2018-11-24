@@ -21,7 +21,7 @@
             tools:srcCompat="@tools:sample/avatars"/>
 
     <TextView
-            android:id="@+id/id_lenderName"
+            android:id="@+id/id_borrowerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/lender"
+            android:text="@string/borrower"
             android:textAlignment="textStart"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/id_bookImage"
@@ -50,7 +50,7 @@
             android:id="@+id/id_bookTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
+            android:layout_marginStart="24dp"
             android:text="@string/book_title"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/id_bookImage"
@@ -60,7 +60,6 @@
             android:id="@+id/id_bookAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="@string/author"
             app:layout_constraintEnd_toEndOf="@+id/id_bookTitle"
             app:layout_constraintHorizontal_bias="0.0"
@@ -74,7 +73,7 @@
             android:text="@string/status"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/id_bookAuthor"
-            app:layout_constraintTop_toTopOf="@+id/id_borrowerTitle"/>
+            app:layout_constraintTop_toBottomOf="@+id/id_bookAuthor" android:layout_marginTop="4dp"/>
 
     <TextView
             android:id="@+id/id_status"
@@ -84,11 +83,11 @@
             app:layout_constraintStart_toStartOf="@+id/id_historyTitle"
             app:layout_constraintTop_toBottomOf="@+id/id_historyTitle"/>
     <Button
-            android:text="@string/return_text"
+            android:text="@string/confirm_returned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/id_returnButton"
+            android:id="@+id/id_confirmReturnButton"
             app:layout_constraintTop_toTopOf="@+id/id_historyTitle" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="4dp" android:layout_marginTop="36dp"/>
 
 </android.support.constraint.ConstraintLayout>

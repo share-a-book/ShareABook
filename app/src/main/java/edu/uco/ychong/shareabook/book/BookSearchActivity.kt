@@ -13,9 +13,11 @@ import android.widget.SearchView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK
+import edu.uco.ychong.shareabook.EXTRA_SELECTED_BOOK_ID
 import edu.uco.ychong.shareabook.MainActivity
 import edu.uco.ychong.shareabook.R
 import edu.uco.ychong.shareabook.book.fragments.BOOKDOC_PATH
+import edu.uco.ychong.shareabook.helper.UserAccess
 import edu.uco.ychong.shareabook.model.Book
 import edu.uco.ychong.shareabook.model.BookStatus
 import kotlinx.android.synthetic.main.activity_book_search.*
@@ -38,11 +40,13 @@ class BookSearchActivity : AppCompatActivity() {
         bookAdapter = BookAdapter(availableBooks, object: CustomItemClickListener {
             override fun onItemClick(v: View, position: Int) {
                 val selectedBook = availableBooks[position]
-                Log.d(TESTTAG, "[BookSearchActivity]: selectedBook = ${selectedBook.id}")
+                Log.d(TESTTAG, "[BookSearchActivity]: selectedBook.bookId = ${selectedBook.id}")
                 Log.d(TESTTAG, "[BookSearchActivity]: selectedBook.imageUrl = ${selectedBook.imageUrl}")
-                goToBookInfoActivity(selectedBook)
+                goToBookInfoActivity(selectedBook, selectedBook.id)
             }
         })
+
+        setVisibility()
 
         id_filteredBooksRecyclerView.apply {
             setHasFixedSize(true)
@@ -53,6 +57,14 @@ class BookSearchActivity : AppCompatActivity() {
         id_homeIcon.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
+        }
+
+        updateUI()
+    }
+
+    private fun setVisibility() {
+        if (!UserAccess.isLoggedIn(mAuth?.currentUser)) {
+            id_homeIcon.visibility = View.GONE
         }
     }
 
@@ -76,9 +88,10 @@ class BookSearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToBookInfoActivity(selectedBook: Book) {
+    private fun goToBookInfoActivity(selectedBook: Book, bookId: String) {
         val infoIntent = Intent(this, BookInfoActivity::class.java)
         infoIntent.putExtra(EXTRA_SELECTED_BOOK, selectedBook)
+        infoIntent.putExtra(EXTRA_SELECTED_BOOK_ID, bookId)
         startActivity(infoIntent)
     }
 
@@ -105,5 +118,18 @@ class BookSearchActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    private fun updateUI() {
+        val decorView = window.decorView
+        decorView.setOnSystemUiVisibilityChangeListener { visibility ->
+            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 1) {
+                decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+            }
+        }
     }
 }

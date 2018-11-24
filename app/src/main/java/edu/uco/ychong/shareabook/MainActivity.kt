@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -68,9 +69,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setNavMenuLoginLogoutVisibility(currentUser)
         handleHomeNavigation()
+
+
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
+
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
@@ -111,7 +115,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         id_historyIcon.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
-            intent.putExtra(EXTRA_HISTORY_TAB, "returned")
+            intent.putExtra(EXTRA_HISTORY_TAB, "history")
             startActivity(intent)
             overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
         }
@@ -127,7 +131,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val email = mAuth?.currentUser?.email
             if (email != null) {
                 editAccountInfo(email)
-                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
             }
         }
 
@@ -137,8 +140,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }
-
-
     }
 
     private fun setAccountHeaderInfo(userEmail: String) {
@@ -195,6 +196,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navMenu.findItem(R.id.nav_accountInfo).isVisible = true
         navMenu.findItem(R.id.nav_login).isVisible = false
         navMenu.findItem(R.id.nav_sign_up).isVisible = false
+        id_logo.visibility = View.GONE
 
         if (!profileUrl.isNullOrEmpty() && id_profile_image != null)
             Picasso.get().load(profileUrl).noFade().into(id_profile_image)
@@ -212,6 +214,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navMenu.findItem(R.id.nav_accountInfo).isVisible = false
         navMenu.findItem(R.id.nav_login).isVisible = true
         navMenu.findItem(R.id.nav_sign_up).isVisible = true
+
+        id_searchIcon.visibility = View.GONE
+        id_searchText.visibility = View.GONE
+        id_addBookIcon.visibility = View.GONE
+        id_addBookText.visibility = View.GONE
+        id_checkoutIcon.visibility = View.GONE
+        id_checkoutText.visibility = View.GONE
+        id_requestIcon.visibility = View.GONE
+        id_requestText.visibility = View.GONE
+        id_historyIcon.visibility = View.GONE
+        id_historyText.visibility = View.GONE
+        id_pendingIcon.visibility = View.GONE
+        id_pendingText.visibility = View.GONE
+        id_settingsIcon.visibility = View.GONE
+        id_settingsText.visibility = View.GONE
+        id_returnBookIcon.visibility = View.GONE
+        id_returnBookText.visibility = View.GONE
+        id_logo.visibility = View.VISIBLE
     }
 
     override fun onBackPressed() {
@@ -277,6 +297,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val userProfile = Upload(USER_PROFILE, profileUrl)
                 intent.putExtra(USER_PROFILE, userProfile)
                 startActivityForResult(intent, REQ_CODE_EDIT_ACCOUNT_INFO)
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right)
             }
             ?.addOnFailureListener {
                 ToastMe.message(this, "Failed to get account info!")

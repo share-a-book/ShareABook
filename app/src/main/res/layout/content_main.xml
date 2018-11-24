@@ -8,8 +8,17 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_main"
         android:background="@color/colorFadeWhite"
-        tools:context=".MainActivity">
+        tools:context=".MainActivity" android:id="@+id/id_mainLayout">
 
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:layout_width="224dp"
+                android:layout_gravity="center"
+                android:layout_height="224dp" app:srcCompat="@drawable/logo_text" android:id="@+id/id_logo"/>
+    </FrameLayout>
     <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp" app:srcCompat="@drawable/ic_close_book"
