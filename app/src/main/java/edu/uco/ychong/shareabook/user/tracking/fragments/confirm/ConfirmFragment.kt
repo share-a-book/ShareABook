@@ -88,9 +88,9 @@ class ConfirmFragment: Fragment() {
         confirmAdapter?.notifyDataSetChanged()
     }
 
-    fun contactPreference(context: Context, lenderEmail: String, bookTitle: String, bookAuthor: String, borrowerName: String) {
+    fun communicationPreference(context: Context, lenderEmail: String, bookTitle: String, bookAuthor: String, borrowerName: String) {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Contact Preference")
+        builder.setTitle("Communication Preference")
         builder.setMessage("How do you want to contact the lender?")
         builder.setPositiveButton("TEXT") { dialog, which ->
             getPhoneNumber(lenderEmail, !IS_CALL, bookTitle, bookAuthor, borrowerName)

@@ -35,7 +35,11 @@ class HistoryFragment : Fragment() {
         var viewManager = LinearLayoutManager(context)
         val returnAdapter = HistoryAdapter(histories, this)
 
-        loadHistories()
+        val userEmail = mAuth?.currentUser?.email
+
+        if (userEmail != null) {
+            loadHistories(userEmail)
+        }
 
         inflatedView.id_historyRecyclerView.apply {
             setHasFixedSize(true)
@@ -47,15 +51,24 @@ class HistoryFragment : Fragment() {
     }
 
 
-    private fun loadHistories() {
+    private fun loadHistories(userEmail: String) {
         mFireStore?.collection(HISTORYDOC_PATH)
+                ?.whereEqualTo("lenderEmail", userEmail)
                 ?.whereEqualTo("historyStatus", HistoryStatus.RETURN_COMPLETED)
                 ?.get()
                 ?.addOnSuccessListener {
                     histories.clear()
                     loadHistorySnapshot(it)
                     notifyAdapterDataChange()
+                }
 
+        mFireStore?.collection(HISTORYDOC_PATH)
+                ?.whereEqualTo("borrowerEmail", userEmail)
+                ?.whereEqualTo("historyStatus", HistoryStatus.RETURN_COMPLETED)
+                ?.get()
+                ?.addOnSuccessListener {
+                    loadHistorySnapshot(it)
+                    notifyAdapterDataChange()
                 }
     }
 

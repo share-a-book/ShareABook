@@ -41,7 +41,7 @@ class ConfirmAdapter(private val myDataSet: ArrayList<Request>, private val conf
             val bookAuthor = data.bookAuthor
             val borrowerName = data.borrowerName
 
-            confirmFragment.contactPreference(parent.context, lenderEmail, bookTitle, bookAuthor, borrowerName)
+            confirmFragment.communicationPreference(parent.context, lenderEmail, bookTitle, bookAuthor, borrowerName)
         }
 
         rowView.id_checkoutButton.setOnClickListener {
