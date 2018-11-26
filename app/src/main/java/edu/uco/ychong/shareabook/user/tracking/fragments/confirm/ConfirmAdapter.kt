@@ -1,5 +1,10 @@
 package edu.uco.ychong.shareabook.user.tracking.fragments.confirm
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +33,16 @@ class ConfirmAdapter(private val myDataSet: ArrayList<Request>, private val conf
                 .inflate(R.layout.book_confirm_row, parent, false)
 
         val viewHolder = MyViewHolder(rowView)
+
+        rowView.id_phoneIcon.setOnClickListener {
+            val data = myDataSet[viewHolder.position]
+            val lenderEmail = data.lenderEmail
+            val bookTitle = data.bookTitle
+            val bookAuthor = data.bookAuthor
+            val borrowerName = data.borrowerName
+
+            confirmFragment.contactPreference(parent.context, lenderEmail, bookTitle, bookAuthor, borrowerName)
+        }
 
         rowView.id_checkoutButton.setOnClickListener {
             Log.d(TESTTAG, "checkout ${myDataSet[viewHolder.layoutPosition]}")
